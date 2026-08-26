@@ -99,50 +99,43 @@ export function CreativeZone() {
     {
       name: "Root Chakra",
       description: "Grounding & Security",
-      traditionalColor: "#FF0000",
-      symbol: "🔴",
+      traditionalColor: "#EF4444",
       outline: "M150,350 Q100,300 150,250 Q200,300 150,350 Z"
     },
     {
       name: "Sacral Chakra", 
       description: "Creativity & Emotion",
-      traditionalColor: "#FF7F00",
-      symbol: "🟠",
+      traditionalColor: "#F97316",
       outline: "M150,350 L100,300 L100,250 L200,250 L200,300 Z"
     },
     {
       name: "Solar Plexus",
       description: "Personal Power",
-      traditionalColor: "#FFFF00",
-      symbol: "🟡",
+      traditionalColor: "#EAB308",
       outline: "M150,350 L120,300 L120,280 L100,250 L200,250 L180,280 L180,300 Z"
     },
     {
       name: "Heart Chakra",
       description: "Love & Compassion", 
-      traditionalColor: "#00FF00",
-      symbol: "💚",
+      traditionalColor: "#10B981",
       outline: "M150,350 Q100,320 120,280 Q140,250 150,270 Q160,250 180,280 Q200,320 150,350 Z"
     },
     {
       name: "Throat Chakra",
       description: "Communication",
-      traditionalColor: "#0000FF",
-      symbol: "🔵",
+      traditionalColor: "#0EA5E9",
       outline: "M150,350 Q110,330 110,300 Q110,270 150,250 Q190,270 190,300 Q190,330 150,350 Z"
     },
     {
       name: "Third Eye",
       description: "Intuition & Wisdom",
-      traditionalColor: "#4B0082",
-      symbol: "🟣",
+      traditionalColor: "#6366F1",
       outline: "M150,350 Q120,320 130,290 Q140,260 150,250 Q160,260 170,290 Q180,320 150,350 Z"
     },
     {
       name: "Crown Chakra",
       description: "Spiritual Connection",
-      traditionalColor: "#8B00FF",
-      symbol: "🟪",
+      traditionalColor: "#A855F7",
       outline: "M150,350 Q130,330 130,310 Q130,290 140,270 Q150,250 160,270 Q170,290 170,310 Q170,330 150,350 Z"
     }
   ];
@@ -713,14 +706,13 @@ export function CreativeZone() {
                         }`}
                       >
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-lg">{chakra.symbol}</span>
-                          <span className="text-xs font-medium truncate">{chakra.name}</span>
+                          <span 
+                            className="w-3 h-3 rounded-full shadow-sm flex-shrink-0" 
+                            style={{ backgroundColor: chakra.traditionalColor }}
+                          />
+                          <span className="text-xs font-semibold truncate">{chakra.name}</span>
                         </div>
                         <div className="text-xs text-gray-500 truncate">{chakra.description}</div>
-                        <div 
-                          className="w-4 h-4 rounded border mt-1" 
-                          style={{ backgroundColor: chakra.traditionalColor }}
-                        />
                       </button>
                     ))}
                   </div>

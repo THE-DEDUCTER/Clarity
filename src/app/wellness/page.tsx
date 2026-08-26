@@ -4,6 +4,7 @@ import { MoodTracker } from "@/components/mood-tracker";
 import { BackButton } from "@/components/ui/back-button";
 import { Calendar, Clock, Heart, Brain, Headphones, Play, Volume2, Star, TrendingUp, Users, BookOpen, MessageCircle, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 
 export default function WellnessPage() {

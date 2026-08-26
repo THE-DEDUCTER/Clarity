@@ -25,7 +25,7 @@ const moodOptions: MoodOption[] = [
     value: 1,
     description: "I need support",
     quotes: [
-      "This too shall pass. You're stronger than you know. 💙",
+      "This too shall pass. You're stronger than you know.",
       "Every storm runs out of rain. Healing takes time, and that's okay.",
       "You've survived 100% of your difficult days so far. That's a perfect record.",
       "It's okay to not be okay. What matters is that you're here and you're trying."
@@ -64,7 +64,7 @@ const moodOptions: MoodOption[] = [
     value: 4,
     description: "Feeling positive",
     quotes: [
-      "Your positivity is a gift to yourself and others. Keep shining! ✨",
+      "Your positivity is a gift to yourself and others. Keep shining!",
       "Good days are meant to be celebrated. Take a moment to appreciate this feeling.",
       "You're creating beautiful moments. This energy is contagious!",
       "Gratitude turns what we have into enough. You're doing amazing today."
@@ -77,7 +77,7 @@ const moodOptions: MoodOption[] = [
     value: 5,
     description: "Amazing day!",
     quotes: [
-      "Your joy is infectious! This is the energy the world needs more of! 🌟",
+      "Your joy is infectious! This is the energy the world needs more of!",
       "Amazing days like this remind us what we're capable of. Celebrate yourself!",
       "You're radiating happiness! This feeling is proof of your resilience and strength.",
       "Life is beautiful when we're present for moments like these. Soak it all in!"

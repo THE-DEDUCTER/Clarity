@@ -40,7 +40,7 @@ export default function AdminPage() {
     };
 
     checkAuthentication();
-  }, [setLocation]);
+  }, [router]);
 
   const handleLogout = () => {
     setIsAuthenticated(false);

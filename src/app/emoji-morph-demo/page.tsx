@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/ui/back-button";
-import { Sparkles, MessageCircle, Heart } from "lucide-react";
+import { Sparkles, MessageCircle, Heart, Target, Bot } from "lucide-react";
 import { MoodChatMorph, moodOptions, type MoodOption } from "@/components/mood-chat-morph";
 
 export default function EmojiMorphDemo() {
@@ -70,7 +70,7 @@ export default function EmojiMorphDemo() {
             <div className="mt-8 text-center">
               <div className="inline-flex items-center gap-2 px-6 py-3 bg-blue-50 dark:bg-blue-900/20 rounded-full text-blue-600 dark:text-blue-400">
                 <MessageCircle className="w-5 h-5" />
-                <span className="font-medium">Click any emoji to see the magic! ✨</span>
+                <span className="font-medium">Click any mood to see the interactive companion!</span>
               </div>
             </div>
           </CardContent>
@@ -78,19 +78,23 @@ export default function EmojiMorphDemo() {
 
         {/* Feature explanation */}
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="border-0 shadow-lg bg-red-50 dark:bg-red-900/20">
+          <Card className="border-0 shadow-lg bg-red-50 dark:bg-red-900/20 rounded-2xl">
             <CardContent className="p-6 text-center">
-              <div className="text-3xl mb-4">🎯</div>
+              <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-red-100 dark:bg-red-800/40 flex items-center justify-center text-red-600">
+                <Target className="w-6 h-6" />
+              </div>
               <h3 className="font-semibold mb-2">Mood-Specific Quotes</h3>
               <p className="text-sm text-muted-foreground">
-                Each emoji triggers personalized motivational quotes that match your current emotional state.
+                Each mood triggers personalized motivational quotes that match your current emotional state.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg bg-blue-50 dark:bg-blue-900/20">
+          <Card className="border-0 shadow-lg bg-blue-50 dark:bg-blue-900/20 rounded-2xl">
             <CardContent className="p-6 text-center">
-              <div className="text-3xl mb-4">🤖</div>
+              <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-blue-100 dark:bg-blue-800/40 flex items-center justify-center text-blue-600">
+                <Bot className="w-6 h-6" />
+              </div>
               <h3 className="font-semibold mb-2">AI Companion Match</h3>
               <p className="text-sm text-muted-foreground">
                 Smart AI personality suggestions based on your mood, connecting you with the right support.
@@ -98,9 +102,11 @@ export default function EmojiMorphDemo() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg bg-green-50 dark:bg-green-900/20">
+          <Card className="border-0 shadow-lg bg-green-50 dark:bg-green-900/20 rounded-2xl">
             <CardContent className="p-6 text-center">
-              <div className="text-3xl mb-4">✨</div>
+              <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-green-100 dark:bg-green-800/40 flex items-center justify-center text-green-600">
+                <Sparkles className="w-6 h-6" />
+              </div>
               <h3 className="font-semibold mb-2">Smooth Morphing</h3>
               <p className="text-sm text-muted-foreground">
                 Beautiful animated transitions that make the interaction feel magical and engaging.

@@ -16,7 +16,7 @@ export interface Visitor {
   type: 'positive' | 'negative' | 'complex';
   name: string;
   description: string;
-  emoji: string;
+  icon: string;
   color: string;
   effects: {
     accept: { health: number; peace: number; score: number; message: string };
@@ -34,7 +34,7 @@ export const visitors: Visitor[] = [
     type: 'positive',
     name: 'Encouragement',
     description: 'A warm, supportive thought that lifts your spirits',
-    emoji: '✨',
+    icon: 'sparkles',
     color: '#FFD700',
     effects: {
       accept: { health: 15, peace: 20, score: 10, message: 'Your castle glows with renewed strength!' },
@@ -49,7 +49,7 @@ export const visitors: Visitor[] = [
     type: 'positive',
     name: 'Joy',
     description: 'Pure happiness seeking to brighten your day',
-    emoji: '🌈',
+    icon: 'sun',
     color: '#FF69B4',
     effects: {
       accept: { health: 10, peace: 25, score: 10, message: 'Rainbow light fills your castle with warmth!' },
@@ -64,7 +64,7 @@ export const visitors: Visitor[] = [
     type: 'positive',
     name: 'Gratitude',
     description: 'Appreciation for the good things in life',
-    emoji: '🙏',
+    icon: 'heart',
     color: '#32CD32',
     effects: {
       accept: { health: 12, peace: 18, score: 8, message: 'Gratitude strengthens your castle walls!' },
@@ -81,7 +81,7 @@ export const visitors: Visitor[] = [
     type: 'negative',
     name: 'Self-Doubt',
     description: 'Dark whispers questioning your worth and abilities',
-    emoji: '🌑',
+    icon: 'cloud-rain',
     color: '#2F2F2F',
     effects: {
       accept: { health: -20, peace: -25, score: 0, message: 'Dark cracks spread across your castle walls.' },
@@ -96,7 +96,7 @@ export const visitors: Visitor[] = [
     type: 'negative',
     name: 'Anger',
     description: 'Burning rage that threatens to consume everything',
-    emoji: '🔥',
+    icon: 'flame',
     color: '#DC143C',
     effects: {
       accept: { health: -25, peace: -30, score: 0, message: 'Flames scorch your castle walls!' },
@@ -111,7 +111,7 @@ export const visitors: Visitor[] = [
     type: 'negative',
     name: 'Guilt',
     description: 'Heavy burden of past mistakes weighing you down',
-    emoji: '⚖️',
+    icon: 'scale',
     color: '#696969',
     effects: {
       accept: { health: -15, peace: -20, score: 0, message: 'Heavy chains bind your castle.' },
@@ -128,7 +128,7 @@ export const visitors: Visitor[] = [
     type: 'complex',
     name: 'Criticism',
     description: 'Sharp words that might hide valuable insights',
-    emoji: '💎',
+    icon: 'message-square',
     color: '#4169E1',
     effects: {
       accept: { health: -10, peace: -15, score: 0, message: 'Harsh words cut into your walls.' },
@@ -143,7 +143,7 @@ export const visitors: Visitor[] = [
     type: 'complex',
     name: 'Worry',
     description: 'Anxious thoughts about uncertain futures',
-    emoji: '🌪️',
+    icon: 'wind',
     color: '#9370DB',
     effects: {
       accept: { health: -12, peace: -18, score: 0, message: 'Worry clouds gather over your castle.' },
@@ -158,7 +158,7 @@ export const visitors: Visitor[] = [
     type: 'complex',
     name: 'Loneliness',
     description: 'The ache of disconnection from others',
-    emoji: '🌙',
+    icon: 'moon',
     color: '#483D8B',
     effects: {
       accept: { health: -8, peace: -12, score: 0, message: 'Shadows lengthen around your castle.' },

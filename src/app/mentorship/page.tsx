@@ -15,28 +15,36 @@ export default function MentorshipPage() {
   const [activeTab, setActiveTab] = useState("overview");
 
   return (
-    <div className="container mx-auto max-w-6xl space-y-4 sm:space-y-8">
+    <div className="max-w-6xl mx-auto space-y-6 pb-20 animate-in fade-in duration-500" data-testid="page-mentorship">
       <BackButton to="/dashboard" />
-      <div className="text-center space-y-2 sm:space-y-4">
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-          <span className="text-indigo-600">Savangadi</span> <span className="text-slate-800">Program</span>
-        </h1>
-        <p className="text-lg text-slate-600 font-medium max-w-2xl mx-auto">
-          Connecting minds, building futures through meaningful mentorship
-        </p>
+      
+      {/* Hero Banner */}
+      <div className="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-teal-500/10 rounded-[32px] p-6 sm:p-8 border border-indigo-200/50 dark:border-indigo-800/40">
+        <div className="max-w-2xl space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-800 dark:text-indigo-200 text-xs font-bold">
+            <GraduationCap className="w-3.5 h-3.5" />
+            <span>Savangadi Mentorship Initiative</span>
+          </div>
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+            Peer Mentorship Network
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+            Connecting students across regions and domains for academic guidance, career prep, and personal growth.
+          </p>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 text-xs sm:text-sm">
-          <TabsTrigger value="overview" className="px-2 sm:px-4">Overview</TabsTrigger>
-          <TabsTrigger value="register-mentor" className="px-2 sm:px-4">Become Mentor</TabsTrigger>
-          <TabsTrigger value="register-mentee" className="px-2 sm:px-4">Find Mentor</TabsTrigger>
-          <TabsTrigger value="matching" className="px-2 sm:px-4">Connections</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 text-xs sm:text-sm bg-muted/60 p-1 rounded-2xl mb-6">
+          <TabsTrigger value="overview" className="rounded-xl font-semibold">Overview</TabsTrigger>
+          <TabsTrigger value="register-mentor" className="rounded-xl font-semibold">Become Mentor</TabsTrigger>
+          <TabsTrigger value="register-mentee" className="rounded-xl font-semibold">Find Mentor</TabsTrigger>
+          <TabsTrigger value="matching" className="rounded-xl font-semibold">Connections</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4 sm:space-y-6">
           <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
-            <Card className="border-2 border-indigo-100 hover:border-indigo-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+            <Card className="rounded-[28px] border border-indigo-100 dark:border-indigo-900/40 shadow-lg hover:shadow-xl transition-all duration-300 bg-white dark:bg-gray-900">
               <CardHeader className="text-center pb-3 sm:pb-6">
                 <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 rounded-full flex items-center justify-center mb-2 sm:mb-4 shadow-lg">
                   <GraduationCap className="h-6 w-6 sm:h-8 sm:w-8 text-white" />

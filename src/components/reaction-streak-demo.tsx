@@ -33,7 +33,7 @@ export function ReactionStreakDemo() {
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
               "Remember: Progress isn't always linear. It's okay to have difficult days. 
-              What matters is that you keep moving forward, one step at a time. 💙"
+              What matters is that you keep moving forward, one step at a time."
             </p>
             <div className="flex items-center justify-between pt-4 border-t">
               <MultiReaction 
@@ -43,7 +43,7 @@ export function ReactionStreakDemo() {
                 showStreak={true}
               />
               <div className="text-sm text-muted-foreground">
-                React to build your streak! 🔥
+                React to build your streak!
               </div>
             </div>
           </CardContent>
@@ -56,7 +56,7 @@ export function ReactionStreakDemo() {
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
               "5-minute breathing exercise: Inhale for 4 counts, hold for 4, exhale for 6. 
-              Repeat 5 times. Perfect for reducing anxiety and finding calm. ✨"
+              Repeat 5 times. Perfect for reducing anxiety and finding calm."
             </p>
             <div className="flex items-center justify-between pt-4 border-t">
               <MultiReaction 
@@ -66,7 +66,7 @@ export function ReactionStreakDemo() {
                 showStreak={true}
               />
               <div className="text-sm text-muted-foreground">
-                Show some love for helpful content! 💫
+                Show some love for helpful content!
               </div>
             </div>
           </CardContent>
@@ -79,7 +79,7 @@ export function ReactionStreakDemo() {
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
               "Just finished my final exams! The key was breaking down each subject into 
-              manageable chunks and celebrating small wins along the way. You've got this! 🎯"
+              manageable chunks and celebrating small wins along the way. You've got this!"
             </p>
             <div className="flex items-center justify-between pt-4 border-t">
               <MultiReaction 
@@ -89,7 +89,7 @@ export function ReactionStreakDemo() {
                 showStreak={true}
               />
               <div className="text-sm text-muted-foreground">
-                Support fellow students! 🚀
+                Support fellow students!
               </div>
             </div>
           </CardContent>

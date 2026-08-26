@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Clock, Heart, Moon, Music, Wind, Timer, Star, Headphones, SkipBack, SkipForward, Shuffle, Repeat, Plus, Search, Filter } from "lucide-react";
+import { Play, Pause, RotateCcw, Volume2, VolumeX, Clock, Heart, Moon, Music, Wind, Timer, Star, Headphones, SkipBack, SkipForward, Shuffle, Repeat, Plus, Search, Filter, Lightbulb, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -41,7 +41,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     backgroundSound: "rain",
     isPopular: true,
     plays: 12450,
-    coverImage: "🌙"
+    coverImage: "sleep"
   },
   {
     id: "sleep-2", 
@@ -54,7 +54,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     tags: ["body scan", "tension relief", "peaceful"],
     backgroundSound: "ocean",
     plays: 8920,
-    coverImage: "🏖️"
+    coverImage: "ocean"
   },
   {
     id: "sleep-3",
@@ -67,7 +67,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     tags: ["story", "nature", "visualization"],
     backgroundSound: "forest",
     plays: 15630,
-    coverImage: "🌲"
+    coverImage: "forest"
   },
 
   // Meditation Sessions
@@ -82,7 +82,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     tags: ["mindfulness", "stress", "academic"],
     isPopular: true,
     plays: 9870,
-    coverImage: "🧘‍♂️"
+    coverImage: "mindfulness"
   },
   {
     id: "med-2",
@@ -95,7 +95,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     tags: ["anxiety", "calm", "breathing"],
     backgroundSound: "bells",
     plays: 7450,
-    coverImage: "🕉️"
+    coverImage: "calm"
   },
   {
     id: "med-3",
@@ -107,7 +107,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     instructor: "Dr. Sarah Chen",
     tags: ["self-love", "compassion", "healing"],
     plays: 6780,
-    coverImage: "💝"
+    coverImage: "compassion"
   },
 
   // Focus Sessions
@@ -122,7 +122,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     backgroundSound: "white-noise",
     isPopular: true,
     plays: 23450,
-    coverImage: "📚"
+    coverImage: "focus"
   },
   {
     id: "focus-2",
@@ -134,7 +134,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     instructor: "Alex Thompson",
     tags: ["pomodoro", "productivity", "time-management"],
     plays: 11200,
-    coverImage: "⏰"
+    coverImage: "timer"
   },
   {
     id: "focus-3",
@@ -146,7 +146,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     tags: ["deep-work", "extended", "ambient"],
     backgroundSound: "cafe",
     plays: 5670,
-    coverImage: "☕"
+    coverImage: "cafe"
   },
 
   // Breathing Sessions
@@ -161,7 +161,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     tags: ["anxiety", "quick", "calming"],
     isPopular: true,
     plays: 14520,
-    coverImage: "🌬️"
+    coverImage: "breath"
   },
   {
     id: "breath-2",
@@ -173,7 +173,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     instructor: "Captain Sarah Miller",
     tags: ["focus", "discipline", "clarity"],
     plays: 8930,
-    coverImage: "⭐"
+    coverImage: "box"
   },
   {
     id: "breath-3",
@@ -185,7 +185,7 @@ const AUDIO_SESSIONS: AudioSession[] = [
     instructor: "David Kumar",
     tags: ["energy", "advanced", "resilience"],
     plays: 6120,
-    coverImage: "❄️"
+    coverImage: "energy"
   }
 ];
 
@@ -202,7 +202,8 @@ export function AudioSessions() {
   const [isShuffled, setIsShuffled] = useState(false);
   const [repeatMode, setRepeatMode] = useState<'none' | 'all' | 'one'>('none');
   const [favorites, setFavorites] = useState<string[]>([]);
-  
+  const [isAIThinking, setIsAIThinking] = useState(false);
+  const [aiRecommendation, setAiRecommendation] = useState<{ resource: AudioSession, reasoning: string } | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -278,6 +279,30 @@ export function AudioSessions() {
         ? prev.filter(id => id !== sessionId)
         : [...prev, sessionId]
     );
+  };
+
+  const handleAIRecommend = async () => {
+    if (!searchTerm) return;
+    setIsAIThinking(true);
+    setAiRecommendation(null);
+    try {
+      const res = await fetch('/api/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: searchTerm, items: AUDIO_SESSIONS, type: 'audio session' })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const recommendedResource = AUDIO_SESSIONS.find(r => r.id === data.recommendedId);
+        if (recommendedResource) {
+          setAiRecommendation({ resource: recommendedResource, reasoning: data.reasoning });
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsAIThinking(false);
+    }
   };
 
   const getCategoryIcon = (category: string) => {
@@ -366,29 +391,76 @@ export function AudioSessions() {
       </div>
 
       {/* Search and Filter */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <Input 
-            placeholder="Search sessions, instructors, or tags..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-12 bg-white border-gray-200 text-gray-800 placeholder-gray-400 rounded-full h-12 focus:ring-2 focus:ring-blue-500 shadow-sm"
-          />
+      <div className="flex flex-col gap-4 mb-6">
+        <div className="flex items-center gap-4">
+          <div className="relative flex-1 max-w-md flex items-center">
+            <Search className="absolute left-4 w-5 h-5 text-gray-400" />
+            <Input 
+              placeholder="Search sessions or describe how you feel..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAIRecommend()}
+              className="pl-12 pr-32 bg-white border-gray-200 text-gray-800 placeholder-gray-400 rounded-full h-12 focus:ring-2 focus:ring-blue-500 shadow-sm w-full"
+            />
+            <div className="absolute right-1">
+              <Button
+                onClick={handleAIRecommend}
+                disabled={isAIThinking || !searchTerm}
+                className="bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center gap-2 shadow-md transition-all h-10 px-4"
+              >
+                {isAIThinking ? (
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <Lightbulb className="w-4 h-4" />
+                )}
+                <span className="hidden sm:inline">Ask AI</span>
+              </Button>
+            </div>
+          </div>
+          <Select value={activeTab} onValueChange={setActiveTab}>
+            <SelectTrigger className="w-40 bg-white border-gray-200 text-gray-800 rounded-full shadow-sm h-12">
+              <Filter className="w-4 h-4 mr-2" />
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-white border-gray-200">
+              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="sleep">Sleep</SelectItem>
+              <SelectItem value="meditation">Meditation</SelectItem>
+              <SelectItem value="focus">Focus</SelectItem>
+              <SelectItem value="breathing">Breathing</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <Select value={activeTab} onValueChange={setActiveTab}>
-          <SelectTrigger className="w-40 bg-white border-gray-200 text-gray-800 rounded-full shadow-sm">
-            <Filter className="w-4 h-4 mr-2" />
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="bg-white border-gray-200">
-            <SelectItem value="all">All Categories</SelectItem>
-            <SelectItem value="sleep">Sleep</SelectItem>
-            <SelectItem value="meditation">Meditation</SelectItem>
-            <SelectItem value="focus">Focus</SelectItem>
-            <SelectItem value="breathing">Breathing</SelectItem>
-          </SelectContent>
-        </Select>
+        
+        {/* AI Recommendation Result */}
+        {aiRecommendation && (
+          <div className="max-w-md animate-in fade-in slide-in-from-top-4 duration-500">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-4 shadow-sm">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-blue-500/10 rounded-lg">
+                  <Lightbulb className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <div className="text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">AI Pick for You</div>
+                  <h4 className="text-gray-900 font-semibold text-base">{aiRecommendation.resource.title}</h4>
+                  <p className="text-gray-600 text-sm mt-1 leading-relaxed">
+                    "{aiRecommendation.reasoning}"
+                  </p>
+                  <Button 
+                    className="mt-3 bg-blue-600 hover:bg-blue-700 text-white h-8 text-xs font-medium rounded-lg px-4"
+                    onClick={() => {
+                      setActiveTab('all');
+                      setSearchTerm(aiRecommendation.resource.title);
+                      handleSessionSelect(aiRecommendation.resource);
+                    }}
+                  >
+                    Play Session
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Clean Track List */}
@@ -431,7 +503,7 @@ export function AudioSessions() {
                     <span className={`text-sm ${
                       isCurrentSession ? 'text-blue-600' : 'text-gray-500 group-hover:hidden'
                     }`}>
-                      {isCurrentSession && isPlaying ? '♪' : index + 1}
+                      {isCurrentSession && isPlaying ? <Volume2 className="w-3.5 h-3.5 text-blue-600 animate-pulse" /> : index + 1}
                     </span>
                     <Play className="w-4 h-4 text-blue-600 hidden group-hover:block absolute top-0 left-0" />
                   </div>
@@ -439,8 +511,11 @@ export function AudioSessions() {
                 
                 {/* Title and Artist */}
                 <div className="col-span-6 flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-md flex items-center justify-center text-lg">
-                    {session.coverImage}
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center shadow-sm">
+                    {(() => {
+                      const Icon = session.category === 'sleep' ? Moon : session.category === 'meditation' ? Sparkles : session.category === 'focus' ? Music : Wind;
+                      return <Icon className="w-5 h-5 text-white" />;
+                    })()}
                   </div>
                   <div>
                     <div className={`font-medium ${
@@ -480,8 +555,8 @@ export function AudioSessions() {
                     <Heart 
                       className={`w-4 h-4 ${
                         isFavorited 
-                          ? 'text-red-500 fill-red-500' 
-                          : 'text-gray-400 hover:text-red-500'
+                            ? 'text-red-500 fill-red-500' 
+                            : 'text-gray-400 hover:text-red-500'
                       }`} 
                     />
                   </Button>
@@ -499,8 +574,11 @@ export function AudioSessions() {
             <div className="flex items-center justify-between">
               {/* Current Track Info */}
               <div className="flex items-center gap-4 min-w-0 w-1/4">
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
-                  {currentSession.coverImage}
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                  {(() => {
+                    const Icon = currentSession.category === 'sleep' ? Moon : currentSession.category === 'meditation' ? Sparkles : currentSession.category === 'focus' ? Music : Wind;
+                    return <Icon className="w-7 h-7 text-white" />;
+                  })()}
                 </div>
                 <div className="min-w-0">
                   <div className="text-gray-800 font-medium truncate">{currentSession.title}</div>

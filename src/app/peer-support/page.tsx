@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 import { Users, TrendingUp, MessageSquare, Star, Shield, Eye, Volume2, Accessibility, BookOpen, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -160,83 +161,83 @@ export default function PeerSupportPage() {
         <TabsContent value={activeTab} className="mt-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredCommunities.map((community) => (
-              <Card key={community.id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md" style={{ borderRadius: '16px' }}>
-                <CardHeader className="pb-3">
+              <div key={community.id} className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm rounded-[32px] overflow-hidden flex flex-col">
+                <div className="p-6">
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${community.id === 'general' ? 'bg-blue-100 dark:bg-blue-900' : community.id === 'mental-wellness' ? 'bg-red-100 dark:bg-red-900' : community.id === 'learning-differences' ? 'bg-pink-100 dark:bg-pink-900' : community.id === 'visual-impaired' ? 'bg-purple-100 dark:bg-purple-900' : community.id === 'mobility-support' ? 'bg-orange-100 dark:bg-orange-900' : 'bg-green-100 dark:bg-green-900'}`}>
-                        <community.icon className={`w-6 h-6 ${community.color}`} />
+                    <div className="flex items-center gap-4">
+                      <div className={`p-4 rounded-[20px] shadow-sm ${community.id === 'general' ? 'bg-blue-50 dark:bg-blue-900/20' : community.id === 'mental-wellness' ? 'bg-red-50 dark:bg-red-900/20' : community.id === 'learning-differences' ? 'bg-pink-50 dark:bg-pink-900/20' : community.id === 'visual-impaired' ? 'bg-purple-50 dark:bg-purple-900/20' : community.id === 'mobility-support' ? 'bg-orange-50 dark:bg-orange-900/20' : 'bg-green-50 dark:bg-green-900/20'}`}>
+                        <community.icon className={`w-8 h-8 ${community.color}`} />
                       </div>
                       <div>
-                        <CardTitle className="text-lg font-semibold">
+                        <h3 className="text-xl font-bold group-hover:text-emerald-500 transition-colors">
                           {community.name}
-                        </CardTitle>
-                        <div className="flex items-center gap-2 mt-1">
+                        </h3>
+                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                           {community.isSpecialized && (
-                            <Badge variant="secondary" className="text-xs">
+                            <div className="px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">
                               Specialized
-                            </Badge>
+                            </div>
                           )}
                           {community.trending && (
-                            <Badge className="text-xs bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+                            <div className="flex items-center px-2 py-0.5 bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 text-xs font-semibold rounded-full">
                               <TrendingUp className="w-3 h-3 mr-1" />
                               Trending
-                            </Badge>
+                            </div>
                           )}
                         </div>
                       </div>
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground line-clamp-3">
+                </div>
+                <div className="px-6 flex-1 flex flex-col space-y-4">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
                     {community.description}
                   </p>
                   
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
-                        <span>{formatNumber(community.memberCount)}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span>{community.onlineCount} online</span>
-                      </div>
+                  <div className="flex items-center gap-4 text-sm font-semibold text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-2xl w-fit">
+                    <div className="flex items-center gap-1.5">
+                      <Users className="w-4 h-4 text-gray-400" />
+                      <span>{formatNumber(community.memberCount)}</span>
+                    </div>
+                    <div className="w-1 h-1 bg-gray-300 rounded-full" />
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                      <span>{community.onlineCount} online</span>
                     </div>
                   </div>
 
                   {community.accessibilitySupport && (
-                    <div className="space-y-2">
-                      <p className="text-xs font-medium text-muted-foreground">Accessibility Support:</p>
-                      <div className="flex flex-wrap gap-1">
+                    <div className="space-y-2 mt-auto">
+                      <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Features</p>
+                      <div className="flex flex-wrap gap-1.5">
                         {community.accessibilitySupport.slice(0, 2).map((support) => (
-                          <Badge key={support} variant="outline" className="text-xs">
+                          <div key={support} className="px-2 py-1 bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400 text-[11px] font-semibold rounded-lg border border-emerald-100/50">
                             {support}
-                          </Badge>
+                          </div>
                         ))}
                         {community.accessibilitySupport.length > 2 && (
-                          <Badge variant="outline" className="text-xs">
+                          <div className="px-2 py-1 bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400 text-[11px] font-semibold rounded-lg border border-gray-100">
                             +{community.accessibilitySupport.length - 2} more
-                          </Badge>
+                          </div>
                         )}
                       </div>
                     </div>
                   )}
-
-                  <div className="flex gap-2 pt-2">
-                    <Button asChild className="flex-1">
-                      <Link href={`/community/${community.id}`}>
+                </div>
+                <div className="p-6 mt-2">
+                  <div className="flex gap-3">
+                    <Link href={`/community/${community.id}`} className="flex-1">
+                      <Button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl shadow-md hover:shadow-lg transition-all h-11">
                         <MessageSquare className="w-4 h-4 mr-2" />
                         Join Community
-                      </Link>
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Star className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                    <Button variant="outline" className="w-11 h-11 rounded-xl border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 p-0">
+                      <Star className="w-4 h-4 text-gray-400" />
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
 

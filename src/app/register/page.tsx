@@ -51,7 +51,7 @@ export default function RegisterPage() {
       await register(formData);
       
       toast({
-        title: "Welcome to Clarity! 🎉",
+        title: "Welcome to Clarity!",
         description: "Your account has been created successfully.",
       });
       
@@ -83,10 +83,10 @@ export default function RegisterPage() {
         </Button>
 
         {/* Register Card */}
-        <Card className="w-full shadow-lg">
+        <Card className="w-full shadow-xl rounded-[28px] border border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl">
           <CardHeader className="space-y-1 text-center">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
                 <UserPlus className="w-6 h-6 text-white" />
               </div>
             </div>

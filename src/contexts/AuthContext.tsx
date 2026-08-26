@@ -68,92 +68,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Login function
   const login = async (username: string, password: string) => {
-    if (isStaticMode) {
-      // Demo mode - simulate successful login
-      const demoUser: User = {
-        id: 'demo-user',
-        username: username,
-        email: `${username}@demo.com`,
-        firstName: 'Demo',
-        lastName: 'User'
-      };
-      setUser(demoUser);
-      setToken('demo-token');
-      localStorage.setItem('authToken', 'demo-token');
-      localStorage.setItem('authUser', JSON.stringify(demoUser));
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
-      const { token: newToken, user: userData } = data;
-      setToken(newToken);
-      setUser(userData);
-
-      localStorage.setItem('authToken', newToken);
-      localStorage.setItem('authUser', JSON.stringify(userData));
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
-    }
+    // Demo mode - simulate successful login
+    // Using a brief timeout to simulate network request
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const demoUser: User = {
+      id: 'demo-user',
+      username: username,
+      email: `${username}@demo.com`,
+      firstName: 'Demo',
+      lastName: 'User'
+    };
+    setUser(demoUser);
+    setToken('demo-token');
+    localStorage.setItem('authToken', 'demo-token');
+    localStorage.setItem('authUser', JSON.stringify(demoUser));
   };
 
   // Register function
   const register = async (userData: RegisterData) => {
-    if (isStaticMode) {
-      // Demo mode - simulate successful registration
-      const demoUser: User = {
-        id: 'demo-user',
-        username: userData.username,
-        email: userData.email,
-        firstName: userData.firstName,
-        lastName: userData.lastName
-      };
-      setUser(demoUser);
-      setToken('demo-token');
-      localStorage.setItem('authToken', 'demo-token');
-      localStorage.setItem('authUser', JSON.stringify(demoUser));
-      return;
-    }
+    // Demo mode - simulate successful registration
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
-
-      const { token: newToken, user: newUser } = data;
-      setToken(newToken);
-      setUser(newUser);
-
-      localStorage.setItem('authToken', newToken);
-      localStorage.setItem('authUser', JSON.stringify(newUser));
-    } catch (error) {
-      console.error('Registration error:', error);
-      throw error;
-    }
+    const demoUser: User = {
+      id: 'demo-user',
+      username: userData.username,
+      email: userData.email,
+      firstName: userData.firstName,
+      lastName: userData.lastName
+    };
+    setUser(demoUser);
+    setToken('demo-token');
+    localStorage.setItem('authToken', 'demo-token');
+    localStorage.setItem('authUser', JSON.stringify(demoUser));
   };
 
   // Logout function

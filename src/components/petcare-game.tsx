@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { VirtualPets } from '@/components/3d/virtual-pets';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -58,6 +59,7 @@ interface Activity {
 }
 
 export const PetCareDashboard: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'3d' | 'classic'>('3d');
   const [pet, setPet] = useState<Pet>({
     id: '1',
     name: 'Buddy',
@@ -84,7 +86,7 @@ export const PetCareDashboard: React.FC = () => {
     {
       id: '1',
       sender: 'pet',
-      message: `Woof! Hi there! I'm ${pet.name} and I'm so happy to meet you! 🐕💕`,
+      message: `Woof! Hi there! I'm ${pet.name} and I'm so happy to meet you!`,
       timestamp: new Date()
     }
   ]);
@@ -214,50 +216,50 @@ export const PetCareDashboard: React.FC = () => {
     
     // Contextual responses based on pet stats
     if (pet.hunger < 30) {
-      return "Woof woof! I'm getting really hungry... could you feed me please? 🍖😋";
+      return "Woof woof! I'm getting really hungry... could you feed me please?";
     }
     if (pet.thirst < 30) {
-      return "Pant pant... I'm so thirsty! Could I have some fresh water? 💧🐕";
+      return "Pant pant... I'm so thirsty! Could I have some fresh water?";
     }
     if (pet.health < 40) {
-      return "I'm not feeling too well... maybe I need some rest and care? 😴💚";
+      return "I'm not feeling too well... maybe I need some rest and care?";
     }
     if (pet.happiness < 40) {
-      return "I'm feeling a bit sad today... want to play with me to cheer me up? 🎮😊";
+      return "I'm feeling a bit sad today... want to play with me to cheer me up?";
     }
     
     // Responses to specific keywords
     if (message.includes('play') || message.includes('game')) {
-      return "Yes! I love to play! Let's have some fun together! 🎮🐕💕";
+      return "Yes! I love to play! Let's have some fun together!";
     }
     if (message.includes('hungry') || message.includes('food') || message.includes('eat')) {
-      return "Woof! Food sounds amazing right now! I love treats! 🍖😋";
+      return "Woof! Food sounds amazing right now! I love treats!";
     }
     if (message.includes('water') || message.includes('drink') || message.includes('thirsty')) {
-      return "Fresh water is the best! Glug glug glug! 💧😊";
+      return "Fresh water is the best! Glug glug glug!";
     }
     if (message.includes('good') || message.includes('love') || message.includes('cute')) {
-      return "Aww, you're the best! I love you too! You take such good care of me! 💕🐕";
+      return "Aww, you're the best! I love you too! You take such good care of me!";
     }
     if (message.includes('tired') || message.includes('sleep') || message.includes('rest')) {
-      return "A good nap sounds perfect right now... zzz... 😴💤";
+      return "A good nap sounds perfect right now... zzz...";
     }
     if (message.includes('happy') || message.includes('joy')) {
-      return "I'm so happy when we're together! You make me feel loved! 😊🎉";
+      return "I'm so happy when we're together! You make me feel loved!";
     }
     if (message.includes('sick') || message.includes('hurt') || message.includes('pain')) {
-      return "Don't worry about me! With your love and care, I'll feel better soon! 💚🐕";
+      return "Don't worry about me! With your love and care, I'll feel better soon!";
     }
     
     // General friendly responses
     const generalResponses = [
-      "Woof woof! I'm so happy you're talking to me! 🐕💕",
-      "You're the best pet parent ever! Thank you for taking care of me! 😊🎉",
-      "I love spending time with you! What should we do next? 🎮💚",
-      "Being with you makes me so happy! Tail wagging intensifies! 🐕💕",
-      "You always know just what to say! I'm lucky to have you! 😊🌟",
-      "Every day with you is an adventure! What fun thing should we do? 🎯💫",
-      "I can tell you care about me so much! That makes me feel safe and loved! 💕🏠"
+      "Woof woof! I'm so happy you're talking to me!",
+      "You're the best pet parent ever! Thank you for taking care of me!",
+      "I love spending time with you! What should we do next?",
+      "Being with you makes me so happy! Tail wagging intensifies!",
+      "You always know just what to say! I'm lucky to have you!",
+      "Every day with you is an adventure! What fun thing should we do?",
+      "I can tell you care about me so much! That makes me feel safe and loved!"
     ];
     
     return generalResponses[Math.floor(Math.random() * generalResponses.length)];
@@ -342,30 +344,8 @@ export const PetCareDashboard: React.FC = () => {
     return 'bg-red-500';
   };
 
-  const getPetEmoji = () => {
-    if (pet.happiness >= 80) return '😊';
-    if (pet.happiness >= 60) return '🙂';
-    if (pet.happiness >= 40) return '😐';
-    if (pet.happiness >= 20) return '😔';
-    return '😢';
-  };
-
   // Animated Dog Component
   const AnimatedDog = () => {
-    const getDogState = () => {
-      if (pet.health < 30) return { emoji: '🐕‍🦺', animation: 'tired', color: 'text-red-500' };
-      if (pet.hunger < 20) return { emoji: '🐕', animation: 'hungry', color: 'text-orange-500' };
-      if (pet.happiness < 30) return { emoji: '🐕', animation: 'sad', color: 'text-gray-500' };
-      if (currentAnimation === 'eating') return { emoji: '🍖', animation: 'eating', color: 'text-green-500' };
-      if (currentAnimation === 'drinking') return { emoji: '💧', animation: 'drinking', color: 'text-blue-500' };
-      if (currentAnimation === 'playing') return { emoji: '🎾', animation: 'playing', color: 'text-purple-500' };
-      if (currentAnimation === 'sleeping') return { emoji: '😴', animation: 'sleeping', color: 'text-indigo-500' };
-      if (pet.happiness >= 80) return { emoji: '🐕', animation: 'happy', color: 'text-green-500' };
-      return { emoji: '🐕', animation: 'idle', color: 'text-blue-500' };
-    };
-
-    const dogState = getDogState();
-
     return (
       <div className="relative flex items-center justify-center p-8">
         {/* Background effects based on mood */}
@@ -377,8 +357,8 @@ export const PetCareDashboard: React.FC = () => {
           'bg-blue-100'
         } opacity-30`} style={{animationDuration: currentAnimation === 'playing' ? '2s' : '3s'}} />
         
-        {/* Main dog */}
-        <div className={`relative z-10 transition-all duration-500 ${
+        {/* Main dog graphic */}
+        <div className={`relative z-10 p-8 rounded-full bg-gradient-to-tr from-amber-100 to-orange-100 shadow-xl transition-all duration-500 ${
           currentAnimation === 'eating' ? 'animate-bounce' :
           currentAnimation === 'drinking' ? 'animate-pulse' :
           currentAnimation === 'playing' ? 'animate-spin' :
@@ -392,27 +372,27 @@ export const PetCareDashboard: React.FC = () => {
           currentAnimation === 'playing' ? '1s' :
           '3s'
         }}>
-          <div className="text-8xl mb-2">{dogState.emoji}</div>
+          <PawPrint className="w-24 h-24 text-amber-700" />
           
           {/* Activity indicators */}
           {currentAnimation === 'eating' && (
-            <div className="absolute -top-2 -right-2 animate-bounce">
-              <div className="text-2xl">🍖</div>
+            <div className="absolute -top-2 -right-2 p-2 bg-emerald-500 text-white rounded-full shadow-lg animate-bounce">
+              <Bone className="w-5 h-5" />
             </div>
           )}
           {currentAnimation === 'drinking' && (
-            <div className="absolute -top-2 -right-2 animate-pulse">
-              <div className="text-2xl">💧</div>
+            <div className="absolute -top-2 -right-2 p-2 bg-sky-500 text-white rounded-full shadow-lg animate-pulse">
+              <Droplets className="w-5 h-5" />
             </div>
           )}
           {currentAnimation === 'playing' && (
-            <div className="absolute -top-2 -right-2 animate-spin">
-              <div className="text-2xl">🎾</div>
+            <div className="absolute -top-2 -right-2 p-2 bg-violet-500 text-white rounded-full shadow-lg animate-spin">
+              <GamepadIcon className="w-5 h-5" />
             </div>
           )}
           {currentAnimation === 'sleeping' && (
-            <div className="absolute -top-2 -right-2 animate-pulse">
-              <div className="text-2xl">💤</div>
+            <div className="absolute -top-2 -right-2 p-2 bg-indigo-500 text-white rounded-full shadow-lg animate-pulse">
+              <Moon className="w-5 h-5" />
             </div>
           )}
         </div>
@@ -453,89 +433,122 @@ export const PetCareDashboard: React.FC = () => {
             <span>Achievements: {achievements.length}</span>
           </div>
         </div>
+
+        {/* 3D Arena vs Classic Mode Switcher */}
+        <div className="flex justify-center pt-2">
+          <div className="p-1 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl border border-indigo-100 dark:border-gray-700 shadow-sm flex items-center gap-1.5">
+            <Button
+              size="sm"
+              variant={viewMode === '3d' ? 'default' : 'ghost'}
+              onClick={() => setViewMode('3d')}
+              className="rounded-xl text-xs px-4 font-semibold"
+            >
+              <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+              3D Companion Arena
+            </Button>
+            <Button
+              size="sm"
+              variant={viewMode === 'classic' ? 'default' : 'ghost'}
+              onClick={() => setViewMode('classic')}
+              className="rounded-xl text-xs px-4 font-semibold"
+            >
+              <PawPrint className="w-3.5 h-3.5 mr-1.5" />
+              Stats & Mini-View
+            </Button>
+          </div>
+        </div>
       </div>
 
-      {/* Pet Status with Animated Dog */}
-      <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50">
-        <CardHeader className="text-center pb-4">
-          <AnimatedDog />
-          <CardTitle className="text-2xl text-gray-800">
-            {pet.name} - Level {pet.level}
-          </CardTitle>
-          <div className="flex justify-center gap-2">
-            <Badge variant="outline" className="bg-white/50">
-              {pet.experience}/{pet.maxExperience} XP
-            </Badge>
-            <Badge className={`${
-              pet.mood === 'happy' ? 'bg-green-100 text-green-800' :
-              pet.mood === 'sad' ? 'bg-gray-100 text-gray-800' :
-              pet.mood === 'tired' ? 'bg-red-100 text-red-800' :
-              pet.mood === 'hungry' ? 'bg-orange-100 text-orange-800' :
-              pet.mood === 'playful' ? 'bg-purple-100 text-purple-800' :
-              'bg-blue-100 text-blue-800'
-            }`}>
-              {pet.mood.charAt(0).toUpperCase() + pet.mood.slice(1)}
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Progress value={(pet.experience / pet.maxExperience) * 100} className="h-3" />
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center space-y-2">
-              <div className="flex items-center justify-center gap-1">
-                <Heart className={`w-5 h-5 ${getStatColor(pet.health)}`} />
-                <span className="font-semibold">Health</span>
-              </div>
-              <div className="space-y-1">
-                <div className={`text-2xl font-bold ${getStatColor(pet.health)}`}>
-                  {pet.health}%
-                </div>
-                <Progress value={pet.health} className="h-2" />
-              </div>
-            </div>
+      {/* 3D Virtual Pets Arena */}
+      {viewMode === '3d' && (
+        <div className="animate-in fade-in duration-300">
+          <VirtualPets />
+        </div>
+      )}
 
-            <div className="text-center space-y-2">
-              <div className="flex items-center justify-center gap-1">
-                <Sparkles className={`w-5 h-5 ${getStatColor(pet.happiness)}`} />
-                <span className="font-semibold">Happiness</span>
-              </div>
-              <div className="space-y-1">
-                <div className={`text-2xl font-bold ${getStatColor(pet.happiness)}`}>
-                  {pet.happiness}%
-                </div>
-                <Progress value={pet.happiness} className="h-2" />
-              </div>
+      {/* Pet Status with Animated Dog (Classic view) */}
+      {viewMode === 'classic' && (
+        <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50">
+          <CardHeader className="text-center pb-4">
+            <AnimatedDog />
+            <CardTitle className="text-2xl text-gray-800">
+              {pet.name} - Level {pet.level}
+            </CardTitle>
+            <div className="flex justify-center gap-2">
+              <Badge variant="outline" className="bg-white/50">
+                {pet.experience}/{pet.maxExperience} XP
+              </Badge>
+              <Badge className={`${
+                pet.mood === 'happy' ? 'bg-green-100 text-green-800' :
+                pet.mood === 'sad' ? 'bg-gray-100 text-gray-800' :
+                pet.mood === 'tired' ? 'bg-red-100 text-red-800' :
+                pet.mood === 'hungry' ? 'bg-orange-100 text-orange-800' :
+                pet.mood === 'playful' ? 'bg-purple-100 text-purple-800' :
+                'bg-blue-100 text-blue-800'
+              }`}>
+                {pet.mood.charAt(0).toUpperCase() + pet.mood.slice(1)}
+              </Badge>
             </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Progress value={(pet.experience / pet.maxExperience) * 100} className="h-3" />
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center space-y-2">
+                <div className="flex items-center justify-center gap-1">
+                  <Heart className={`w-5 h-5 ${getStatColor(pet.health)}`} />
+                  <span className="font-semibold">Health</span>
+                </div>
+                <div className="space-y-1">
+                  <div className={`text-2xl font-bold ${getStatColor(pet.health)}`}>
+                    {pet.health}%
+                  </div>
+                  <Progress value={pet.health} className="h-2" />
+                </div>
+              </div>
 
-            <div className="text-center space-y-2">
-              <div className="flex items-center justify-center gap-1">
-                <Apple className={`w-5 h-5 ${getStatColor(pet.hunger)}`} />
-                <span className="font-semibold">Hunger</span>
-              </div>
-              <div className="space-y-1">
-                <div className={`text-2xl font-bold ${getStatColor(pet.hunger)}`}>
-                  {pet.hunger}%
+              <div className="text-center space-y-2">
+                <div className="flex items-center justify-center gap-1">
+                  <Sparkles className={`w-5 h-5 ${getStatColor(pet.happiness)}`} />
+                  <span className="font-semibold">Happiness</span>
                 </div>
-                <Progress value={pet.hunger} className="h-2" />
+                <div className="space-y-1">
+                  <div className={`text-2xl font-bold ${getStatColor(pet.happiness)}`}>
+                    {pet.happiness}%
+                  </div>
+                  <Progress value={pet.happiness} className="h-2" />
+                </div>
               </div>
-            </div>
 
-            <div className="text-center space-y-2">
-              <div className="flex items-center justify-center gap-1">
-                <Droplets className={`w-5 h-5 ${getStatColor(pet.thirst)}`} />
-                <span className="font-semibold">Thirst</span>
-              </div>
-              <div className="space-y-1">
-                <div className={`text-2xl font-bold ${getStatColor(pet.thirst)}`}>
-                  {pet.thirst}%
+              <div className="text-center space-y-2">
+                <div className="flex items-center justify-center gap-1">
+                  <Apple className={`w-5 h-5 ${getStatColor(pet.hunger)}`} />
+                  <span className="font-semibold">Hunger</span>
                 </div>
-                <Progress value={pet.thirst} className="h-2" />
+                <div className="space-y-1">
+                  <div className={`text-2xl font-bold ${getStatColor(pet.hunger)}`}>
+                    {pet.hunger}%
+                  </div>
+                  <Progress value={pet.hunger} className="h-2" />
+                </div>
+              </div>
+
+              <div className="text-center space-y-2">
+                <div className="flex items-center justify-center gap-1">
+                  <Droplets className={`w-5 h-5 ${getStatColor(pet.thirst)}`} />
+                  <span className="font-semibold">Thirst</span>
+                </div>
+                <div className="space-y-1">
+                  <div className={`text-2xl font-bold ${getStatColor(pet.thirst)}`}>
+                    {pet.thirst}%
+                  </div>
+                  <Progress value={pet.thirst} className="h-2" />
+                </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Activity Buttons */}
       <Card>
@@ -651,9 +664,12 @@ export const PetCareDashboard: React.FC = () => {
           </div>
 
           {/* Chat Tips */}
-          <div className="text-xs text-gray-600 bg-white/50 p-3 rounded-lg border border-purple-100">
-            💡 <strong>Chat Tips:</strong> Ask {pet.name} how they're feeling, tell them about your day, or just say hi! 
-            Your pet will respond based on their current needs and mood. Try words like "play", "hungry", "happy", or "love"!
+          <div className="text-xs text-gray-600 bg-white/50 p-3 rounded-lg border border-purple-100 flex items-start gap-2">
+            <Sparkles className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
+            <div>
+              <strong>Chat Tips:</strong> Ask {pet.name} how they're feeling, tell them about your day, or just say hi! 
+              Your pet will respond based on their current needs and mood. Try words like "play", "hungry", "happy", or "love"!
+            </div>
           </div>
         </CardContent>
       </Card>

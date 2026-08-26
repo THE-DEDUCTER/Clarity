@@ -62,15 +62,15 @@ export function useReaction(options: UseReactionOptions = {}) {
       if (data.streak) {
         if (data.streak.newAchievements && data.streak.newAchievements.length > 0) {
           toast({
-            title: `🎉 New Achievement${data.streak.newAchievements.length > 1 ? 's' : ''} Unlocked!`,
+            title: `New Achievement${data.streak.newAchievements.length > 1 ? 's' : ''} Unlocked!`,
             description: data.streak.newAchievements.join(', '),
           });
         } else if (data.streak.currentStreak > 1) {
           const streakMessages = [
-            `🔥 ${data.streak.currentStreak} day streak!`,
-            `💫 Streak power: ${data.streak.currentStreak} days!`,
-            `⚡ ${data.streak.currentStreak} days of engagement!`,
-            `🌟 ${data.streak.currentStreak} day reaction streak!`
+            `${data.streak.currentStreak} day streak!`,
+            `Streak power: ${data.streak.currentStreak} days!`,
+            `${data.streak.currentStreak} days of engagement!`,
+            `${data.streak.currentStreak} day reaction streak!`
           ];
           const randomMessage = streakMessages[Math.floor(Math.random() * streakMessages.length)];
           
@@ -80,7 +80,7 @@ export function useReaction(options: UseReactionOptions = {}) {
           });
         } else {
           toast({
-            title: 'Reaction added! 👍',
+            title: 'Reaction added!',
             description: 'Keep reacting to build your streak!',
           });
         }
@@ -143,12 +143,17 @@ export function useReaction(options: UseReactionOptions = {}) {
 
 // Hook for checking if user has reacted to specific content
 export function useUserReactions(targetType: string, targetId: string) {
-  const { data: userReactions, isLoading } = useQuery({
+  const { data: userReactions = [], isLoading } = useQuery({
     queryKey: ['/api/reactions', 'user', targetType, targetId],
     queryFn: async () => {
-      const response = await fetch(`/api/reactions/user/${targetType}/${targetId}`);
-      if (!response.ok) throw new Error('Failed to fetch user reactions');
-      return response.json();
+      try {
+        const response = await fetch(`/api/reactions/user/${targetType}/${targetId}`);
+        if (!response.ok) return [];
+        const data = await response.json();
+        return Array.isArray(data) ? data : [];
+      } catch (err) {
+        return [];
+      }
     },
   });
 
@@ -167,18 +172,23 @@ export function useUserReactions(targetType: string, targetId: string) {
 
 // Hook for getting reaction counts for content
 export function useReactionCounts(targetType: string, targetId: string) {
-  const { data: reactionCounts, isLoading } = useQuery({
+  const { data: reactionCounts = {}, isLoading } = useQuery({
     queryKey: ['/api/reactions', 'counts', targetType, targetId],
     queryFn: async () => {
-      const response = await fetch(`/api/reactions/counts/${targetType}/${targetId}`);
-      if (!response.ok) throw new Error('Failed to fetch reaction counts');
-      return response.json();
+      try {
+        const response = await fetch(`/api/reactions/counts/${targetType}/${targetId}`);
+        if (!response.ok) return {};
+        const data = await response.json();
+        return data && typeof data === 'object' ? data : {};
+      } catch (err) {
+        return {};
+      }
     },
   });
 
   return {
     counts: reactionCounts || {},
-    total: Object.values(reactionCounts || {}).reduce((sum: number, count: any) => sum + (count || 0), 0),
+    total: Object.values(reactionCounts || {}).reduce((sum: number, count: any) => sum + (Number(count) || 0), 0),
     isLoading,
   };
 }

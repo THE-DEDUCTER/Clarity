@@ -455,7 +455,7 @@ export default function MentalHealthAssessment() {
           </div>
 
           {/* Question Card */}
-          <Card>
+          <Card className="rounded-[32px] border-gray-100 shadow-sm">
             <CardHeader>
               <CardTitle className="text-lg">
                 {questions[currentQuestion]}
@@ -506,7 +506,7 @@ export default function MentalHealthAssessment() {
           </p>
         </div>
 
-        <Card>
+        <Card className="rounded-[32px] border-gray-100 shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Brain className="h-5 w-5" />

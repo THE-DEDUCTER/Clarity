@@ -5,7 +5,7 @@ import { AIChatList } from "@/components/ai-chat-list";
 import { AIChat } from "@/components/ai-chat";
 import { BackButton } from "@/components/ui/back-button";
 import { AI_PERSONALITIES, type AIPersonality } from "@shared/ai-personalities";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 
 interface Message {
@@ -19,6 +19,7 @@ interface Message {
 type ConversationHistory = Record<string, Message[]>;
 
 export default function AIBuddyPage() {
+  const router = useRouter();
   const pathname = usePathname();
   const [selectedPersonality, setSelectedPersonality] = useState<AIPersonality | null>(null);
   const [conversations, setConversations] = useState<ConversationHistory>({});
@@ -28,6 +29,7 @@ export default function AIBuddyPage() {
 
   // Extract mood and emoji from URL parameters
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const urlParams = new URLSearchParams(window.location.search);
     const mood = urlParams.get('mood');
     const emoji = urlParams.get('emoji');
@@ -54,7 +56,7 @@ export default function AIBuddyPage() {
         }
       }
     }
-  }, [location, selectedPersonality]);
+  }, [pathname, selectedPersonality]);
 
   // Update last messages when conversations change (but don't save to localStorage)
   useEffect(() => {
@@ -104,11 +106,10 @@ export default function AIBuddyPage() {
     return conversations[selectedPersonality.id] || [];
   };
 
-  // Desktop layout with Instagram-like design - fixed height containers
+  // Desktop layout with Instagram-like design
   const DesktopLayout = () => (
-    <div className="flex h-[calc(100vh-8rem)] gap-0 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
-      {/* Chat List - Instagram sidebar style */}
-      <div className="w-80 flex-shrink-0 border-r border-gray-200 bg-white flex flex-col">
+    <div className="flex h-full w-full gap-0 bg-white dark:bg-black overflow-hidden">
+      <div className="w-[350px] flex-shrink-0 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-black flex flex-col z-20">
         <AIChatList
           onSelectPersonality={handleSelectPersonality}
           selectedPersonalityId={selectedPersonality?.id}
@@ -117,8 +118,7 @@ export default function AIBuddyPage() {
         />
       </div>
       
-      {/* Chat Area - Instagram main content style */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col bg-white dark:bg-black">
         {selectedPersonality ? (
           <AIChat
             personality={selectedPersonality}
@@ -127,15 +127,15 @@ export default function AIBuddyPage() {
             userMoodEmoji={userMoodEmoji}
           />
         ) : (
-          <div className="h-full flex items-center justify-center bg-gray-50">
+          <div className="h-full flex items-center justify-center bg-white dark:bg-black">
             <div className="text-center space-y-4 p-8">
-              <div className="w-16 h-16 mx-auto bg-indigo-100 rounded-full flex items-center justify-center">
-                <MessageCircle className="w-8 h-8 text-indigo-500" />
+              <div className="w-20 h-20 mx-auto bg-gray-100 dark:bg-gray-900 rounded-full flex items-center justify-center shadow-sm">
+                <MessageCircle className="w-10 h-10 text-gray-400" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-gray-800">Choose Your AI Buddy</h3>
-                <p className="text-gray-500 text-sm">
-                  Select a personality to start chatting
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Your Messages</h3>
+                <p className="text-gray-500 dark:text-gray-400 text-sm max-w-[250px] mx-auto">
+                  Select a companion to start chatting.
                 </p>
               </div>
             </div>
@@ -145,9 +145,9 @@ export default function AIBuddyPage() {
     </div>
   );
 
-  // Mobile layout with Instagram-like full screen design
+  // Mobile layout - full screen immersive
   const MobileLayout = () => (
-    <div className="h-[calc(100vh-6rem)] xxs:h-[calc(100vh-5rem)] sm:h-[calc(100vh-8rem)] bg-white rounded-2xl xxs:rounded-xl shadow-xl overflow-hidden border border-gray-200">
+    <div className="h-full w-full bg-white dark:bg-black overflow-hidden flex flex-col">
       {selectedPersonality ? (
         <AIChat
           personality={selectedPersonality}
@@ -159,7 +159,7 @@ export default function AIBuddyPage() {
       ) : (
         <AIChatList
           onSelectPersonality={handleSelectPersonality}
-          selectedPersonalityId={selectedPersonality?.id}
+          selectedPersonalityId={undefined}
           lastMessages={lastMessages}
           unreadCounts={unreadCounts}
         />
@@ -168,14 +168,19 @@ export default function AIBuddyPage() {
   );
 
   return (
-    <div className="h-full" data-testid="page-ai-buddy">
-      <BackButton to="/dashboard" />
+    <div 
+      className="w-full h-full flex flex-col animate-in fade-in duration-500 bg-white dark:bg-black" 
+      data-testid="page-ai-buddy"
+    >
+      <div className="hidden lg:block absolute top-20 left-[300px] z-50">
+        {!selectedPersonality && <BackButton to="/dashboard" />}
+      </div>
       
       {/* Show desktop layout on larger screens, mobile on smaller */}
-      <div className="hidden lg:block mt-4">
+      <div className="hidden lg:flex flex-col flex-1 h-full w-full">
         <DesktopLayout />
       </div>
-      <div className="lg:hidden mt-4">
+      <div className="lg:hidden flex flex-col flex-1 h-full w-full">
         <MobileLayout />
       </div>
     </div>

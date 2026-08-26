@@ -61,7 +61,7 @@ export default function ProfilePage() {
         username: user.username || ""
       });
     }
-  }, [isAuthenticated, user, setLocation]);
+  }, [isAuthenticated, user, router]);
 
   const handleSaveProfile = async () => {
     setIsLoading(true);
@@ -71,8 +71,8 @@ export default function ProfilePage() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       toast({
-        title: "Profile Updated! ✅",
-        description: "Your profile changes have been saved successfully.",
+        title: "Profile Updated!",
+        description: "Your profile information has been saved.",
       });
       
       setIsEditing(false);

@@ -1,145 +1,193 @@
 "use client";
 
+import { useAuth } from "@/contexts/AuthContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowUpRight, Bot, PenLine, Users2, Headphones, BookOpen, Palette, Activity, Brain, Target, Gamepad2, Phone, Sparkles } from "lucide-react";
+import Link from "next/link";
 import MoodTracker from "@/components/mood-tracker";
-import { WellnessDashboard } from "@/components/wellness-dashboard";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { BackButton } from "@/components/ui/back-button";
-import { MessageCircle, Users, BookOpen, Palette, PenTool, Headphones } from "lucide-react";
-
+import { VirtualPets } from "@/components/3d/virtual-pets";
 
 export default function Dashboard() {
-  const quickActions = [
+  const { user } = useAuth();
+  const name = user?.firstName || user?.username || "Friend";
+
+  const quickPills = [
+    { title: "Self-Assessment", href: "/assessment", icon: Brain, bg: "bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300" },
+    { title: "Therapy Games", href: "/games", icon: Gamepad2, bg: "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300" },
+    { title: "My Goals", href: "/goals", icon: Target, bg: "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300" },
+    { title: "Crisis SOS", href: "/crisis", icon: Phone, bg: "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300" },
+  ];
+
+  const bentoCards = [
     { 
-      title: "AI Buddy", 
-      icon: MessageCircle, 
+      title: "Talk to AI Buddy", 
+      icon: Bot, 
       href: "/ai-buddy", 
-      color: "text-white", 
-      bg: "bg-blue-500",
-      description: "Smart companion"
+      bg: "bg-[#EE5394]", // Pink
+      textColor: "text-white",
+      span: "col-span-1"
     },
     { 
-      title: "Diary", 
-      icon: PenTool, 
+      title: "Write in Diary", 
+      icon: PenLine, 
       href: "/diary", 
-      color: "text-white", 
-      bg: "bg-green-500",
-      description: "Private thoughts"
+      bg: "bg-[#E89326]", // Orange
+      textColor: "text-white",
+      span: "col-span-1"
     },
     { 
-      title: "Peer Support", 
-      icon: Users, 
+      title: "Peer Community", 
+      icon: Users2, 
       href: "/peer-support", 
-      color: "text-white", 
-      bg: "bg-purple-500",
-      description: "Connect & share"
+      bg: "bg-[#EAC85A]", // Yellow
+      textColor: "text-amber-950",
+      span: "col-span-1"
     },
     { 
-      title: "Audio", 
+      title: "Audio Sessions", 
       icon: Headphones, 
       href: "/audio-sessions", 
-      color: "text-white", 
-      bg: "bg-orange-500",
-      description: "Guided sessions"
+      bg: "bg-[#13B695]", // Green
+      textColor: "text-white",
+      span: "col-span-1"
     },
     { 
-      title: "Resources", 
+      title: "Learning Resources", 
       icon: BookOpen, 
       href: "/resources", 
-      color: "text-white", 
-      bg: "bg-indigo-500",
-      description: "Learn & grow"
+      bg: "bg-[#9B89F3]", // Purple
+      textColor: "text-white",
+      span: "col-span-2 xs:col-span-1 sm:col-span-2 md:col-span-1"
     },
     { 
-      title: "Create", 
+      title: "Creative Canvas", 
       icon: Palette, 
       href: "/creative", 
-      color: "text-white", 
-      bg: "bg-pink-500",
-      description: "Express yourself"
-    },
+      bg: "bg-[#64A3E9]", // Blue
+      textColor: "text-white",
+      span: "col-span-2 xs:col-span-1 sm:col-span-2 md:col-span-1"
+    }
   ];
 
   return (
-    <div className="space-y-6 pb-safe" data-testid="page-dashboard">
-      <BackButton to="/" />
+    <div className="w-full max-w-5xl mx-auto space-y-6 sm:space-y-8 pb-20 px-2 sm:px-4 animate-in fade-in zoom-in-95 duration-500">
       
-      {/* Welcome Header - Modern minimal design */}
-      <div className="text-center space-y-3 py-4">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-primary">
-          Welcome to Clarity
+      {/* Top Banner Area */}
+      <div className="bg-[#FAE9E6] dark:bg-[#3d211e] rounded-[36px] sm:rounded-[48px] p-6 sm:p-10 relative overflow-hidden shadow-sm mt-2">
+        <div className="flex justify-between items-start mb-4 sm:mb-8">
+          <span className="text-sm font-medium text-gray-500 dark:text-gray-400 tracking-wide uppercase">Your Daily Growth</span>
+          <div className="w-10 h-10 bg-white dark:bg-black/40 rounded-full flex items-center justify-center shadow-sm cursor-pointer hover:bg-gray-50 transition-colors">
+            <div className="flex gap-1">
+              <div className="w-1 h-1 bg-gray-400 rounded-full" />
+              <div className="w-1 h-1 bg-gray-400 rounded-full" />
+              <div className="w-1 h-1 bg-gray-400 rounded-full" />
+            </div>
+          </div>
+        </div>
+        
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#2d3748] dark:text-[#f7fafc] leading-[1.15] tracking-tight">
+          Hello, {name}<br />
+          <span className="text-[#4a5568] dark:text-[#cbd5e0]">How are you<br />feeling today?</span>
         </h1>
-        <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto">
-          Your wellness companion
-        </p>
+        
+        {/* Subtle background decoration */}
+        <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-white/20 dark:bg-black/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* Mood Tracker - Enhanced */}
-      <div className="w-full">
-        <MoodTracker variant="compact" />
-      </div>
-
-      {/* Quick Actions Grid - Modern cards */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-center">Quick Actions</h2>
-        <div className="grid grid-cols-2 xxs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xxs:gap-2 sm:gap-4 lg:gap-6">
-          {quickActions.map((action, index) => (
-            <Card 
-              key={action.title} 
-              className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
-              style={{
-                animationDelay: `${index * 100}ms`,
-                animation: 'slideInBounce 0.8s ease-out forwards',
-                borderRadius: '16px' // Following UI Corner Radius Standard
-              }}
+      {/* Quick Jump Shortcuts (Mobile horizontal scroll + Desktop flex wrap) */}
+      <div className="px-2 overflow-x-auto pb-1 no-scrollbar -mt-2">
+        <div className="flex items-center gap-2.5 min-w-max">
+          {quickPills.map((pill) => (
+            <Link
+              key={pill.title}
+              href={pill.href}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-semibold shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 border border-black/5 dark:border-white/10 ${pill.bg}`}
             >
-              <CardContent className="p-0 relative" style={{ borderRadius: '16px' }}>
-                <Link href={action.href}>
-                  <div 
-                    className={`relative p-4 xxs:p-3 sm:p-6 ${action.bg} text-center space-y-3 xxs:space-y-2 sm:space-y-4 cursor-pointer overflow-hidden transition-all duration-300 hover:brightness-110`}
-                    style={{ borderRadius: '16px' }}
-                  >
-                    {/* Background decoration */}
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-10 translate-x-10 group-hover:scale-150 transition-transform duration-700" />
-                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 -translate-x-8 group-hover:scale-125 transition-transform duration-700" />
-                    
-                    {/* Icon container */}
-                    <div className="relative z-10 mx-auto w-12 h-12 xxs:w-10 xxs:h-10 sm:w-16 sm:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
-                      <action.icon className={`w-6 h-6 xxs:w-5 xxs:h-5 sm:w-8 sm:h-8 ${action.color} transition-all duration-300 group-hover:scale-110`} />
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="relative z-10 space-y-1">
-                      <p className="font-bold text-sm xxs:text-xs sm:text-base text-white transition-transform duration-300">{action.title}</p>
-                      <p className="text-xs xxs:text-2xs sm:text-xs text-white/80 font-medium">{action.description}</p>
-                    </div>
-                  </div>
-                </Link>
-              </CardContent>
-            </Card>
+              <pill.icon className="w-3.5 h-3.5" />
+              <span>{pill.title}</span>
+            </Link>
           ))}
         </div>
       </div>
 
-      {/* Wellness Dashboard */}
-      <div className="w-full">
-        <WellnessDashboard />
+      {/* Mood Tracker */}
+      <div className="px-2">
+        <div className="mb-4">
+          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tracking-wide">Select Mood type</span>
+        </div>
+        {/* We reuse the existing MoodTracker but it will automatically inherit the cleaner aesthetic */}
+        <MoodTracker variant="inline" />
+      </div>
+
+      {/* Virtual Companions (3D) */}
+      <div className="px-2 pt-2">
+        <VirtualPets />
+      </div>
+
+      {/* Bento Grid Features */}
+      <div className="px-2 pt-6">
+        <div className="mb-4">
+          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tracking-wide">Explore Activities</span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
+          {bentoCards.map((card, index) => (
+            <Link key={card.title} href={card.href} className={card.span}>
+              <div 
+                className={`group relative h-40 sm:h-48 rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 ${card.bg} ${card.textColor} overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-95 flex flex-col justify-between`}
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                  animation: 'slideInBounce 0.8s ease-out forwards'
+                }}
+              >
+                <div className="flex justify-between items-start z-10">
+                  <h3 className="text-lg sm:text-xl font-semibold leading-tight max-w-[70%]">
+                    {card.title}
+                  </h3>
+                  <div className="w-8 h-8 rounded-full bg-white/20 dark:bg-black/10 flex items-center justify-center backdrop-blur-md group-hover:bg-white/30 transition-colors">
+                    <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </div>
+                
+                <div className="w-16 h-16 rounded-2xl bg-white/20 dark:bg-black/15 backdrop-blur-md flex items-center justify-center self-end mt-auto opacity-95 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 z-10 shadow-sm">
+                  <card.icon className="w-8 h-8 text-current stroke-[2.2]" />
+                </div>
+                
+                {/* Decorative blob */}
+                <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Progress / Wellness Card */}
+      <div className="px-2 pt-2">
+        <Link href="/wellness">
+          <div className="relative overflow-hidden bg-[#e2e8f0] dark:bg-[#1a202c] rounded-[36px] p-6 sm:p-10 flex flex-col justify-center h-48 sm:h-56 group transition-all hover:shadow-lg">
+            <div className="relative z-10">
+              <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 tracking-wide">Your Wellness Score</span>
+              <div className="text-6xl sm:text-7xl font-bold text-gray-800 dark:text-gray-100 mt-2">
+                85%
+              </div>
+            </div>
+            
+            {/* Abstract hexagon-like background shapes mimicking the first reference image */}
+            <div className="absolute right-0 bottom-0 opacity-40 dark:opacity-20 translate-x-1/4 translate-y-1/4 group-hover:scale-105 transition-transform duration-700">
+              <div className="w-64 h-64 grid grid-cols-3 gap-2 rotate-12">
+                {[...Array(9)].map((_, i) => (
+                  <div key={i} className="w-20 h-20 bg-white dark:bg-gray-600 rounded-2xl opacity-70" style={{ transform: i % 2 === 0 ? 'translateY(20px)' : 'none' }} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </Link>
       </div>
       
       <style>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .pb-safe {
-          padding-bottom: env(safe-area-inset-bottom, 1rem);
+        @keyframes slideInBounce {
+          0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+          50% { transform: translateY(-5px) scale(1.02); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
         }
       `}</style>
     </div>

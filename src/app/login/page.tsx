@@ -30,7 +30,7 @@ export default function LoginPage() {
       await login(credentials.username, credentials.password);
       
       toast({
-        title: "Welcome back! 👋",
+        title: "Welcome back!",
         description: "You've successfully logged in to Clarity.",
       });
       
@@ -62,10 +62,10 @@ export default function LoginPage() {
         </Button>
 
         {/* Login Card */}
-        <Card className="w-full shadow-lg">
+        <Card className="w-full shadow-xl rounded-[28px] border border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl">
           <CardHeader className="space-y-1 text-center">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
                 <LogIn className="w-6 h-6 text-white" />
               </div>
             </div>

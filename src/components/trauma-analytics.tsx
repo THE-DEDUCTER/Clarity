@@ -14,7 +14,8 @@ import {
   CheckCircle,
   Target,
   Brain,
-  Heart
+  Heart,
+  PenLine
 } from "lucide-react";
 
 interface TraumaPattern {
@@ -202,7 +203,10 @@ export function TraumaAnalytics() {
         <CardContent>
           <div className="space-y-3">
             <div className="p-3 bg-blue-50 rounded-lg">
-              <h4 className="font-medium text-blue-800 mb-2">📅 Schedule Therapy Session</h4>
+              <h4 className="font-medium text-blue-800 mb-2 flex items-center gap-1.5">
+                <Calendar className="w-4 h-4 text-blue-600" />
+                Schedule Therapy Session
+              </h4>
               <p className="text-sm text-blue-700 mb-3">
                 Based on your recent patterns, discussing past memory triggers with a professional could be beneficial.
               </p>
@@ -212,7 +216,10 @@ export function TraumaAnalytics() {
             </div>
             
             <div className="p-3 bg-green-50 rounded-lg">
-              <h4 className="font-medium text-green-800 mb-2">🧘‍♀️ Continue Coping Strategies</h4>
+              <h4 className="font-medium text-green-800 mb-2 flex items-center gap-1.5">
+                <Heart className="w-4 h-4 text-green-600" />
+                Continue Coping Strategies
+              </h4>
               <p className="text-sm text-green-700 mb-3">
                 Your academic stress management is improving. Keep using your current coping techniques.
               </p>
@@ -222,7 +229,10 @@ export function TraumaAnalytics() {
             </div>
             
             <div className="p-3 bg-purple-50 rounded-lg">
-              <h4 className="font-medium text-purple-800 mb-2">📝 Maintain Journaling</h4>
+              <h4 className="font-medium text-purple-800 mb-2 flex items-center gap-1.5">
+                <PenLine className="w-4 h-4 text-purple-600" />
+                Maintain Journaling
+              </h4>
               <p className="text-sm text-purple-700 mb-3">
                 Your consistent diary entries are supporting emotional processing and self-awareness.
               </p>

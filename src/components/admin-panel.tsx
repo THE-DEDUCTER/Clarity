@@ -265,7 +265,7 @@ export function AdminPanel() {
           <AlertTitle className="text-red-800">Critical Alerts Pending</AlertTitle>
           <AlertDescription className="text-red-700">
             {criticalAlerts.length} critical safety alert{criticalAlerts.length > 1 ? 's' : ''} require immediate attention.
-            <Button variant="link" className="p-0 h-auto text-red-700 underline ml-2">
+            <Button variant="ghost" className="p-0 h-auto text-red-700 underline ml-2 hover:bg-transparent">
               View All Critical Alerts
             </Button>
           </AlertDescription>

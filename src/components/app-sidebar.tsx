@@ -19,7 +19,8 @@ import {
   Castle,
   GraduationCap
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 
 import {
   Sidebar,
@@ -137,8 +138,8 @@ export function AppSidebar() {
   const { isMobile, setOpenMobile } = useSidebar();
 
   const isActive = (url: string) => {
-    if (url === "/dashboard" && location === "/dashboard") return true;
-    if (url !== "/dashboard" && location.startsWith(url)) return true;
+    if (url === "/dashboard" && pathname === "/dashboard") return true;
+    if (url !== "/dashboard" && pathname?.startsWith(url)) return true;
     return false;
   };
 

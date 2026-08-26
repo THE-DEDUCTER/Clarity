@@ -95,7 +95,7 @@ export function GoalTracker() {
       queryClient.invalidateQueries({ queryKey: ['/api/goals'] });
       setNewGoal({ title: "", description: "", category: "personal", priority: "medium", targetDate: "" });
       setShowAddForm(false);
-      toast({ title: "Goal created! 🎉", description: "Your new goal has been added." });
+      toast({ title: "Goal created!", description: "Your new goal has been added." });
     }
   });
 
@@ -108,7 +108,7 @@ export function GoalTracker() {
     mutationFn: async (goalId: string) => ({ success: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/goals'] });
-      toast({ title: "Goal deleted 🗑️", description: "Goal removed successfully." });
+      toast({ title: "Goal deleted", description: "Goal removed successfully." });
     }
   });
 

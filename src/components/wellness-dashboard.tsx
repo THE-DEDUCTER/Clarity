@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Target, BookOpen, Palette, Calendar, Flame } from "lucide-react";
+import { Heart, Target, BookOpen, Palette, Calendar, Flame, Zap, TrendingUp, Sparkles, Trophy } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -77,37 +77,43 @@ export function WellnessDashboard() {
   const badges = [
     { 
       name: "Mood Streak", 
-      icon: "🔥", 
+      icon: Flame, 
+      color: "text-amber-500",
       earned: moodStreak >= 3,
       description: `${moodStreak >= 3 ? 'Earned' : 'Reach 3-day mood streak'}`
     },
     { 
       name: "Reaction Streak", 
-      icon: "⚡", 
+      icon: Zap, 
+      color: "text-yellow-500",
       earned: reactionStreak >= 3,
       description: `${reactionStreak >= 3 ? 'Earned' : 'React for 3 days straight'}`
     },
     { 
       name: "Goal Achiever", 
-      icon: "🎯", 
+      icon: Target, 
+      color: "text-rose-500",
       earned: goalsCompleted >= 1,
       description: `${goalsCompleted >= 1 ? 'Earned' : 'Complete your first goal'}`
     },
     { 
       name: "Consistent Tracker", 
-      icon: "📈", 
+      icon: TrendingUp, 
+      color: "text-emerald-500",
       earned: recentMoodEntries >= 5,
       description: `${recentMoodEntries >= 5 ? 'Earned' : 'Track mood 5 times'}`
     },
     { 
       name: "Social Butterfly", 
-      icon: "🦋", 
+      icon: Sparkles, 
+      color: "text-purple-500",
       earned: reactionActivity >= 20,
       description: `${reactionActivity >= 20 ? 'Earned' : '20+ reactions this week'}`
     },
     { 
       name: "Wellness Champion", 
-      icon: "🏆", 
+      icon: Trophy, 
+      color: "text-blue-500",
       earned: moodStreak >= 7 && goalsCompleted >= 2 && reactionStreak >= 5,
       description: `${moodStreak >= 7 && goalsCompleted >= 2 && reactionStreak >= 5 ? 'Earned' : 'Master all wellness areas'}`
     },
@@ -291,16 +297,19 @@ export function WellnessDashboard() {
                   <div className="absolute top-0 right-0 w-8 h-8 bg-emerald-500/20 rounded-full -translate-y-4 translate-x-4 group-hover:scale-150 transition-transform duration-700" />
                 )}
                 <div className="relative z-10 text-center space-y-3">
-                  <div className="text-4xl transition-transform duration-300 group-hover:scale-125">{badge.icon}</div>
+                  <div className="w-12 h-12 mx-auto rounded-2xl bg-white/80 dark:bg-black/20 backdrop-blur-sm flex items-center justify-center shadow-sm">
+                    <badge.icon className={`w-6 h-6 ${badge.color || 'text-primary'} transition-transform duration-300 group-hover:scale-110`} />
+                  </div>
                   <div className="space-y-1">
                     <div className="text-sm font-bold">{badge.name}</div>
                     {badge.earned && (
                       <Badge 
                         variant="secondary" 
-                        className="text-xs px-3 py-1 bg-emerald-500 text-white border-0 font-semibold"
+                        className="text-xs px-3 py-0.5 bg-emerald-500 text-white border-0 font-semibold flex items-center gap-1 mx-auto w-fit"
                         style={{ borderRadius: '12px' }}
                       >
-                        ✨ Earned
+                        <Sparkles className="w-3 h-3" />
+                        <span>Earned</span>
                       </Badge>
                     )}
                   </div>

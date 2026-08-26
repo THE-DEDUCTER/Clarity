@@ -2,6 +2,22 @@
 
 import React from 'react';
 import { GameState } from './GameState';
+import { 
+  Sun, 
+  Cloud, 
+  CloudRain, 
+  CloudLightning, 
+  Smile, 
+  Meh, 
+  Frown, 
+  AlertCircle, 
+  Play, 
+  Pause, 
+  RotateCcw, 
+  Sparkles, 
+  Shield, 
+  HeartHandshake 
+} from 'lucide-react';
 
 interface GameUIProps {
   gameState: GameState;
@@ -30,24 +46,24 @@ export const GameUI: React.FC<GameUIProps> = ({
     return '#f87171'; // red
   };
 
-  const getWeatherEmoji = (weather: string) => {
+  const renderWeatherIcon = (weather: string) => {
     switch (weather) {
-      case 'sunny': return '☀️';
-      case 'cloudy': return '☁️';
-      case 'rainy': return '🌧️';
-      case 'stormy': return '⛈️';
-      default: return '☀️';
+      case 'sunny': return <Sun className="w-5 h-5 text-amber-400" />;
+      case 'cloudy': return <Cloud className="w-5 h-5 text-slate-300" />;
+      case 'rainy': return <CloudRain className="w-5 h-5 text-sky-400" />;
+      case 'stormy': return <CloudLightning className="w-5 h-5 text-purple-400" />;
+      default: return <Sun className="w-5 h-5 text-amber-400" />;
     }
   };
 
-  const getMoodEmoji = (mood: string) => {
+  const renderMoodIcon = (mood: string) => {
     switch (mood) {
-      case 'peaceful': return '😌';
-      case 'concerned': return '😐';
-      case 'worried': return '😟';
-      case 'stressed': return '😰';
-      case 'anxious': return '😨';
-      default: return '😌';
+      case 'peaceful': return <Smile className="w-5 h-5 text-emerald-400" />;
+      case 'concerned': return <Meh className="w-5 h-5 text-amber-400" />;
+      case 'worried': return <Frown className="w-5 h-5 text-orange-400" />;
+      case 'stressed':
+      case 'anxious': return <AlertCircle className="w-5 h-5 text-rose-400" />;
+      default: return <Smile className="w-5 h-5 text-emerald-400" />;
     }
   };
 
@@ -59,7 +75,10 @@ export const GameUI: React.FC<GameUIProps> = ({
         <div className="space-y-2">
           {/* Castle Health */}
           <div className="flex items-center space-x-2">
-            <span className="text-white font-semibold min-w-[100px]">🏰 Castle:</span>
+            <span className="text-white font-semibold min-w-[100px] flex items-center gap-1.5">
+              <Shield className="w-4 h-4 text-emerald-400" />
+              Castle:
+            </span>
             <div className="w-32 h-4 bg-black/40 rounded-full overflow-hidden">
               <div 
                 className="h-full transition-all duration-500 rounded-full"
@@ -74,7 +93,10 @@ export const GameUI: React.FC<GameUIProps> = ({
 
           {/* Inner Peace */}
           <div className="flex items-center space-x-2">
-            <span className="text-white font-semibold min-w-[100px]">🧘 Peace:</span>
+            <span className="text-white font-semibold min-w-[100px] flex items-center gap-1.5">
+              <HeartHandshake className="w-4 h-4 text-sky-400" />
+              Peace:
+            </span>
             <div className="w-32 h-4 bg-black/40 rounded-full overflow-hidden">
               <div 
                 className="h-full transition-all duration-500 rounded-full"
@@ -113,12 +135,12 @@ export const GameUI: React.FC<GameUIProps> = ({
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2 bg-black/40 rounded-lg px-3 py-1">
-            <span className="text-2xl">{getWeatherEmoji(gameState.weather)}</span>
+            {renderWeatherIcon(gameState.weather)}
             <span className="text-white text-sm capitalize">{gameState.weather}</span>
           </div>
           
           <div className="flex items-center space-x-2 bg-black/40 rounded-lg px-3 py-1">
-            <span className="text-2xl">{getMoodEmoji(gameState.gatekeeperMood)}</span>
+            {renderMoodIcon(gameState.gatekeeperMood)}
             <span className="text-white text-sm capitalize">{gameState.gatekeeperMood}</span>
           </div>
         </div>
@@ -127,15 +149,17 @@ export const GameUI: React.FC<GameUIProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={onPause}
-            className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors duration-200 backdrop-blur-sm"
+            className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors duration-200 backdrop-blur-sm flex items-center gap-1.5 text-sm"
           >
-            {isPaused ? '▶️ Resume' : '⏸️ Pause'}
+            {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
+            <span>{isPaused ? 'Resume' : 'Pause'}</span>
           </button>
           <button
             onClick={onRestart}
-            className="bg-red-500/80 hover:bg-red-500 text-white px-4 py-2 rounded-lg transition-colors duration-200 backdrop-blur-sm"
+            className="bg-red-500/80 hover:bg-red-500 text-white px-4 py-2 rounded-lg transition-colors duration-200 backdrop-blur-sm flex items-center gap-1.5 text-sm"
           >
-            🔄 Restart
+            <RotateCcw className="w-4 h-4" />
+            <span>Restart</span>
           </button>
         </div>
       </div>
@@ -167,9 +191,10 @@ export const GameUI: React.FC<GameUIProps> = ({
             <div className="space-y-2">
               <button
                 onClick={onRestart}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
               >
-                🔄 Play Again
+                <RotateCcw className="w-5 h-5" />
+                <span>Play Again</span>
               </button>
             </div>
           </div>
@@ -180,20 +205,24 @@ export const GameUI: React.FC<GameUIProps> = ({
       {gameState.level > 10 && gameState.castleHealth > 80 && gameState.innerPeace > 80 && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
           <div className="bg-white rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
-            <h2 className="text-3xl font-bold mb-4 text-green-600">Victory! 🎉</h2>
+            <h2 className="text-3xl font-bold mb-4 text-green-600 flex items-center justify-center gap-2">
+              <Sparkles className="w-7 h-7 text-amber-500" />
+              <span>Victory!</span>
+            </h2>
             <p className="text-gray-700 mb-4">
               You've mastered the art of inner gatekeeping!
             </p>
             <div className="space-y-2 mb-6">
               <p className="text-gray-700">Final Score: <span className="font-bold">{gameState.score}</span></p>
               <p className="text-gray-700">Level Reached: <span className="font-bold">{gameState.level}</span></p>
-              <p className="text-gray-700">Perfect Balance Achieved! 🧘‍♂️</p>
+              <p className="text-gray-700">Perfect Balance Achieved!</p>
             </div>
             <button
               onClick={onRestart}
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
             >
-              🌟 Play Again
+              <Sparkles className="w-5 h-5" />
+              <span>Play Again</span>
             </button>
           </div>
         </div>
@@ -208,15 +237,17 @@ export const GameUI: React.FC<GameUIProps> = ({
             <div className="space-y-2">
               <button
                 onClick={onPause}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
               >
-                ▶️ Resume Game
+                <Play className="w-5 h-5" />
+                <span>Resume Game</span>
               </button>
               <button
                 onClick={onRestart}
-                className="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
+                className="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
               >
-                🔄 Restart Game
+                <RotateCcw className="w-5 h-5" />
+                <span>Restart Game</span>
               </button>
             </div>
           </div>

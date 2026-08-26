@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "wouter";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { MessageSquare, ThumbsUp, Reply, MoreHorizontal, Clock, Shield, Users, TrendingUp, Pin, Award, ArrowLeft, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -180,7 +179,8 @@ const COMMUNITIES: Record<string, CommunityInfo> = {
 export function CommunityPage() {
   const params = useParams();
   const router = useRouter();
-  const communityId = params.id || "general";
+  const rawId = params?.id;
+  const communityId = typeof rawId === 'string' ? rawId : Array.isArray(rawId) ? rawId[0] : "general";
   const community = COMMUNITIES[communityId];
   
   const [posts, setPosts] = useState<CommunityPost[]>([]);
@@ -415,7 +415,7 @@ export function CommunityPage() {
                 </div>
                 {community.accessibilitySupport && (
                   <div className="flex flex-wrap gap-2 pt-2">
-                    {community.accessibilitySupport.map((support) => (
+                    {community.accessibilitySupport.map((support: string) => (
                       <Badge key={support} className="bg-white/10 text-white border-white/20 text-xs">
                         {support}
                       </Badge>
@@ -463,7 +463,7 @@ export function CommunityPage() {
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {community.categories.map((category) => (
+                      {community.categories.map((category: string) => (
                         <SelectItem key={category} value={category}>
                           {category}
                         </SelectItem>
@@ -672,7 +672,7 @@ export function CommunityPage() {
             </div>
             <CardContent className="p-6">
               <div className="space-y-4">
-                {community.rules.map((rule, index) => (
+                {community.rules.map((rule: string, index: number) => (
                   <div key={index} className="flex gap-3 text-sm">
                     <div className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                       {index + 1}
@@ -691,7 +691,7 @@ export function CommunityPage() {
             </div>
             <CardContent className="p-6">
               <div className="space-y-3">
-                {community.moderators.map((mod) => (
+                {community.moderators.map((mod: string) => (
                   <div key={mod} className="flex items-center gap-3 text-sm p-2 rounded-lg hover:bg-pink-50 transition-colors duration-300">
                     <Avatar className="w-8 h-8 border-2 border-pink-200 dark:border-pink-700">
                       <AvatarFallback className="text-xs bg-pink-500 text-white font-bold">{mod[0]}</AvatarFallback>

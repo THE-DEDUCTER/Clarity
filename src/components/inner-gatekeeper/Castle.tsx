@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Smile, Meh, Frown, AlertCircle } from "lucide-react";
 
 interface CastleProps {
   health: number;
@@ -18,7 +19,7 @@ export function Castle({ health, weather, gatekeeperMood }: CastleProps) {
     
     if (numCracks > cracks.length) {
       // Add new cracks
-      const newCracks = [];
+      const newCracks: Array<{id: string, x: number, y: number, severity: number}> = [];
       for (let i = cracks.length; i < numCracks; i++) {
         newCracks.push({
           id: `crack-${i}`,
@@ -29,7 +30,7 @@ export function Castle({ health, weather, gatekeeperMood }: CastleProps) {
       }
       setCracks(prev => [...prev, ...newCracks]);
     } else if (numCracks < cracks.length) {
-      // Remove cracks (healing)
+      // Remove cracks (repairing)
       setCracks(prev => prev.slice(0, numCracks));
     }
   }, [health, cracks.length]);
@@ -114,17 +115,16 @@ export function Castle({ health, weather, gatekeeperMood }: CastleProps) {
   const getGatekeeperExpression = () => {
     switch (gatekeeperMood) {
       case 'peaceful':
-        return '😌';
+        return <Smile className="w-3.5 h-3.5 text-stone-700" />;
       case 'concerned':
-        return '😟';
+        return <Meh className="w-3.5 h-3.5 text-amber-700" />;
       case 'worried':
-        return '😰';
       case 'stressed':
-        return '😨';
+        return <Frown className="w-3.5 h-3.5 text-orange-700" />;
       case 'anxious':
-        return '😱';
+        return <AlertCircle className="w-3.5 h-3.5 text-rose-700" />;
       default:
-        return '😐';
+        return <Smile className="w-3.5 h-3.5 text-stone-700" />;
     }
   };
 

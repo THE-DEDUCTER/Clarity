@@ -15,7 +15,7 @@ export function ShaderAnimation({
   colors = ["#4f46e5", "#7c3aed", "#ec4899", "#06b6d4"]
 }: ShaderAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {

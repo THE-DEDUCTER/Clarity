@@ -17,7 +17,15 @@ import {
   Star,
   PawPrint,
   Sparkles,
-  Castle
+  Castle,
+  BarChart3,
+  Droplets,
+  Utensils,
+  Moon,
+  Swords,
+  Sun,
+  TrendingUp,
+  Shield
 } from 'lucide-react';
 
 export default function GamesPage() {
@@ -89,62 +97,68 @@ export default function GamesPage() {
   ];
 
   return (
-    <div className="space-y-6" data-testid="page-games">
+    <div className="max-w-6xl mx-auto space-y-8 pb-20 animate-in fade-in duration-500" data-testid="page-games">
       <BackButton to="/dashboard" />
       
       <div className="space-y-2">
         <div className="flex items-center gap-3">
-          <i className="fi fi-rr-gamepad text-2xl text-blue-600" />
-          <h1 className="text-3xl font-bold tracking-tight">Wellness Games</h1>
+          <div className="p-3 bg-indigo-100 dark:bg-indigo-950/60 rounded-2xl text-indigo-600 dark:text-indigo-400">
+            <Gamepad2 className="w-8 h-8" />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+              Wellness Games
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Therapeutic interactive games designed to build emotional resilience, mindfulness, and cognitive strength.
+            </p>
+          </div>
         </div>
-        <p className="text-muted-foreground">
-          Engage in therapeutic games and activities designed to improve mental wellbeing, 
-          reduce stress, and enhance cognitive function through play.
-        </p>
       </div>
 
       {/* Pet Care Dashboard Game Section */}
-      <div className="bg-gradient-to-r from-rose-400/10 via-violet-400/10 to-blue-400/10 rounded-2xl p-8 border-0 shadow-xl backdrop-blur-sm relative overflow-hidden">
+      <div className="bg-gradient-to-r from-rose-500/10 via-violet-500/10 to-blue-500/10 rounded-[32px] p-6 sm:p-8 border border-rose-200/40 dark:border-rose-800/30 shadow-xl backdrop-blur-sm relative overflow-hidden">
         {/* Background decorations */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-violet-200/20 to-purple-200/20 rounded-full -translate-y-6 translate-x-8"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-rose-200/20 to-pink-200/20 rounded-full translate-y-4 -translate-x-6"></div>
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-4 bg-gradient-to-br from-rose-400 to-pink-500 rounded-full shadow-lg">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-violet-200/20 to-purple-200/20 rounded-full -translate-y-12 translate-x-12 blur-2xl pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-36 h-36 bg-gradient-to-tr from-rose-200/20 to-pink-200/20 rounded-full translate-y-8 -translate-x-8 blur-2xl pointer-events-none"></div>
+        
+        <div className="text-center mb-8 relative z-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+            <div className="p-4 bg-gradient-to-br from-rose-500 to-pink-600 rounded-3xl shadow-lg shadow-rose-500/20">
               <PawPrint className="w-10 h-10 text-white" />
             </div>
-            <div>
-              <h2 className="text-3xl font-bold text-gray-800">Pet Care Dashboard</h2>
-              <Badge className="bg-gradient-to-r from-rose-400 to-pink-500 text-white border-0 shadow-md mt-2">
-                🌟 Most Popular Therapeutic Game
+            <div className="text-center sm:text-left">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">Pet Care Companion</h2>
+              <Badge className="bg-gradient-to-r from-rose-500 to-pink-600 text-white border-0 shadow-sm mt-1.5 inline-flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Featured Therapeutic Game</span>
               </Badge>
             </div>
           </div>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-6">
-            Experience the joy of caring for a virtual pet while learning valuable life skills. This interactive game 
-            combines fun gameplay with therapeutic benefits, helping you develop responsibility, empathy, and mindfulness.
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Experience the soothing routine of caring for a virtual emotional companion while learning valuable mindfulness and grounding skills.
           </p>
         </div>
 
         {/* Game Preview Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
-            <div className="text-2xl mb-2">🐕</div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-gray-100">
+            <PawPrint className="w-7 h-7 mx-auto mb-2 text-rose-500" />
             <div className="font-semibold text-gray-800">Choose Your Pet</div>
             <div className="text-sm text-gray-600">Dog, Cat, or Rabbit</div>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
-            <div className="text-2xl mb-2">📊</div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-gray-100">
+            <BarChart3 className="w-7 h-7 mx-auto mb-2 text-sky-500" />
             <div className="font-semibold text-gray-800">Track Progress</div>
             <div className="text-sm text-gray-600">Health & Happiness</div>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
-            <div className="text-2xl mb-2">🏆</div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-gray-100">
+            <Trophy className="w-7 h-7 mx-auto mb-2 text-amber-500" />
             <div className="font-semibold text-gray-800">Earn Achievements</div>
             <div className="text-sm text-gray-600">Level up & unlock rewards</div>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
-            <div className="text-2xl mb-2">🧠</div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-gray-100">
+            <Brain className="w-7 h-7 mx-auto mb-2 text-violet-500" />
             <div className="font-semibold text-gray-800">Therapeutic Benefits</div>
             <div className="text-sm text-gray-600">Mindfulness & empathy</div>
           </div>
@@ -152,21 +166,21 @@ export default function GamesPage() {
 
         {/* Therapeutic Benefits */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white/90 rounded-xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-rose-50/80 to-pink-50/80 backdrop-blur-sm">
+          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-rose-50/80 to-pink-50/80 backdrop-blur-sm">
             <Trophy className="w-8 h-8 text-rose-600 mx-auto mb-3" />
             <h3 className="font-bold text-gray-800 mb-2">Build Responsibility</h3>
             <p className="text-gray-600 text-sm">
               Learn time management and develop consistent care routines through daily pet activities
             </p>
           </div>
-          <div className="bg-white/90 rounded-xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-sky-50/80 to-blue-50/80 backdrop-blur-sm">
+          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-sky-50/80 to-blue-50/80 backdrop-blur-sm">
             <Target className="w-8 h-8 text-sky-600 mx-auto mb-3" />
             <h3 className="font-bold text-gray-800 mb-2">Develop Empathy</h3>
             <p className="text-gray-600 text-sm">
               Enhance emotional awareness and caregiving skills by responding to your pet's needs
             </p>
           </div>
-          <div className="bg-white/90 rounded-xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-violet-50/80 to-purple-50/80 backdrop-blur-sm">
+          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-violet-50/80 to-purple-50/80 backdrop-blur-sm">
             <Brain className="w-8 h-8 text-violet-600 mx-auto mb-3" />
             <h3 className="font-bold text-gray-800 mb-2">Practice Mindfulness</h3>
             <p className="text-gray-600 text-sm">
@@ -177,23 +191,23 @@ export default function GamesPage() {
 
         {/* Game Actions */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-gradient-to-br from-emerald-100 to-green-200 rounded-lg p-4 text-center shadow-md">
-            <div className="text-3xl mb-2">🍎</div>
+          <div className="bg-gradient-to-br from-emerald-100 to-green-200 rounded-2xl p-4 text-center shadow-md">
+            <Utensils className="w-7 h-7 mx-auto mb-2 text-emerald-700" />
             <div className="font-semibold text-emerald-800">Feed</div>
             <div className="text-xs text-emerald-600">Nutrition & health</div>
           </div>
-          <div className="bg-gradient-to-br from-sky-100 to-blue-200 rounded-lg p-4 text-center shadow-md">
-            <div className="text-3xl mb-2">💧</div>
+          <div className="bg-gradient-to-br from-sky-100 to-blue-200 rounded-2xl p-4 text-center shadow-md">
+            <Droplets className="w-7 h-7 mx-auto mb-2 text-sky-700" />
             <div className="font-semibold text-sky-800">Hydrate</div>
             <div className="text-xs text-sky-600">Fresh water care</div>
           </div>
-          <div className="bg-gradient-to-br from-violet-100 to-purple-200 rounded-lg p-4 text-center shadow-md">
-            <div className="text-3xl mb-2">🎮</div>
+          <div className="bg-gradient-to-br from-violet-100 to-purple-200 rounded-2xl p-4 text-center shadow-md">
+            <Gamepad2 className="w-7 h-7 mx-auto mb-2 text-violet-700" />
             <div className="font-semibold text-violet-800">Play</div>
             <div className="text-xs text-violet-600">Fun activities</div>
           </div>
-          <div className="bg-gradient-to-br from-rose-100 to-pink-200 rounded-lg p-4 text-center shadow-md">
-            <div className="text-3xl mb-2">💤</div>
+          <div className="bg-gradient-to-br from-rose-100 to-pink-200 rounded-2xl p-4 text-center shadow-md">
+            <Moon className="w-7 h-7 mx-auto mb-2 text-rose-700" />
             <div className="font-semibold text-rose-800">Rest</div>
             <div className="text-xs text-rose-600">Recovery time</div>
           </div>
@@ -210,7 +224,7 @@ export default function GamesPage() {
             <Sparkles className="w-6 h-6 ml-3" />
           </Button>
           <p className="text-sm text-gray-600 mt-3">
-            🎯 Recommended by mental health professionals • 🎮 Play anytime, anywhere • 💝 Completely free
+            Recommended by mental health professionals • Play anytime, anywhere • Completely free
           </p>
         </div>
       </div>
@@ -227,8 +241,9 @@ export default function GamesPage() {
             </div>
             <div>
               <h2 className="text-3xl font-bold text-gray-800">Inner Gatekeeper</h2>
-              <Badge className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-0 shadow-md mt-2">
-                🧠 Mental Health Strategy Game
+              <Badge className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-0 shadow-md mt-2 flex items-center gap-1.5 mx-auto w-fit">
+                <Brain className="w-3.5 h-3.5" />
+                <span>Mental Health Strategy Game</span>
               </Badge>
             </div>
           </div>
@@ -240,23 +255,23 @@ export default function GamesPage() {
 
         {/* Game Preview Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
-            <div className="text-2xl mb-2">🏰</div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-gray-100">
+            <Shield className="w-7 h-7 mx-auto mb-2 text-indigo-600" />
             <div className="font-semibold text-gray-800">Protect Castle</div>
             <div className="text-sm text-gray-600">Maintain health & peace</div>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
-            <div className="text-2xl mb-2">⚔️</div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-gray-100">
+            <Swords className="w-7 h-7 mx-auto mb-2 text-purple-600" />
             <div className="font-semibold text-gray-800">Strategic Choices</div>
             <div className="text-sm text-gray-600">Accept, reject, or challenge</div>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
-            <div className="text-2xl mb-2">🌤️</div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-gray-100">
+            <Sun className="w-7 h-7 mx-auto mb-2 text-amber-500" />
             <div className="font-semibold text-gray-800">Dynamic Weather</div>
             <div className="text-sm text-gray-600">Reflects your mental state</div>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-md">
-            <div className="text-2xl mb-2">📈</div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-gray-100">
+            <TrendingUp className="w-7 h-7 mx-auto mb-2 text-emerald-600" />
             <div className="font-semibold text-gray-800">Track Progress</div>
             <div className="text-sm text-gray-600">Level up & improve skills</div>
           </div>
@@ -264,21 +279,21 @@ export default function GamesPage() {
 
         {/* Therapeutic Benefits */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white/90 rounded-xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-indigo-50/80 to-blue-50/80 backdrop-blur-sm">
+          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-indigo-50/80 to-blue-50/80 backdrop-blur-sm">
             <Brain className="w-8 h-8 text-indigo-600 mx-auto mb-3" />
             <h3 className="font-bold text-gray-800 mb-2">Emotional Regulation</h3>
             <p className="text-gray-600 text-sm">
               Learn to identify and manage difficult emotions through strategic gameplay
             </p>
           </div>
-          <div className="bg-white/90 rounded-xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-purple-50/80 to-violet-50/80 backdrop-blur-sm">
+          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-purple-50/80 to-violet-50/80 backdrop-blur-sm">
             <Target className="w-8 h-8 text-purple-600 mx-auto mb-3" />
             <h3 className="font-bold text-gray-800 mb-2">Decision Making</h3>
             <p className="text-gray-600 text-sm">
               Practice making healthy choices under pressure in a safe environment
             </p>
           </div>
-          <div className="bg-white/90 rounded-xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-sm">
+          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-sm">
             <Trophy className="w-8 h-8 text-blue-600 mx-auto mb-3" />
             <h3 className="font-bold text-gray-800 mb-2">Mental Resilience</h3>
             <p className="text-gray-600 text-sm">
@@ -298,7 +313,7 @@ export default function GamesPage() {
             <Sparkles className="w-6 h-6 ml-3" />
           </Button>
           <p className="text-sm text-gray-600 mt-3">
-            🧠 Designed by mental health experts • 🎮 Evidence-based therapy • 🏰 Safe space to practice
+            Designed by mental health experts • Evidence-based therapy • Safe space to practice
           </p>
         </div>
       </div>

@@ -23,7 +23,7 @@ const communityPosts = [
       username: "@drsarahj",
       avatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=40&h=40&fit=crop&crop=face"
     },
-    content: "Just published a new research paper on mindfulness-based therapy for anxiety disorders. The results show a 73% improvement rate in patients who practiced daily meditation. 🧠✨",
+    content: "Just published a new research paper on mindfulness-based therapy for anxiety disorders. The results show a 73% improvement rate in patients who practiced daily meditation.",
     timestamp: "2 hours ago",
     likes: 127,
     comments: 23,
@@ -43,7 +43,7 @@ const communityPosts = [
       username: "@mhalliance",
       avatar: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=40&h=40&fit=crop&crop=face"
     },
-    content: "Remember: It's okay to not be okay. Your mental health journey is unique, and seeking help is a sign of strength, not weakness. 💙 #MentalHealthAwareness",
+    content: "Remember: It's okay to not be okay. Your mental health journey is unique, and seeking help is a sign of strength, not weakness. #MentalHealthAwareness",
     timestamp: "4 hours ago",
     likes: 89,
     comments: 12,
@@ -56,7 +56,7 @@ const communityPosts = [
       username: "@alexr_therapist",
       avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face"
     },
-    content: "Sharing some practical breathing exercises that can help manage anxiety in real-time. These techniques have helped many of my clients during panic episodes. 🌬️",
+    content: "Sharing some practical breathing exercises that can help manage anxiety in real-time. These techniques have helped many of my clients during panic episodes.",
     timestamp: "6 hours ago",
     likes: 156,
     comments: 31,
@@ -72,29 +72,42 @@ const communityPosts = [
 
 export default function ProfessionalCommunityPage() {
   return (
-    <div className="p-6">
-      <div className="max-w-6xl mx-auto">
-        <BackButton to="/dashboard" />
-        <h1 className="text-3xl font-bold mb-8 text-center">Clarity Connect</h1>
+    <div className="max-w-5xl mx-auto space-y-6 pb-20 animate-in fade-in duration-500" data-testid="page-professional-community">
+      <BackButton to="/dashboard" />
+      
+      {/* Hero Banner */}
+      <div className="bg-gradient-to-r from-cyan-500/10 via-indigo-500/10 to-purple-500/10 rounded-[32px] p-6 sm:p-8 border border-cyan-200/50 dark:border-cyan-800/40">
+        <div className="max-w-2xl space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100 dark:bg-cyan-900/60 text-cyan-800 dark:text-cyan-200 text-xs font-bold">
+            <GraduationCap className="w-3.5 h-3.5" />
+            <span>Clinical Knowledge & Dialogue</span>
+          </div>
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+            Clarity Connect
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+            A verified professional space connecting licensed therapists, psychological researchers, and student wellness advocates.
+          </p>
+        </div>
+      </div>
+      
+      <Tabs defaultValue="community" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-8 bg-muted/60 p-1 rounded-2xl">
+          <TabsTrigger value="community" className="rounded-xl font-semibold">Community Insights</TabsTrigger>
+          <TabsTrigger value="therapists" className="rounded-xl font-semibold">Therapist Network</TabsTrigger>
+        </TabsList>
         
-        <Tabs defaultValue="community" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="community">Community Insights</TabsTrigger>
-            <TabsTrigger value="therapists">Therapist Network</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="community">
-            <div className="space-y-6">
-              <div className="text-center mb-8">
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <Users className="w-6 h-6 text-blue-600" />
-                  <h2 className="text-2xl font-semibold">Community Insights</h2>
-                </div>
-                <p className="text-gray-600 max-w-2xl mx-auto">
-                  Connect with mental health professionals, researchers, and advocates sharing valuable insights, 
-                  research findings, and supportive content from around the world.
-                </p>
+        <TabsContent value="community">
+          <div className="space-y-6">
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Users className="w-5 h-5 text-indigo-600" />
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Featured Insights</h2>
               </div>
+              <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto">
+                Evidence-based findings, clinical takeaways, and peer-reviewed strategies shared by certified practitioners.
+              </p>
+            </div>
               
               <div className="max-w-2xl mx-auto space-y-6">
                 {communityPosts.map((post) => (
@@ -155,10 +168,9 @@ export default function ProfessionalCommunityPage() {
           </TabsContent>
           
           <TabsContent value="therapists">
-            <TherapistCommunity />
-          </TabsContent>
-        </Tabs>
-      </div>
+          <TherapistCommunity />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

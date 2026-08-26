@@ -1,11 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Search, MessageCircle } from "lucide-react";
+import { Search, MessageCircle, HeartHandshake, Sparkles, Brain, Moon, Users2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { AI_PERSONALITIES, type AIPersonality } from "@shared/ai-personalities";
+
+const personalityIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  alex: HeartHandshake,
+  maya: Sparkles,
+  sage: Brain,
+  luna: Moon,
+  rio: Users2,
+};
 
 interface AIChatListProps {
   onSelectPersonality: (personality: AIPersonality) => void;
@@ -49,13 +57,14 @@ export function AIChatList({
   };
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-white dark:bg-black">
       {/* Header - Fixed */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-100">
+      <div className="flex-shrink-0 p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
-            <MessageCircle className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-sm">
+            <MessageCircle className="w-4 h-4" />
           </div>
+          <h2 className="font-bold text-gray-900 dark:text-gray-100">AI Companions</h2>
         </div>
         
         {/* Search */}
@@ -65,14 +74,14 @@ export function AIChatList({
             placeholder="Search buddies..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+            className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:bg-white dark:focus:bg-black transition-colors rounded-xl"
           />
         </div>
       </div>
       
       {/* Scrollable Chat List */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-        <div className="p-2">
+      <div className="flex-1 overflow-y-auto scrollbar-thin">
+        <div className="p-2 space-y-1.5">
           {filteredPersonalities.map((personality) => {
             const isSelected = selectedPersonalityId === personality.id;
             const unreadCount = getUnreadCount(personality.id);
@@ -82,47 +91,52 @@ export function AIChatList({
               <div
                 key={personality.id}
                 onClick={() => onSelectPersonality(personality)}
-                className={`flex items-center gap-4 p-4 m-2 cursor-pointer transition-all duration-200 rounded-xl hover:bg-gray-50 active:scale-[0.98] ${
-                  isSelected ? 'bg-indigo-50 shadow-md border border-indigo-200' : ''
+                className={`flex items-center gap-3.5 p-3.5 cursor-pointer transition-all duration-200 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/60 active:scale-[0.98] ${
+                  isSelected 
+                    ? 'bg-indigo-50/80 dark:bg-indigo-950/40 shadow-sm border border-indigo-200 dark:border-indigo-800/60' 
+                    : 'border border-transparent'
                 }`}
               >
                 {/* Avatar with status */}
                 <div className="relative flex-shrink-0">
-                  <Avatar className="w-14 h-14 ring-2 ring-white shadow-md">
-                    <AvatarFallback className={`${getPersonalityColor(personality.color)} text-white text-xl font-semibold`}>
-                      {personality.avatar}
+                  <Avatar className="w-12 h-12 ring-2 ring-white dark:ring-gray-800 shadow-sm">
+                    <AvatarFallback className={`${getPersonalityColor(personality.color)} text-white`}>
+                      {(() => {
+                        const IconComponent = personalityIcons[personality.id] || Sparkles;
+                        return <IconComponent className="w-6 h-6 stroke-[2]" />;
+                      })()}
                     </AvatarFallback>
                   </Avatar>
                   {/* Online indicator */}
-                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-3 border-white rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-gray-900 rounded-full flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                   </div>
                 </div>
 
                 {/* Chat content */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-semibold text-gray-900 truncate">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100 truncate">
                       {personality.name}
                     </h3>
                     <div className="flex items-center gap-2 flex-shrink-0">
                       {unreadCount > 0 && (
-                        <Badge className="bg-indigo-500 text-white text-xs px-2 py-1 min-w-[1.25rem] h-6">
+                        <Badge className="bg-indigo-500 text-white text-[10px] px-1.5 py-0.5 min-w-[1.25rem] h-5">
                           {unreadCount > 99 ? '99+' : unreadCount}
                         </Badge>
                       )}
-                      <span className="text-xs text-gray-400 font-medium">
+                      <span className="text-[11px] text-gray-400 dark:text-gray-500 font-medium">
                         active
                       </span>
                     </div>
                   </div>
                   
-                  <p className="text-sm text-gray-500 mb-2 line-clamp-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 line-clamp-1">
                     {personality.description}
                   </p>
                   
-                  <p className={`text-sm truncate mb-2 ${
-                    unreadCount > 0 ? 'font-semibold text-gray-800' : 'text-gray-500'
+                  <p className={`text-xs truncate mb-2 ${
+                    unreadCount > 0 ? 'font-semibold text-gray-800 dark:text-gray-200' : 'text-gray-400 dark:text-gray-500'
                   }`}>
                     {lastMessage}
                   </p>
@@ -133,16 +147,11 @@ export function AIChatList({
                       <Badge 
                         key={specialty} 
                         variant="outline" 
-                        className="text-xs px-2 py-0.5 bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                        className="text-[10px] px-2 py-0.5 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300"
                       >
                         {specialty}
                       </Badge>
                     ))}
-                    {personality.specialties.length > 2 && (
-                      <Badge variant="outline" className="text-xs px-2 py-0.5 bg-white border-gray-200 text-gray-600">
-                        +{personality.specialties.length - 2}
-                      </Badge>
-                    )}
                   </div>
                 </div>
               </div>
@@ -153,11 +162,11 @@ export function AIChatList({
         {/* Empty state */}
         {filteredPersonalities.length === 0 && (
           <div className="text-center py-12 px-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-              <MessageCircle className="w-8 h-8 text-gray-400" />
+            <div className="w-14 h-14 mx-auto mb-3 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+              <MessageCircle className="w-6 h-6 text-gray-400" />
             </div>
-            <h3 className="font-semibold text-gray-700 mb-2">No buddies found</h3>
-            <p className="text-sm text-gray-500">Try adjusting your search terms</p>
+            <h3 className="font-semibold text-sm text-gray-700 dark:text-gray-300 mb-1">No buddies found</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Try adjusting your search terms</p>
           </div>
         )}
       </div>

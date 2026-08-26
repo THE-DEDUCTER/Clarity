@@ -41,14 +41,18 @@ export function useAssessmentHistory() {
   return useQuery({
     queryKey: ["assessment-history"],
     queryFn: async () => {
-      const response = await fetch("/api/assessment/history");
-      
-      if (!response.ok) {
-        throw new Error("Failed to fetch assessment history");
-      }
+      try {
+        const response = await fetch("/api/assessment/history");
+        
+        if (!response.ok) {
+          return [] as AssessmentHistory[];
+        }
 
-      const data = await response.json();
-      return data.history as AssessmentHistory[];
+        const data = await response.json();
+        return (data || []) as AssessmentHistory[];
+      } catch (err) {
+        return [] as AssessmentHistory[];
+      }
     },
   });
 }

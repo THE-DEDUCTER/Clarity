@@ -5,6 +5,7 @@ import { GameState, Visitor, visitors, initialGameState } from './GameState';
 import { Castle } from './Castle';
 import { VisitorChoice } from './VisitorChoice';
 import { GameUI } from './GameUI';
+import { Shield, CheckCircle2, XCircle, Swords, Play } from 'lucide-react';
 
 export const InnerGatekeeper: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(initialGameState);
@@ -102,9 +103,9 @@ export const InnerGatekeeper: React.FC = () => {
     // Bonus points for correct choice
     if (isCorrect) {
       scoreChange += 10;
-      feedbackMessage = `✅ ${feedbackMessage}`;
+      feedbackMessage = `${feedbackMessage}`;
     } else {
-      feedbackMessage = `❌ ${feedbackMessage}`;
+      feedbackMessage = `${feedbackMessage}`;
     }
 
     setGameState(prev => {
@@ -203,40 +204,44 @@ export const InnerGatekeeper: React.FC = () => {
       {!gameStarted ? (
         /* Start Screen */
         <div className="flex items-center justify-center min-h-screen">
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-4 text-center shadow-2xl">
-            <h1 className="text-4xl font-bold mb-4 text-gray-800">
-              🏰 Inner Gatekeeper
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 max-w-2xl mx-4 text-center shadow-2xl border border-white/60">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg text-white">
+              <Shield className="w-8 h-8" />
+            </div>
+            <h1 className="text-3xl font-bold mb-3 text-gray-800">
+              Inner Gatekeeper
             </h1>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+            <p className="text-base text-gray-600 mb-6 leading-relaxed">
               Welcome, Guardian! You are the protector of your mind castle. 
               Thoughts, feelings, and experiences will approach your gates. 
               Choose wisely whether to accept, reject, or challenge them.
             </p>
-            <div className="space-y-4 mb-8 text-left">
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">✅</span>
-                <span className="text-gray-700"><strong>Accept:</strong> Welcome positive thoughts and beneficial experiences</span>
+            <div className="space-y-3 mb-8 text-left">
+              <div className="flex items-center space-x-3 p-3 rounded-xl bg-emerald-50/80 border border-emerald-100">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                <span className="text-sm text-gray-700"><strong>Accept:</strong> Welcome positive thoughts and beneficial experiences</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">❌</span>
-                <span className="text-gray-700"><strong>Reject:</strong> Turn away harmful or destructive influences</span>
+              <div className="flex items-center space-x-3 p-3 rounded-xl bg-rose-50/80 border border-rose-100">
+                <XCircle className="w-5 h-5 text-rose-600 flex-shrink-0" />
+                <span className="text-sm text-gray-700"><strong>Reject:</strong> Turn away harmful or destructive influences</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">⚔️</span>
-                <span className="text-gray-700"><strong>Challenge:</strong> Face difficult thoughts with courage and wisdom</span>
+              <div className="flex items-center space-x-3 p-3 rounded-xl bg-purple-50/80 border border-purple-100">
+                <Swords className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                <span className="text-sm text-gray-700"><strong>Challenge:</strong> Face difficult thoughts with courage and wisdom</span>
               </div>
             </div>
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-yellow-800">
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+              <p className="text-sm text-amber-800">
                 <strong>Goal:</strong> Maintain your castle's health and inner peace. 
                 Make wise choices to protect your mental wellbeing while growing stronger.
               </p>
             </div>
             <button
               onClick={startGame}
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-600 hover:from-indigo-600 hover:via-purple-600 hover:to-blue-700 text-white font-bold py-3.5 px-8 rounded-xl text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 mx-auto"
             >
-              🚀 Begin Your Journey
+              <Play className="w-5 h-5" />
+              <span>Begin Your Journey</span>
             </button>
           </div>
         </div>
@@ -278,7 +283,7 @@ export const InnerGatekeeper: React.FC = () => {
               <div className="space-y-1">
                 {visitorQueue.slice(0, 3).map((visitor, index) => (
                   <div key={index} className="flex items-center space-x-2 text-sm text-white/80">
-                    <span>{visitor.emoji}</span>
+                    <div className="w-2 h-2 rounded-full bg-indigo-400 flex-shrink-0" />
                     <span className="truncate max-w-24">{visitor.name}</span>
                   </div>
                 ))}

@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { ThemeProvider } from "next-themes";
+
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const style = {
@@ -14,13 +14,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <TooltipProvider>
-            <SidebarProvider style={style as React.CSSProperties}>
-              {children}
-            </SidebarProvider>
-          </TooltipProvider>
-        </ThemeProvider>
+        <TooltipProvider>
+          <SidebarProvider style={style as React.CSSProperties}>
+            {children}
+          </SidebarProvider>
+        </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

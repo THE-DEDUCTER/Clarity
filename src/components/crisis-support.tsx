@@ -174,8 +174,14 @@ export function CrisisSupport() {
                       {resource.description}
                     </p>
                     <div className="flex items-center gap-4 text-sm">
-                      <span className="font-medium">📞 {resource.phone}</span>
-                      <span className="text-muted-foreground">⏰ {resource.hours}</span>
+                      <span className="font-medium flex items-center gap-1.5">
+                        <Phone className="w-4 h-4 text-primary" />
+                        {resource.phone}
+                      </span>
+                      <span className="text-muted-foreground flex items-center gap-1.5">
+                        <Clock className="w-4 h-4" />
+                        {resource.hours}
+                      </span>
                     </div>
                   </div>
                 </div>

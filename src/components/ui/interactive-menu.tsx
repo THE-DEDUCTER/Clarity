@@ -125,14 +125,14 @@ const InteractiveMenu: React.FC<InteractiveMenuProps> = ({
             key={item.label}
             className={`menu__item ${isActive ? 'active' : ''}`}
             onClick={() => handleItemClick(index)}
-            ref={(el) => (itemRefs.current[index] = el)}
+            ref={(el) => { itemRefs.current[index] = el; }}
           >
             <div className="menu__icon">
               <IconComponent className="icon" />
             </div>
             <strong
               className={`menu__text ${isTextActive ? 'active' : ''}`}
-              ref={(el) => (textRefs.current[index] = el)}
+              ref={(el) => { textRefs.current[index] = el; }}
             >
               {item.label}
             </strong>

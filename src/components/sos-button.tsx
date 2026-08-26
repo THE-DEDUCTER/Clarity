@@ -84,7 +84,7 @@ export function SOSButton() {
         </AlertDialogHeader>
         <div className="space-y-3">
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-800 mb-2 font-medium">🇮🇳 Professional Mental Health Support - India</p>
+            <p className="text-sm text-red-800 mb-2 font-medium">National Mental Health Support - India</p>
             <Button 
               onClick={handleTelemanus}
               className="w-full justify-start bg-red-600 hover:bg-red-700 text-white font-semibold"
