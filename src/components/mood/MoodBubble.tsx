@@ -11,7 +11,10 @@ export interface MoodBubbleProps {
   isCenterFocal?: boolean;
   onSelect: (id: string) => void;
   style?: React.CSSProperties;
-  bubbleSize?: number; // Injected by react-bubble-ui if provideProps is true
+  bubbleSize?: number;
+  scaleFactor?: number;
+  x?: number;
+  y?: number;
 }
 
 const QUADRANT_GRADIENTS: Record<Quadrant, { from: string; via: string; to: string; glow: string; text: string }> = {
@@ -68,7 +71,9 @@ export function MoodBubble({
   scaleFactor = 1,
   onSelect,
   style,
-  bubbleSize
+  bubbleSize,
+  x = 0,
+  y = 0
 }: MoodBubbleProps) {
   // Deterministic seed from word id to assign unique shape profile
   const shapeIndex = useMemo(() => {
@@ -76,19 +81,21 @@ export function MoodBubble({
     return hash % MORPH_SHAPES.length;
   }, [word.id]);
 
-  // Base size based on intensity (1-5) - Responsive clamping for mobile optimization
+  // Base size based on intensity (1-5)
+  // We use concrete numbers here because D3 physics needs raw values to compute collisions.
+  // The MoodGrid will pass down a scaled `bubbleSize` based on viewport width.
   const internalBaseSize = useMemo(() => {
     switch (word.intensity) {
-      case 5: return "clamp(100px, 16vw, 175px)"; // anchor
-      case 4: return "clamp(90px, 14vw, 155px)";
-      case 3: return "clamp(80px, 12vw, 135px)"; // ordinary
-      case 2: return "clamp(70px, 10vw, 120px)";
-      case 1: return "clamp(60px, 8vw, 110px)"; // peripheral
-      default: return "clamp(80px, 12vw, 135px)";
+      case 5: return 160; // anchor
+      case 4: return 140;
+      case 3: return 120; // ordinary
+      case 2: return 100;
+      case 1: return 90; // peripheral
+      default: return 120;
     }
   }, [word.intensity]);
 
-  const finalSize = bubbleSize ? `${bubbleSize}px` : internalBaseSize;
+  const finalSize = bubbleSize || internalBaseSize;
 
   const colors = QUADRANT_GRADIENTS[word.quadrant] || QUADRANT_GRADIENTS["high-pleasant"];
   
@@ -114,12 +121,16 @@ export function MoodBubble({
         mass: 0.8
       }}
       className={cn(
-        "relative flex items-center justify-center select-none cursor-pointer outline-none touch-manipulation group",
+        "absolute flex items-center justify-center select-none cursor-pointer outline-none touch-manipulation group",
         colors.text
       )}
       style={{
         width: finalSize,
         height: finalSize,
+        left: x,
+        top: y,
+        marginLeft: -(typeof finalSize === 'number' ? finalSize : parseFloat(finalSize as string)) / 2,
+        marginTop: -(typeof finalSize === 'number' ? finalSize : parseFloat(finalSize as string)) / 2,
         ...style
       }}
     >
@@ -201,7 +212,7 @@ export function MoodBubble({
         }}
         className="relative z-10 text-center leading-[1.1] tracking-tight px-3 py-1 font-sans pointer-events-none drop-shadow-sm select-none"
         style={{
-          fontSize: `clamp(10px, ${word.intensity * 0.4 + 1.2}vw, 18px)`,
+          fontSize: Math.max(12, Math.round((typeof finalSize === 'number' ? finalSize : parseFloat(finalSize as string)) * 0.15)),
           color: colors.text.includes("white") ? "#FFFFFF" : "#0A0A0A"
         }}
       >
