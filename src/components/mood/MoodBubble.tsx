@@ -10,9 +10,6 @@ export interface MoodBubbleProps {
   isSelected: boolean;
   onSelect: (id: string) => void;
   style?: React.CSSProperties;
-  x?: number;
-  y?: number;
-  delay?: number;
   searchQuery?: string;
 }
 
@@ -52,9 +49,6 @@ export function MoodBubble({
   isSelected,
   onSelect,
   style,
-  x = 0,
-  y = 0,
-  delay = 0,
   searchQuery = ""
 }: MoodBubbleProps) {
   const theme = QUADRANT_THEME[word.quadrant] || QUADRANT_THEME["high-pleasant"];
@@ -62,8 +56,6 @@ export function MoodBubble({
   // Size based on intensity:
   const isExtreme = word.intensity >= 4;
   const isModerate = word.intensity === 3;
-
-  const size = isExtreme ? 110 : isModerate ? 90 : 75;
 
   // VisionOS Style Advanced Physics & Spotlight
   const mouseX = useMotionValue(0);
@@ -106,44 +98,37 @@ export function MoodBubble({
       onClick={() => onSelect(word.id)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      // Combine 3D rotation, absolute positioning, and dynamic filtering
+      // Combine 3D rotation, and dynamic filtering
       style={{
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
-        position: "absolute",
-        left: x,
-        top: y,
-        marginLeft: -size / 2,
-        marginTop: -size / 2,
-        width: size,
-        height: size,
         ...style
       }}
-      initial={{ opacity: 0, scale: 0, rotate: -45 }}
+      initial={{ opacity: 0, scale: 0.9 }}
       animate={{ 
         opacity: opacityState, 
-        scale: isSelected ? 1.2 : 1, 
-        rotate: 0,
+        scale: isSelected ? 1.05 : 1, 
         filter: filterState
       }}
-      whileHover={{ scale: 1.15, zIndex: 50 }}
+      whileHover={{ scale: 1.08, zIndex: 50 }}
       whileTap={{ scale: 0.95 }}
       // Use Layout to make everything glide when filtered or sorted
       layout
       transition={{ 
         type: "spring", 
-        stiffness: 250, 
-        damping: 20,
-        opacity: { duration: 0.3, delay: delay },
-        scale: { type: "spring", delay: delay },
-        rotate: { type: "spring", delay: delay }
+        stiffness: 300, 
+        damping: 25,
+        opacity: { duration: 0.2 },
       }}
       className={cn(
-        "flex flex-col items-center justify-center text-center transition-all duration-[250ms] ease-out border backdrop-blur-xl select-none cursor-pointer outline-none group overflow-hidden rounded-full",
+        "relative inline-flex flex-col items-center justify-center text-center transition-all duration-[250ms] ease-out border backdrop-blur-xl select-none cursor-pointer outline-none group overflow-hidden",
+        isExtreme ? "w-auto px-6 py-4 rounded-full" : 
+        isModerate ? "w-auto px-5 py-3 rounded-full" : 
+        "w-auto px-4 py-2.5 rounded-full",
         isSelected 
-          ? [theme.active, "border-white/40 shadow-[0_0_40px_rgba(255,255,255,0.2)] z-30"] 
-          : [theme.base, theme.border, "shadow-2xl z-10"]
+          ? [theme.active, "border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.2)] z-30"] 
+          : [theme.base, theme.border, "shadow-lg z-10"]
       )}
     >
       {/* 1. Base Glass Highlight Overlay */}
@@ -172,15 +157,15 @@ export function MoodBubble({
       
       {/* 4. Text Content (Lifted up via 3D translateZ) */}
       <div 
-        className="relative z-10 flex flex-col items-center pointer-events-none px-2"
-        style={{ transform: "translateZ(30px)" }} // Pop the text off the glass!
+        className="relative z-10 flex flex-col items-center pointer-events-none"
+        style={{ transform: "translateZ(20px)" }} // Pop the text off the glass!
       >
         <span className={cn(
           "font-semibold tracking-tight transition-colors duration-200 leading-[1.1]",
           isSelected ? (word.quadrant === "high-pleasant" ? "text-amber-950" : "text-white") : theme.text,
-          isExtreme ? "text-sm sm:text-base" :
-          isModerate ? "text-xs sm:text-sm" :
-          "text-[10px] sm:text-xs"
+          isExtreme ? "text-lg sm:text-xl" :
+          isModerate ? "text-base sm:text-lg" :
+          "text-sm sm:text-base"
         )}>
           {word.label}
         </span>
