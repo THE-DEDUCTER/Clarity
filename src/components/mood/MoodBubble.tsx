@@ -10,6 +10,10 @@ export interface MoodBubbleProps {
   isSelected: boolean;
   onSelect: (id: string) => void;
   style?: React.CSSProperties;
+  x?: number;
+  y?: number;
+  delay?: number;
+  searchQuery?: string;
 }
 
 const QUADRANT_THEME: Record<Quadrant, { base: string; active: string; text: string; glow: string; border: string }> = {
@@ -48,12 +52,18 @@ export function MoodBubble({
   isSelected,
   onSelect,
   style,
+  x = 0,
+  y = 0,
+  delay = 0,
+  searchQuery = ""
 }: MoodBubbleProps) {
   const theme = QUADRANT_THEME[word.quadrant] || QUADRANT_THEME["high-pleasant"];
   
   // Size based on intensity:
   const isExtreme = word.intensity >= 4;
   const isModerate = word.intensity === 3;
+
+  const size = isExtreme ? 110 : isModerate ? 90 : 75;
 
   // VisionOS Style Advanced Physics & Spotlight
   const mouseX = useMotionValue(0);
@@ -87,31 +97,53 @@ export function MoodBubble({
     rotateY.set(0);
   }
 
+  const isMatch = searchQuery === "" || word.label.toLowerCase().includes(searchQuery.toLowerCase());
+  const opacityState = isMatch ? 1 : 0.15;
+  const filterState = isMatch ? "grayscale(0%)" : "grayscale(100%)";
+
   return (
     <motion.button
       onClick={() => onSelect(word.id)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      // Combine 3D rotation with scaling on hover
+      // Combine 3D rotation, absolute positioning, and dynamic filtering
       style={{
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
+        position: "absolute",
+        left: x,
+        top: y,
+        marginLeft: -size / 2,
+        marginTop: -size / 2,
+        width: size,
+        height: size,
         ...style
       }}
-      whileHover={{ scale: 1.05 }}
+      initial={{ opacity: 0, scale: 0, rotate: -45 }}
+      animate={{ 
+        opacity: opacityState, 
+        scale: isSelected ? 1.2 : 1, 
+        rotate: 0,
+        filter: filterState
+      }}
+      whileHover={{ scale: 1.15, zIndex: 50 }}
       whileTap={{ scale: 0.95 }}
       // Use Layout to make everything glide when filtered or sorted
       layout
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 250, 
+        damping: 20,
+        opacity: { duration: 0.3, delay: delay },
+        scale: { type: "spring", delay: delay },
+        rotate: { type: "spring", delay: delay }
+      }}
       className={cn(
-        "relative flex flex-col items-center justify-center text-center transition-all duration-[250ms] ease-out border backdrop-blur-xl select-none cursor-pointer outline-none group overflow-hidden",
-        isExtreme ? "w-full py-5 sm:py-7 rounded-[28px]" : 
-        isModerate ? "w-full py-3.5 sm:py-5 rounded-[24px]" : 
-        "w-full py-2.5 sm:py-3.5 rounded-[20px]",
+        "flex flex-col items-center justify-center text-center transition-all duration-[250ms] ease-out border backdrop-blur-xl select-none cursor-pointer outline-none group overflow-hidden rounded-full",
         isSelected 
-          ? [theme.active, "border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.15)] z-20"] 
-          : [theme.base, theme.border, "shadow-xl z-0"]
+          ? [theme.active, "border-white/40 shadow-[0_0_40px_rgba(255,255,255,0.2)] z-30"] 
+          : [theme.base, theme.border, "shadow-2xl z-10"]
       )}
     >
       {/* 1. Base Glass Highlight Overlay */}
@@ -140,27 +172,18 @@ export function MoodBubble({
       
       {/* 4. Text Content (Lifted up via 3D translateZ) */}
       <div 
-        className="relative z-10 flex flex-col items-center pointer-events-none"
+        className="relative z-10 flex flex-col items-center pointer-events-none px-2"
         style={{ transform: "translateZ(30px)" }} // Pop the text off the glass!
       >
         <span className={cn(
-          "font-semibold tracking-tight transition-colors duration-200",
+          "font-semibold tracking-tight transition-colors duration-200 leading-[1.1]",
           isSelected ? (word.quadrant === "high-pleasant" ? "text-amber-950" : "text-white") : theme.text,
-          isExtreme ? "text-lg sm:text-2xl" :
-          isModerate ? "text-base sm:text-lg" :
-          "text-sm sm:text-base"
+          isExtreme ? "text-sm sm:text-base" :
+          isModerate ? "text-xs sm:text-sm" :
+          "text-[10px] sm:text-xs"
         )}>
           {word.label}
         </span>
-        
-        {isExtreme && (
-          <span className={cn(
-            "text-[11px] sm:text-xs mt-1.5 max-w-[85%] leading-tight font-medium opacity-80",
-            isSelected ? (word.quadrant === "high-pleasant" ? "text-amber-950/70" : "text-white/70") : "text-white/40"
-          )}>
-            {word.description || "Intense emotion"}
-          </span>
-        )}
       </div>
     </motion.button>
   );
