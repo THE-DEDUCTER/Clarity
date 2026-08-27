@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, MessageCircle, ArrowLeft } from "lucide-react";
+import { Sparkles, MessageCircle, ArrowLeft, Network, LayoutGrid } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { EmotionMap } from "@/components/emotion-map/emotion-map";
 
 export const moodQuadrants = [
   {
@@ -121,6 +122,7 @@ interface MoodTrackerProps {
 }
 
 export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLogged }: MoodTrackerProps) {
+  const [viewMode, setViewMode] = useState<'constellation' | 'quadrants'>('constellation');
   const [activeQuadrant, setActiveQuadrant] = useState<string | null>(defaultQuadrant);
   const [selectedEmotion, setSelectedEmotion] = useState<{name: string, value: number, color: string, textColor: string} | null>(null);
   const [note, setNote] = useState("");
@@ -403,11 +405,56 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
 
   return (
     <div className="w-full relative min-h-[400px]">
-      <AnimatePresence mode="wait">
-        {!activeQuadrant && !selectedEmotion && renderQuadrants()}
-        {activeQuadrant && !selectedEmotion && renderEmotions()}
-        {selectedEmotion && renderSave()}
-      </AnimatePresence>
+      {/* View Switcher Pill */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="inline-flex p-1 bg-neutral-900/80 border border-neutral-800 rounded-xl">
+          <button
+            onClick={() => {
+              setViewMode('constellation');
+              setActiveQuadrant(null);
+              setSelectedEmotion(null);
+            }}
+            className={cn(
+              "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all",
+              viewMode === 'constellation'
+                ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                : "text-neutral-400 hover:text-white"
+            )}
+          >
+            <Network className="w-3.5 h-3.5" />
+            Emotion Constellation (SVG)
+          </button>
+          <button
+            onClick={() => {
+              setViewMode('quadrants');
+              setSelectedEmotion(null);
+            }}
+            className={cn(
+              "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all",
+              viewMode === 'quadrants'
+                ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                : "text-neutral-400 hover:text-white"
+            )}
+          >
+            <LayoutGrid className="w-3.5 h-3.5" />
+            Energy Quadrants
+          </button>
+        </div>
+      </div>
+
+      {viewMode === 'constellation' ? (
+        <EmotionMap
+          onSelectEmotion={(emo) => {
+            if (onMoodLogged) onMoodLogged({ value: 3, name: emo.name });
+          }}
+        />
+      ) : (
+        <AnimatePresence mode="wait">
+          {!activeQuadrant && !selectedEmotion && renderQuadrants()}
+          {activeQuadrant && !selectedEmotion && renderEmotions()}
+          {selectedEmotion && renderSave()}
+        </AnimatePresence>
+      )}
     </div>
   );
 }
