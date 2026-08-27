@@ -1,223 +1,93 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useMemo } from "react";
 import { MoodWord, Quadrant } from "@/lib/mood-data";
 import { cn } from "@/lib/utils";
 
 export interface MoodBubbleProps {
   word: MoodWord;
   isSelected: boolean;
-  isCenterFocal?: boolean;
   onSelect: (id: string) => void;
   style?: React.CSSProperties;
-  bubbleSize?: number;
-  scaleFactor?: number;
-  x?: number;
-  y?: number;
 }
 
-const QUADRANT_GRADIENTS: Record<Quadrant, { from: string; via: string; to: string; glow: string; text: string }> = {
+const QUADRANT_GRADIENTS: Record<Quadrant, { bg: string; active: string; text: string; border: string }> = {
   "high-pleasant": {
-    from: "#FFE169",
-    via: "#FFC837",
-    to: "#FF9800",
-    glow: "rgba(255, 200, 55, 0.55)",
-    text: "text-[#1A1100]"
+    bg: "bg-[#FFC837]/10 hover:bg-[#FFC837]/20",
+    active: "bg-gradient-to-br from-[#FFE169] to-[#FF9800]",
+    border: "border-[#FFC837]/30",
+    text: "text-[#FFE169]",
   },
   "high-unpleasant": {
-    from: "#FF6575",
-    via: "#FF3B4E",
-    to: "#E60026",
-    glow: "rgba(255, 59, 78, 0.55)",
-    text: "text-[#1A0004]"
+    bg: "bg-[#FF3B4E]/10 hover:bg-[#FF3B4E]/20",
+    active: "bg-gradient-to-br from-[#FF6575] to-[#E60026]",
+    border: "border-[#FF3B4E]/30",
+    text: "text-[#FF6575]",
   },
   "low-unpleasant": {
-    from: "#72B9FF",
-    via: "#3B82F6",
-    to: "#1D4ED8",
-    glow: "rgba(59, 130, 246, 0.55)",
-    text: "text-[#001026]"
+    bg: "bg-[#3B82F6]/10 hover:bg-[#3B82F6]/20",
+    active: "bg-gradient-to-br from-[#72B9FF] to-[#1D4ED8]",
+    border: "border-[#3B82F6]/30",
+    text: "text-[#72B9FF]",
   },
   "low-pleasant": {
-    from: "#56ECA6",
-    via: "#10B981",
-    to: "#059669",
-    glow: "rgba(16, 185, 129, 0.55)",
-    text: "text-[#001D13]"
+    bg: "bg-[#10B981]/10 hover:bg-[#10B981]/20",
+    active: "bg-gradient-to-br from-[#56ECA6] to-[#059669]",
+    border: "border-[#10B981]/30",
+    text: "text-[#56ECA6]",
   }
 };
-
-// Variety of organic SVG shapes representing different emotional states
-const MORPH_SHAPES = [
-  // 0: Soft 4-petal scallop (Calm / Warm)
-  "M 50 4 C 68 4, 82 12, 88 28 C 96 48, 96 68, 80 84 C 64 100, 40 96, 24 88 C 6 80, 2 56, 12 36 C 20 20, 32 4, 50 4 Z",
-  // 1: 5-petal flower bloom (Excited / Joyful)
-  "M 50 6 C 63 6, 78 -2, 88 15 C 98 32, 102 52, 90 68 C 78 84, 80 102, 60 98 C 40 94, 22 104, 12 86 C 2 68, -4 48, 8 30 C 20 12, 37 6, 50 6 Z",
-  // 2: Fluid mindfulness pebble (Sympathetic / Thoughtful)
-  "M 50 3 C 74 3, 97 19, 97 49 C 97 79, 75 97, 47 97 C 19 97, 3 75, 3 49 C 3 23, 26 3, 50 3 Z",
-  // 3: Radiant burst star-scallop (Thrilled / Energized)
-  "M 50 2 C 65 14, 86 14, 98 28 C 86 42, 86 64, 98 78 C 84 90, 64 86, 50 98 C 36 86, 16 90, 2 78 C 14 64, 14 42, 2 28 C 14 14, 35 14, 50 2 Z",
-  // 4: Organic undulating cloud (Relaxed / Content)
-  "M 50 7 C 70 7, 91 19, 95 41 C 99 63, 87 85, 69 93 C 51 101, 31 95, 17 83 C 3 71, 5 47, 15 29 C 25 11, 30 7, 50 7 Z"
-];
-
-const CIRCLE_PATH = "M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 Z";
 
 export function MoodBubble({
   word,
   isSelected,
-  isCenterFocal = false,
-  scaleFactor = 1,
   onSelect,
   style,
-  bubbleSize,
-  x = 0,
-  y = 0
 }: MoodBubbleProps) {
-  // Deterministic seed from word id to assign unique shape profile
-  const shapeIndex = useMemo(() => {
-    const hash = word.id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-    return hash % MORPH_SHAPES.length;
-  }, [word.id]);
-
-  // Base size based on intensity (1-5)
-  // We use concrete numbers here because D3 physics needs raw values to compute collisions.
-  // The MoodGrid will pass down a scaled `bubbleSize` based on viewport width.
-  const internalBaseSize = useMemo(() => {
-    switch (word.intensity) {
-      case 5: return 160; // anchor
-      case 4: return 140;
-      case 3: return 120; // ordinary
-      case 2: return 100;
-      case 1: return 90; // peripheral
-      default: return 120;
-    }
-  }, [word.intensity]);
-
-  const finalSize = bubbleSize || internalBaseSize;
-
   const colors = QUADRANT_GRADIENTS[word.quadrant] || QUADRANT_GRADIENTS["high-pleasant"];
   
-  // Decide whether to morph
-  const targetPath = isSelected ? MORPH_SHAPES[shapeIndex] : CIRCLE_PATH;
-
-  // Visual scale combination of base size and center proximity factor
-  const totalScale = (isSelected ? 1.22 : 1) * scaleFactor;
+  // Size based on intensity:
+  // Extreme (4-5): Large block
+  // Moderate (3): Medium pill
+  // Mild (1-2): Small pill
+  
+  const isExtreme = word.intensity >= 4;
+  const isModerate = word.intensity === 3;
 
   return (
     <motion.button
       onClick={() => onSelect(word.id)}
-      whileHover={{ scale: totalScale * 1.08, zIndex: 60 }}
-      whileTap={{ scale: totalScale * 0.94 }}
-      animate={{
-        scale: totalScale,
-        zIndex: isSelected ? 80 : isCenterFocal ? 50 : 10
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 320,
-        damping: 22,
-        mass: 0.8
-      }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "absolute flex items-center justify-center select-none cursor-pointer outline-none touch-manipulation group",
-        colors.text
+        "relative flex flex-col items-center justify-center text-center transition-all duration-200 ease-out border backdrop-blur-sm select-none cursor-pointer outline-none touch-manipulation overflow-hidden",
+        isExtreme ? "w-full py-4 sm:py-6 rounded-[24px]" : 
+        isModerate ? "w-full py-3 sm:py-4 rounded-[20px]" : 
+        "w-full py-2.5 sm:py-3 rounded-[16px]",
+        isSelected ? [colors.active, "border-transparent shadow-lg scale-[1.02] z-10"] : [colors.bg, colors.border, "shadow-sm z-0"]
       )}
-      style={{
-        width: finalSize,
-        height: finalSize,
-        left: x,
-        top: y,
-        marginLeft: -(typeof finalSize === 'number' ? finalSize : parseFloat(finalSize as string)) / 2,
-        marginTop: -(typeof finalSize === 'number' ? finalSize : parseFloat(finalSize as string)) / 2,
-        ...style
-      }}
+      style={style}
     >
-      {/* Morphing SVG Silhouette */}
-      <svg
-        viewBox="0 0 100 100"
-        className="absolute inset-0 w-full h-full pointer-events-none drop-shadow-md overflow-visible"
-      >
-        <defs>
-          <radialGradient
-            id={`grad-${word.id}`}
-            cx="35%"
-            cy="30%"
-            r="70%"
-            fx="30%"
-            fy="25%"
-          >
-            <stop offset="0%" stopColor={colors.from} />
-            <stop offset="55%" stopColor={colors.via} />
-            <stop offset="100%" stopColor={colors.to} />
-          </radialGradient>
-        </defs>
-
-        {/* Pulsing breathing morph animation only when selected to save FPS */}
-        {isSelected ? (
-          <motion.path
-            d={targetPath}
-            fill={`url(#grad-${word.id})`}
-            animate={{
-              d: targetPath,
-              rotate: [0, 2, -2, 0],
-              scale: [1, 1.02, 0.99, 1]
-            }}
-            transition={{
-              d: { type: "spring", stiffness: 280, damping: 20 },
-              rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-              scale: { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
-            }}
-            className="transition-all duration-300"
-          />
-        ) : (
-          <path
-            d={targetPath}
-            fill={`url(#grad-${word.id})`}
-            className="transition-all duration-300"
-          />
-        )}
-
-        {/* 3D Glass / Apple Watch light highlight rim on top */}
-        <motion.path
-          d={targetPath}
-          fill="none"
-          stroke="rgba(255,255,255,0.4)"
-          strokeWidth="1.5"
-          className="opacity-70"
-        />
-      </svg>
-
-      {/* Dynamic outer glow halo when center focal or selected */}
-      {(isSelected || isCenterFocal) && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{
-            opacity: isSelected ? 0.7 : 0.45,
-            scale: isSelected ? 1.3 : 1.15
-          }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.35 }}
-          className="absolute inset-0 rounded-full blur-2xl -z-10 pointer-events-none"
-          style={{ backgroundColor: colors.glow }}
-        />
-      )}
-
-      {/* Floating Emotion Word Label */}
-      <motion.span
-        animate={{
-          scale: isSelected ? 1.05 : 1,
-          fontWeight: isSelected ? 800 : isCenterFocal ? 750 : 650
-        }}
-        className="relative z-10 text-center leading-[1.1] tracking-tight px-3 py-1 font-sans pointer-events-none drop-shadow-sm select-none"
-        style={{
-          fontSize: Math.max(12, Math.round((typeof finalSize === 'number' ? finalSize : parseFloat(finalSize as string)) * 0.15)),
-          color: colors.text.includes("white") ? "#FFFFFF" : "#0A0A0A"
-        }}
-      >
+      <span className={cn(
+        "font-semibold tracking-tight transition-colors duration-200",
+        isSelected ? (word.quadrant === "high-pleasant" ? "text-amber-950" : "text-white") : colors.text,
+        isExtreme ? "text-lg sm:text-xl" :
+        isModerate ? "text-base sm:text-lg" :
+        "text-sm sm:text-base"
+      )}>
         {word.label}
-      </motion.span>
+      </span>
+      
+      {isExtreme && (
+        <span className={cn(
+          "text-xs mt-1 max-w-[80%] opacity-80 leading-tight",
+          isSelected ? (word.quadrant === "high-pleasant" ? "text-amber-950" : "text-white") : "text-white/50"
+        )}>
+          {word.description || "Intense emotion"}
+        </span>
+      )}
     </motion.button>
   );
 }
