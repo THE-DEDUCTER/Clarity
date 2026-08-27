@@ -21,6 +21,27 @@ const QUADRANT_THEMES: Record<Quadrant, { title: string; subtitle: string; bg: s
   "low-pleasant": { title: "Low Energy, Pleasant", subtitle: "Calm, Relaxed, Serene", bg: "bg-[#10B981]/5" },
 };
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: { type: "spring", stiffness: 300, damping: 24 }
+  }
+};
+
 export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: MoodGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const theme = QUADRANT_THEMES[initialQuadrant];
@@ -45,10 +66,30 @@ export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: Mood
   const mildMoods = relevantMoods.filter(w => w.intensity <= 2);
 
   return (
-    <div className={cn("relative w-full h-full flex flex-col overflow-hidden bg-black", theme.bg)}>
+    <div className={cn("relative w-full h-full flex flex-col overflow-hidden bg-black")}>
+      
+      {/* Ambient Breathing Background Gradient */}
+      <motion.div 
+        className={cn("absolute inset-0 opacity-40 mix-blend-screen pointer-events-none", theme.bg)}
+        initial={{ opacity: 0, scale: 1.1 }}
+        animate={{ 
+          opacity: [0.2, 0.4, 0.2],
+          scale: [1, 1.05, 1],
+        }}
+        transition={{ 
+          duration: 8, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }}
+        style={{ filter: "blur(100px)" }}
+      />
+
       {/* Pinned Header */}
-      <div 
-        className="shrink-0 z-50 px-5 pt-4 pb-4 border-b border-white/5 bg-black/80 backdrop-blur-xl" 
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="shrink-0 z-50 px-5 pt-4 pb-4 border-b border-white/5 bg-black/40 backdrop-blur-3xl" 
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 16px)" }}
       >
         <div className="flex flex-col gap-4 max-w-3xl mx-auto">
@@ -81,56 +122,67 @@ export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: Mood
             />
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Scrollable List */}
-      <div className="flex-1 overflow-y-auto overscroll-contain no-scrollbar p-5 pb-32">
+      {/* Scrollable List with Staggered Cascades */}
+      <motion.div 
+        className="flex-1 overflow-y-auto overscroll-contain no-scrollbar p-5 pb-32 z-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         <div className="max-w-3xl mx-auto flex flex-col gap-10">
           
           {relevantMoods.length === 0 && (
-            <div className="text-center py-20 text-white/40">
+            <motion.div variants={itemVariants} className="text-center py-20 text-white/40">
               No moods found matching "{searchQuery}"
-            </div>
+            </motion.div>
           )}
 
           {/* Extreme Section */}
           {extremeMoods.length > 0 && (
-            <section>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 px-1">Extreme</h3>
+            <motion.section variants={containerVariants}>
+              <motion.h3 variants={itemVariants} className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 px-1">Extreme</motion.h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {extremeMoods.map(word => (
-                  <MoodBubble key={word.id} word={word} isSelected={selectedId === word.id} onSelect={onSelect} />
+                  <motion.div key={word.id} variants={itemVariants} layoutId={`card-${word.id}`}>
+                    <MoodBubble word={word} isSelected={selectedId === word.id} onSelect={onSelect} />
+                  </motion.div>
                 ))}
               </div>
-            </section>
+            </motion.section>
           )}
 
           {/* Moderate Section */}
           {moderateMoods.length > 0 && (
-            <section>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 px-1">Moderate</h3>
+            <motion.section variants={containerVariants}>
+              <motion.h3 variants={itemVariants} className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 px-1">Moderate</motion.h3>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
                 {moderateMoods.map(word => (
-                  <MoodBubble key={word.id} word={word} isSelected={selectedId === word.id} onSelect={onSelect} />
+                  <motion.div key={word.id} variants={itemVariants} layoutId={`card-${word.id}`}>
+                    <MoodBubble word={word} isSelected={selectedId === word.id} onSelect={onSelect} />
+                  </motion.div>
                 ))}
               </div>
-            </section>
+            </motion.section>
           )}
 
           {/* Mild Section */}
           {mildMoods.length > 0 && (
-            <section>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 px-1">Mild</h3>
+            <motion.section variants={containerVariants}>
+              <motion.h3 variants={itemVariants} className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 px-1">Mild</motion.h3>
               <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2">
                 {mildMoods.map(word => (
-                  <MoodBubble key={word.id} word={word} isSelected={selectedId === word.id} onSelect={onSelect} />
+                  <motion.div key={word.id} variants={itemVariants} layoutId={`card-${word.id}`}>
+                    <MoodBubble word={word} isSelected={selectedId === word.id} onSelect={onSelect} />
+                  </motion.div>
                 ))}
               </div>
-            </section>
+            </motion.section>
           )}
 
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
