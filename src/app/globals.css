@@ -1397,3 +1397,107 @@ body {
 /* Hide Next.js dev indicator */
 nextjs-portal { display: none !important; }
 
+/* ============================================================
+   Sign-In Page Animations
+   ============================================================ */
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slideRightIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateX(0px);
+  }
+}
+
+@keyframes testimonialIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px) scale(1);
+  }
+}
+
+.animate-element {
+  opacity: 0;
+  animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-right {
+  opacity: 0;
+  animation: slideRightIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-testimonial {
+  opacity: 0;
+  animation: testimonialIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Animation delays */
+.animate-delay-100  { animation-delay: 100ms; }
+.animate-delay-200  { animation-delay: 200ms; }
+.animate-delay-300  { animation-delay: 300ms; }
+.animate-delay-400  { animation-delay: 400ms; }
+.animate-delay-500  { animation-delay: 500ms; }
+.animate-delay-600  { animation-delay: 600ms; }
+.animate-delay-700  { animation-delay: 700ms; }
+.animate-delay-800  { animation-delay: 800ms; }
+.animate-delay-900  { animation-delay: 900ms; }
+.animate-delay-1000 { animation-delay: 1000ms; }
+.animate-delay-1200 { animation-delay: 1200ms; }
+.animate-delay-1400 { animation-delay: 1400ms; }
+
+/* Custom checkbox */
+.custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid hsl(var(--border));
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.custom-checkbox:checked {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+.custom-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 9px;
+  border: 2px solid hsl(var(--primary-foreground));
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+

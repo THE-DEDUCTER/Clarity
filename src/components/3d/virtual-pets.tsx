@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows, Environment, Float, Sparkles, OrbitControls } from "@react-three/drei";
+import { ContactShadows, Environment, Float, Sparkles, OrbitControls, useGLTF, useAnimations } from "@react-three/drei";
 import * as THREE from "three";
 import { 
   Heart, 
@@ -325,6 +325,56 @@ function PetAccessory({ type }: { type: "none" | "party_hat" | "shades" | "crown
 
   return null;
 }
+
+function AnimatedGLBDog({ 
+  action = "idle",
+  onInteract,
+  ...props 
+}: { 
+  action?: string;
+  onInteract?: () => void;
+  [key: string]: any;
+}) {
+  const group = useRef<THREE.Group>(null);
+  const { scene, animations } = useGLTF('/animated_dog_shiba_inu.glb');
+  const { actions } = useAnimations(animations, group);
+  
+  useEffect(() => {
+    scene.traverse((child: any) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+  }, [scene]);
+
+  useEffect(() => {
+    if (!actions || Object.keys(actions).length === 0) return;
+    
+    let animToPlay = Object.keys(actions)[0];
+    const animNames = Object.keys(actions);
+    const findAnim = (keywords: string[]) => animNames.find(n => keywords.some(k => n.toLowerCase().includes(k)));
+    
+    if (action === "sleep") animToPlay = findAnim(["sleep", "rest"]) || animToPlay;
+    else if (action === "play") animToPlay = findAnim(["play", "jump", "run"]) || animToPlay;
+    else if (action === "feed" || action === "drink") animToPlay = findAnim(["eat", "bite", "drink", "chew"]) || animToPlay;
+    else animToPlay = findAnim(["idle", "stand"]) || animToPlay;
+
+    if (animToPlay && actions[animToPlay]) {
+      actions[animToPlay].reset().fadeIn(0.2).play();
+      return () => {
+        actions[animToPlay]?.fadeOut(0.2);
+      };
+    }
+  }, [action, actions]);
+
+  return (
+    <group ref={group} {...props} onClick={onInteract} dispose={null}>
+      <primitive object={scene} />
+    </group>
+  );
+}
+useGLTF.preload('/animated_dog_shiba_inu.glb');
 
 function RealisticDog({ 
   primaryColor = "#d97706", 
@@ -1019,7 +1069,7 @@ const petDialogueOptions = [
   { label: "Cheer me up", prompt: "I need a little smile boost!" }
 ];
 
-export function VirtualPets() {
+export function VirtualPets({ fullPage = false }: { fullPage?: boolean }) {
   const [mounted, setMounted] = useState(false);
   const [activePet, setActivePet] = useState<"dog" | "cat">("dog");
   const [currentAction, setCurrentAction] = useState<"idle" | "feed" | "drink" | "play" | "pet" | "sleep" | "stretch" | "scratch">("idle");
@@ -1273,379 +1323,321 @@ export function VirtualPets() {
   };
 
   const bondTier = getBondTier(bondPoints);
+  const petName = activePet === "dog" ? "Buddy" : "Luna";
+
+  // Background gradient per environment
+  const envBg =
+    environmentTheme === "night"
+      ? "from-[#0f0c29] via-[#1a1040] to-[#24243e]"
+      : environmentTheme === "park"
+      ? "from-[#d4f5c4] via-[#b5e8d0] to-[#84c9d8]"
+      : "from-[#f5f0eb] via-[#ede8e3] to-[#ddd4c8]";
+
+  const textOnDark = environmentTheme === "night";
 
   return (
-    <div className="w-full rounded-[36px] overflow-hidden bg-gradient-to-br from-indigo-50/95 via-purple-50/80 to-pink-50/95 dark:from-indigo-950/50 dark:via-purple-950/40 dark:to-pink-950/50 border border-indigo-100/70 dark:border-indigo-900/50 shadow-xl transition-all duration-300 relative">
-      
-      {/* Top Header Bar */}
-      <div className="p-4 sm:p-6 flex flex-wrap items-center justify-between gap-3 border-b border-indigo-100/60 dark:border-indigo-900/40 bg-white/50 dark:bg-black/30 backdrop-blur-md">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-2xl bg-indigo-500 text-white shadow-md shadow-indigo-500/20">
-            <SparklesIcon className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-100">
-                {activePet === "dog" ? "Buddy (Realistic Dog)" : "Luna (Realistic Cat)"}
-              </h3>
-              <Badge className="bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-300 border-0 text-[10px] font-bold">
-                Level {bondTier.level}: {bondTier.name}
-              </Badge>
-            </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-              {statusMessage}
-            </p>
-          </div>
-        </div>
-
-        {/* Pet Choice Switcher (Dog vs Cat) & Sound */}
-        <div className="flex items-center gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={toggleSound}
-            className="rounded-xl h-8 w-8 p-0 border-indigo-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80"
-            title={isMuted ? "Unmute Sound" : "Mute Sound"}
-          >
-            {isMuted ? (
-              <VolumeX className="w-3.5 h-3.5 text-gray-400" />
-            ) : (
-              <Volume2 className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-            )}
-          </Button>
-
-          {/* High-Fidelity Pet Choice Toggle */}
-          <div className="flex items-center gap-1 p-1 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-indigo-100 dark:border-gray-700 shadow-sm">
-            <Button
-              size="sm"
-              variant={activePet === "dog" ? "default" : "ghost"}
-              onClick={() => {
-                setActivePet("dog");
-                speakPetVoice("Woof! Hi friend, Buddy is right here with you!");
-              }}
-              className="rounded-xl text-xs h-8 px-3 font-semibold transition-all"
-            >
-              🐕 Dog (Buddy)
-            </Button>
-            <Button
-              size="sm"
-              variant={activePet === "cat" ? "default" : "ghost"}
-              onClick={() => {
-                setActivePet("cat");
-                speakPetVoice("Purrr... Hello dear friend, Luna is here to comfort you.");
-              }}
-              className="rounded-xl text-xs h-8 px-3 font-semibold transition-all"
-            >
-              🐈 Cat (Luna)
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* 3D WebGL Canvas Viewport */}
-      <div className="w-full h-[360px] sm:h-[450px] relative">
+    <div
+      className={`w-full relative overflow-hidden bg-gradient-to-b ${envBg} transition-all duration-700 ${fullPage ? "" : "rounded-3xl"}`}
+      style={fullPage ? { height: "100dvh", minHeight: "100dvh" } : { minHeight: 560, height: "clamp(560px, 70vh, 820px)" }}
+    >
+      {/* ── Full-screen 3D Canvas ─────────────────────────── */}
+      <div className="absolute inset-0">
         {mounted && (
-          <Canvas 
-            camera={{ position: [0, 2.2, 5.0], fov: 42 }}
+          <Canvas
+            camera={{ position: [0, 1.6, 8.5], fov: 42 }}
             shadows
             gl={{ antialias: true, alpha: true }}
+            onCreated={({ camera }) => {
+              camera.lookAt(0, 0.3, 0);
+            }}
           >
-            <ambientLight intensity={environmentTheme === "night" ? 0.35 : 0.85} />
-            <directionalLight 
-              position={[8, 12, 6]} 
-              intensity={environmentTheme === "night" ? 0.7 : 1.8} 
-              castShadow 
+            {/* Lighting */}
+            <ambientLight intensity={environmentTheme === "night" ? 0.4 : 1.0} />
+            <directionalLight
+              position={[6, 10, 5]}
+              intensity={environmentTheme === "night" ? 0.8 : 2.2}
+              castShadow
               shadow-mapSize-width={2048}
               shadow-mapSize-height={2048}
               shadow-bias={-0.0001}
             />
-            <directionalLight position={[-8, 6, -4]} intensity={0.5} />
-            <pointLight position={[0, 3, 2]} intensity={environmentTheme === "night" ? 0.9 : 0.6} color={environmentTheme === "night" ? "#818cf8" : "#fef08a"} />
+            <directionalLight position={[-5, 4, -3]} intensity={0.45} />
+            <pointLight
+              position={[0, 3, 2]}
+              intensity={environmentTheme === "night" ? 1.2 : 0.7}
+              color={environmentTheme === "night" ? "#818cf8" : "#fef08a"}
+            />
+            {environmentTheme === "night" && (
+              <pointLight position={[-2, 2, -1]} intensity={0.6} color="#a78bfa" />
+            )}
 
-            <Environment preset={environmentTheme === "night" ? "night" : "sunset"} />
-            
-            <OrbitControls 
-              enableZoom={true}
-              maxDistance={7.5}
-              minDistance={2.8}
-              enablePan={false} 
-              maxPolarAngle={Math.PI / 2.15} 
-              minPolarAngle={Math.PI / 4.5}
+            {/* Skybox environment — no external HDR */}
+            <Environment background={false}>
+              <mesh>
+                <sphereGeometry args={[60, 24, 24]} />
+                <meshBasicMaterial
+                  color={
+                    environmentTheme === "night"
+                      ? "#070714"
+                      : environmentTheme === "park"
+                      ? "#a8d8ea"
+                      : "#e8ddd4"
+                  }
+                  side={THREE.BackSide}
+                />
+              </mesh>
+            </Environment>
+
+            {/* Orbit – restricted to a natural front-three-quarter view */}
+            <OrbitControls
+              enableZoom={false}
+              enablePan={false}
+              maxPolarAngle={Math.PI / 2.0}
+              minPolarAngle={Math.PI / 5}
+              minAzimuthAngle={-Math.PI / 4}
+              maxAzimuthAngle={Math.PI / 4}
               autoRotate={currentAction === "idle" && !isSpeaking}
-              autoRotateSpeed={0.35}
+              autoRotateSpeed={0.3}
+              target={[0, 0.4, 0]}
             />
 
             <RealisticEnvironmentPlatform theme={environmentTheme} />
 
-            <PetFeedingBowl 
-              mode={currentAction === "drink" ? "water" : "food"} 
-              active={currentAction === "feed" || currentAction === "drink"} 
+            <PetFeedingBowl
+              mode={currentAction === "drink" ? "water" : "food"}
+              active={currentAction === "feed" || currentAction === "drink"}
             />
-
-            <ToyBall position={[0.8, -0.5, 0.8]} isPlaying={currentAction === "play"} />
+            <ToyBall position={[0.9, -0.55, 0.8]} isPlaying={currentAction === "play"} />
 
             {hearts.map((h) => (
               <FloatingHeart key={h.id} position={h.position} index={h.id} />
             ))}
-
             {sleepZParticles.map((z) => (
               <SleepyZParticle key={z.id} position={z.position} index={z.id} />
             ))}
 
             {activePet === "dog" ? (
-              <Float speed={1.5} rotationIntensity={0.12} floatIntensity={0.25} floatingRange={[-0.04, 0.04]}>
-                <RealisticDog 
-                  primaryColor={dogColor}
+              <Float speed={1.2} rotationIntensity={0.06} floatIntensity={0.15} floatingRange={[-0.02, 0.02]}>
+                <AnimatedGLBDog
                   action={currentAction}
-                  accessory={accessory}
-                  isSpeaking={isSpeaking}
-                  furBumpMap={furBumpTexture}
-                  position={[0, -0.45, 0]} 
+                  position={[0, -0.55, 0]}
                   onInteract={triggerPetCuddle}
+                  scale={[0.032, 0.032, 0.032]}
                 />
               </Float>
             ) : (
-              <Float speed={1.8} rotationIntensity={0.14} floatIntensity={0.28} floatingRange={[-0.04, 0.04]}>
-                <RealisticCat 
+              <Float speed={1.4} rotationIntensity={0.08} floatIntensity={0.18} floatingRange={[-0.02, 0.02]}>
+                <RealisticCat
                   primaryColor={catColor}
                   action={currentAction}
                   accessory={accessory}
                   isSpeaking={isSpeaking}
                   furBumpMap={furBumpTexture}
-                  position={[0, -0.45, 0]} 
+                  position={[0, -0.45, 0]}
                   onInteract={triggerPetCuddle}
                 />
               </Float>
             )}
 
-            <ContactShadows position={[0, -0.74, 0]} opacity={0.55} scale={8} blur={2.4} far={3} />
-            
-            <Sparkles 
-              count={currentAction === "pet" ? 90 : 35} 
-              scale={5.5} 
-              size={currentAction === "pet" ? 3.5 : 2} 
-              speed={0.6} 
-              opacity={0.4} 
-              color={environmentTheme === "night" ? "#a78bfa" : "#fbbf24"} 
+            <ContactShadows position={[0, -0.78, 0]} opacity={0.6} scale={10} blur={2.8} far={4} />
+
+            <Sparkles
+              count={currentAction === "pet" ? 80 : 20}
+              scale={5}
+              size={currentAction === "pet" ? 4 : 1.5}
+              speed={0.5}
+              opacity={0.35}
+              color={environmentTheme === "night" ? "#a78bfa" : "#fde68a"}
             />
           </Canvas>
         )}
+      </div>
 
-        {petSpeechText && (
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 w-[90%] sm:max-w-md bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl p-3 rounded-2xl border border-indigo-200/60 dark:border-indigo-800 shadow-xl animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-start gap-2.5">
-              <div className="p-1.5 rounded-xl bg-indigo-500 text-white flex-shrink-0 mt-0.5">
-                <MessageSquare className="w-3.5 h-3.5" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">
-                    {activePet === "dog" ? "Buddy" : "Luna"} {isSpeaking && "(Speaking...)"}
-                  </span>
-                  <button 
-                    onClick={() => setPetSpeechText(null)}
-                    className="text-[10px] text-gray-400 hover:text-gray-600"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <p className="text-xs text-gray-700 dark:text-gray-200 font-medium leading-relaxed mt-0.5">
-                  "{petSpeechText}"
-                </p>
-              </div>
-            </div>
+      {/* ── TOP BAR ────────────────────────────────────────── */}
+      <div className="absolute top-0 left-0 right-0 z-20 flex items-start justify-between p-4 sm:p-5 pointer-events-none">
+        {/* Left: bond level chip */}
+        <div className="pointer-events-auto flex items-center gap-2.5 bg-black/30 backdrop-blur-xl rounded-2xl px-3.5 py-2.5 border border-white/10 shadow-lg">
+          <div className="w-8 h-8 rounded-xl bg-indigo-500 flex items-center justify-center text-base shadow-inner">
+            {activePet === "dog" ? "🐕" : "🐈"}
           </div>
-        )}
-
-        <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 z-10 w-[96%] sm:w-auto flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 bg-white/85 dark:bg-gray-900/85 backdrop-blur-xl p-1.5 sm:p-2 rounded-2xl border border-white/60 dark:border-gray-800 shadow-xl">
-          <Button
-            size="sm"
-            onClick={triggerFeedMeal}
-            disabled={currentAction !== "idle"}
-            className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold text-xs h-8 sm:h-9 px-3 shadow-sm transition-transform active:scale-95"
-          >
-            <Utensils className="w-3.5 h-3.5 mr-1.5" />
-            Feed Meal
-          </Button>
-
-          <Button
-            size="sm"
-            onClick={triggerDrinkWater}
-            disabled={currentAction !== "idle"}
-            className="rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-semibold text-xs h-8 sm:h-9 px-3 shadow-sm transition-transform active:scale-95"
-          >
-            <Droplets className="w-3.5 h-3.5 mr-1.5" />
-            Drink Water
-          </Button>
-
-          <Button
-            size="sm"
-            onClick={triggerStretchYawn}
-            disabled={currentAction !== "idle"}
-            className="rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold text-xs h-8 sm:h-9 px-3 shadow-sm transition-transform active:scale-95"
-          >
-            <Wind className="w-3.5 h-3.5 mr-1.5" />
-            Stretch & Yawn
-          </Button>
-
-          <Button
-            size="sm"
-            onClick={triggerPetCuddle}
-            disabled={currentAction !== "idle"}
-            className="rounded-xl bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-semibold text-xs h-8 sm:h-9 px-3 shadow-sm transition-transform active:scale-95"
-          >
-            <Heart className="w-3.5 h-3.5 mr-1.5" />
-            Pet & Cuddle
-          </Button>
-
-          <Button
-            size="sm"
-            onClick={triggerSleepNap}
-            disabled={currentAction !== "idle"}
-            className="rounded-xl bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 text-white font-semibold text-xs h-8 sm:h-9 px-3 shadow-sm transition-transform active:scale-95"
-          >
-            <Moon className="w-3.5 h-3.5 mr-1.5" />
-            Rest / Nap
-          </Button>
+          <div>
+            <p className="text-white text-sm font-bold leading-none">{petName}</p>
+            <p className={`text-[11px] font-semibold leading-none mt-0.5 ${bondTier.color.replace("text-", "text-")}`}>
+              Level {bondTier.level} · {bondTier.name}
+            </p>
+          </div>
         </div>
 
-        <div className="absolute top-3 right-3 hidden sm:flex items-center gap-1.5">
-          <div className="flex items-center gap-1 bg-white/70 dark:bg-black/50 backdrop-blur-md p-1 rounded-xl border border-white/40">
+        {/* Right: env switcher + sound + fullscreen */}
+        <div className="pointer-events-auto flex items-center gap-2">
+          {/* Env switcher */}
+          <div className="flex items-center gap-1 bg-black/30 backdrop-blur-xl rounded-xl p-1 border border-white/10 shadow-lg">
+            {(["Park", "Night", "Room"] as const).map((env) => {
+              const key = env.toLowerCase() as "park" | "night" | "room";
+              const active = environmentTheme === key;
+              return (
+                <button
+                  key={key}
+                  onClick={() => setEnvironmentTheme(key)}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all duration-200 ${
+                    active
+                      ? "bg-white/20 text-white shadow-sm"
+                      : "text-white/50 hover:text-white/80"
+                  }`}
+                >
+                  {env}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Sound */}
+          <button
+            onClick={toggleSound}
+            className="w-8 h-8 rounded-xl bg-black/30 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all"
+            title={isMuted ? "Unmute" : "Mute"}
+          >
+            {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+          </button>
+
+          {/* Pet toggle */}
+          <div className="flex items-center gap-1 bg-black/30 backdrop-blur-xl rounded-xl p-1 border border-white/10 shadow-lg">
             <button
-              onClick={() => setEnvironmentTheme("park")}
-              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${
-                environmentTheme === "park" ? "bg-emerald-500 text-white shadow-xs" : "text-gray-600 dark:text-gray-300"
-              }`}
+              onClick={() => { setActivePet("dog"); speakPetVoice("Woof! Buddy is here!"); }}
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all duration-200 ${activePet === "dog" ? "bg-white/20 text-white" : "text-white/50 hover:text-white/80"}`}
             >
-              Park
+              🐕 Buddy
             </button>
             <button
-              onClick={() => setEnvironmentTheme("night")}
-              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${
-                environmentTheme === "night" ? "bg-indigo-600 text-white shadow-xs" : "text-gray-600 dark:text-gray-300"
-              }`}
+              onClick={() => { setActivePet("cat"); speakPetVoice("Purrr… Luna is here."); }}
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all duration-200 ${activePet === "cat" ? "bg-white/20 text-white" : "text-white/50 hover:text-white/80"}`}
             >
-              Night
-            </button>
-            <button
-              onClick={() => setEnvironmentTheme("room")}
-              className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all ${
-                environmentTheme === "room" ? "bg-pink-500 text-white shadow-xs" : "text-gray-600 dark:text-gray-300"
-              }`}
-            >
-              Room
+              🐈 Luna
             </button>
           </div>
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 py-3 bg-white/40 dark:bg-black/20 border-t border-indigo-100/40 dark:border-indigo-900/30">
-        <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
-          <MessageSquare className="w-3.5 h-3.5 text-indigo-500" />
-          <span>Talk with {activePet === "dog" ? "Buddy" : "Luna"}:</span>
+      {/* ── STATS PANEL (top-right float) ──────────────────── */}
+      <div className="absolute top-20 right-4 sm:right-5 z-20 w-40 space-y-2 pointer-events-none">
+        {[
+          { label: "Hunger", value: hunger, color: "from-orange-400 to-amber-300" },
+          { label: "Energy", value: energy, color: "from-yellow-400 to-lime-300" },
+          { label: "Happiness", value: happiness, color: "from-violet-400 to-fuchsia-300" },
+          { label: "Thirst", value: thirst, color: "from-sky-400 to-cyan-300" },
+        ].map((s) => (
+          <div key={s.label} className="bg-black/30 backdrop-blur-xl rounded-xl px-3 py-2 border border-white/10">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] text-white/70 font-semibold">{s.label}</span>
+              <span className="text-[10px] text-white/90 font-bold">{s.value}%</span>
+            </div>
+            <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div
+                className={`h-full rounded-full bg-gradient-to-r ${s.color} transition-all duration-500`}
+                style={{ width: `${s.value}%` }}
+              />
+            </div>
+          </div>
+        ))}
+
+        {/* Bond XP */}
+        <div className="bg-black/30 backdrop-blur-xl rounded-xl px-3 py-2 border border-white/10">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-[10px] text-white/70 font-semibold flex items-center gap-1">
+              <Trophy className="w-3 h-3 text-amber-400" /> Bond XP
+            </span>
+            <span className="text-[10px] text-white/90 font-bold">{bondPoints}</span>
+          </div>
+          <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 transition-all duration-500"
+              style={{ width: `${Math.min(100, (bondPoints % 100))}%` }}
+            />
+          </div>
         </div>
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+      </div>
+
+      {/* ── SPEECH BUBBLE HUD ──────────────────────────────── */}
+      {petSpeechText && (
+        <div className="absolute top-20 left-4 sm:left-5 z-20 max-w-[200px] sm:max-w-xs animate-in fade-in slide-in-from-left-2 duration-300">
+          <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl rounded-bl-sm px-4 py-3 shadow-2xl border border-white/60">
+            <p className="text-xs font-semibold text-indigo-700 mb-0.5 flex items-center gap-1">
+              {petName} {isSpeaking && <span className="inline-block w-1 h-1 rounded-full bg-indigo-500 animate-ping" />}
+            </p>
+            <p className="text-[11px] text-gray-700 leading-relaxed">{petSpeechText}</p>
+            <button
+              onClick={() => setPetSpeechText(null)}
+              className="absolute top-2 right-2 text-gray-300 hover:text-gray-500 text-[10px]"
+            >
+              ✕
+            </button>
+          </div>
+          {/* bubble tail */}
+          <div className="ml-4 w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-l-transparent border-r-transparent border-t-white/90" />
+        </div>
+      )}
+
+      {/* ── LEFT ACTION MENU ───────────────────────────────── */}
+      <div className="absolute left-4 sm:left-5 bottom-24 z-20 flex flex-col gap-2 pointer-events-auto">
+        {[
+          { label: "Pet & Cuddle", icon: Heart, action: triggerPetCuddle, key: "pet" },
+          { label: "Let's Talk", icon: MessageSquare, action: () => handleDialoguePrompt("How are you doing today?"), key: "talk" },
+          { label: "Play Together", icon: Activity, action: () => { setCurrentAction("play"); setTimeout(() => setCurrentAction("idle"), 4000); }, key: "play" },
+          { label: "Give Treat", icon: Utensils, action: triggerFeedMeal, key: "feed" },
+          { label: "Training", icon: Zap, action: triggerStretchYawn, key: "stretch" },
+        ].map((item) => {
+          const Icon = item.icon;
+          const isActive = currentAction === item.key;
+          return (
+            <button
+              key={item.label}
+              onClick={item.action}
+              disabled={currentAction !== "idle"}
+              className={`flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-sm font-semibold backdrop-blur-xl transition-all duration-200 active:scale-95 shadow-lg border ${
+                isActive
+                  ? "bg-indigo-500/90 text-white border-indigo-400/50"
+                  : currentAction !== "idle"
+                  ? "bg-black/20 text-white/30 border-white/5 cursor-not-allowed"
+                  : "bg-black/30 text-white border-white/10 hover:bg-black/50 hover:border-white/20"
+              }`}
+            >
+              <Icon className="w-4 h-4 flex-shrink-0" />
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ── BOTTOM DIALOGUE BAR ────────────────────────────── */}
+      <div className="absolute bottom-0 left-0 right-0 z-20 px-4 sm:px-5 pb-4 pt-3 bg-gradient-to-t from-black/40 to-transparent">
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
           {petDialogueOptions.map((opt, idx) => (
             <button
               key={idx}
               onClick={() => handleDialoguePrompt(opt.prompt)}
-              className="whitespace-nowrap rounded-xl bg-white dark:bg-gray-800 border border-indigo-100 dark:border-gray-700 px-3 py-1.5 text-xs text-gray-700 dark:text-gray-300 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-950/50 hover:border-indigo-300 transition-all active:scale-95 shadow-xs"
+              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-white/15 backdrop-blur-lg text-white/80 text-[11px] font-medium border border-white/10 hover:bg-white/25 hover:text-white transition-all active:scale-95 whitespace-nowrap"
             >
-              💬 {opt.label}
+              <MessageSquare className="w-3 h-3" />
+              {opt.label}
             </button>
           ))}
-        </div>
-      </div>
 
-      <div className="p-4 sm:p-6 bg-white/60 dark:bg-black/30 backdrop-blur-md border-t border-indigo-100/50 dark:border-indigo-900/30 space-y-4">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-center">
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs font-semibold text-gray-700 dark:text-gray-300">
-              <span className="flex items-center gap-1">
-                <Heart className="w-3.5 h-3.5 text-rose-500" />
-                Happiness
-              </span>
-              <span>{happiness}%</span>
-            </div>
-            <Progress value={happiness} className="h-2 bg-rose-100 dark:bg-rose-950/40" />
-          </div>
+          {/* Status message pill */}
+          {currentAction !== "idle" && (
+            <span className="flex-shrink-0 px-3 py-2 rounded-2xl bg-indigo-500/40 backdrop-blur-lg text-indigo-100 text-[11px] font-medium border border-indigo-400/20 animate-pulse">
+              {statusMessage}
+            </span>
+          )}
 
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs font-semibold text-gray-700 dark:text-gray-300">
-              <span className="flex items-center gap-1">
-                <Zap className="w-3.5 h-3.5 text-amber-500" />
-                Energy
-              </span>
-              <span>{energy}%</span>
-            </div>
-            <Progress value={energy} className="h-2 bg-amber-100 dark:bg-amber-950/40" />
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs font-semibold text-gray-700 dark:text-gray-300">
-              <span className="flex items-center gap-1">
-                <Utensils className="w-3.5 h-3.5 text-emerald-500" />
-                Nutrition
-              </span>
-              <span>{hunger}%</span>
-            </div>
-            <Progress value={hunger} className="h-2 bg-emerald-100 dark:bg-emerald-950/40" />
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs font-semibold text-gray-700 dark:text-gray-300">
-              <span className="flex items-center gap-1">
-                <Trophy className="w-3.5 h-3.5 text-indigo-500" />
-                Bond XP
-              </span>
-              <span>{bondPoints} XP</span>
-            </div>
-            <Progress value={Math.min(100, (bondPoints % 100))} className="h-2 bg-indigo-100 dark:bg-indigo-950/40" />
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-indigo-100/40 dark:border-indigo-900/30 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-gray-600 dark:text-gray-400">Dress Up:</span>
-            <div className="flex items-center gap-1 bg-white/70 dark:bg-gray-800/70 p-1 rounded-xl border border-indigo-100/50">
-              {(["none", "party_hat", "shades", "crown", "bandana"] as const).map((acc) => (
-                <button
-                  key={acc}
-                  onClick={() => setAccessory(acc)}
-                  className={`px-2 py-0.5 rounded-lg text-[11px] font-medium transition-all ${
-                    accessory === acc ? "bg-indigo-500 text-white font-bold" : "text-gray-600 dark:text-gray-400"
-                  }`}
-                >
-                  {acc === "none" ? "None" : acc.replace("_", " ")}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-gray-600 dark:text-gray-400">Fur Coat:</span>
-            <div className="flex items-center gap-1.5">
-              {[
-                { color: "#d97706", name: "Golden" },
-                { color: "#854d0e", name: "Chocolate" },
-                { color: "#475569", name: "Slate Grey" },
-                { color: "#f87171", name: "Ginger Red" },
-                { color: "#38bdf8", name: "Frost Blue" },
-                { color: "#a855f7", name: "Lavender" },
-              ].map((swatch) => (
-                <button
-                  key={swatch.color}
-                  onClick={() => {
-                    if (activePet === "cat") setCatColor(swatch.color);
-                    else setDogColor(swatch.color);
-                  }}
-                  className="w-5 h-5 rounded-full border-2 border-white dark:border-gray-800 shadow-sm transition-transform hover:scale-125 focus:scale-125"
-                  style={{ backgroundColor: swatch.color }}
-                  title={swatch.name}
-                />
-              ))}
-            </div>
-          </div>
+          {/* Rest nap button inline */}
+          <button
+            onClick={triggerSleepNap}
+            disabled={currentAction !== "idle"}
+            className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-white/15 backdrop-blur-lg text-white/80 text-[11px] font-medium border border-white/10 hover:bg-white/25 hover:text-white transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+          >
+            <Moon className="w-3 h-3" />
+            Rest / Nap
+          </button>
         </div>
       </div>
     </div>

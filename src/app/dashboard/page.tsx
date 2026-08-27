@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowUpRight, Bot, PenLine, Users2, Headphones, BookOpen, Palette, Activity, Brain, Target, Gamepad2, Phone, Sparkles } from "lucide-react";
 import Link from "next/link";
 import MoodTracker from "@/components/mood-tracker";
-import { VirtualPets } from "@/components/3d/virtual-pets";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -117,11 +116,6 @@ export default function Dashboard() {
         </div>
         {/* We reuse the existing MoodTracker but it will automatically inherit the cleaner aesthetic */}
         <MoodTracker variant="inline" />
-      </div>
-
-      {/* Virtual Companions (3D) */}
-      <div className="px-2 pt-2">
-        <VirtualPets />
       </div>
 
       {/* Bento Grid Features */}
