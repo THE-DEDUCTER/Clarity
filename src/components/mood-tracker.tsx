@@ -148,17 +148,11 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
       exit="exit"
       className="flex flex-col items-center w-full py-4 sm:py-8 bg-black dark:bg-black rounded-[40px] shadow-2xl px-4 overflow-hidden border border-gray-800 relative"
     >
-      <div className="flex items-center justify-between w-full px-4 mb-8">
+      <div className="flex items-center justify-center w-full px-4 mb-8">
         <span className="text-xs uppercase tracking-widest text-gray-400 font-semibold flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
           Interactive Mood Meter
         </span>
-        <Link
-          href="/check-in"
-          className="text-xs px-3 py-1 rounded-full bg-white/10 text-gray-300 hover:text-white hover:bg-white/20 transition-colors flex items-center gap-1"
-        >
-          <Maximize2 className="w-3 h-3" /> Full Screen
-        </Link>
       </div>
 
       <motion.h3
