@@ -3,9 +3,9 @@
 import React, { useState, useMemo } from "react";
 import { X, Search } from "lucide-react";
 import { Quadrant, MOOD_DATA } from "@/lib/mood-data";
-import { MoodBubble } from "./MoodBubble";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { arc, pie } from "d3-shape";
 
 interface MoodGridProps {
   initialQuadrant: Quadrant;
@@ -14,32 +14,11 @@ interface MoodGridProps {
   onBack: () => void;
 }
 
-const QUADRANT_THEMES: Record<Quadrant, { title: string; subtitle: string; bg: string }> = {
-  "high-pleasant": { title: "High Energy, Pleasant", subtitle: "Joyful, Excited, Energized", bg: "bg-[#FFC837]/5" },
-  "high-unpleasant": { title: "High Energy, Unpleasant", subtitle: "Angry, Anxious, Frustrated", bg: "bg-[#FF3B4E]/5" },
-  "low-unpleasant": { title: "Low Energy, Unpleasant", subtitle: "Sad, Exhausted, Hopeless", bg: "bg-[#3B82F6]/5" },
-  "low-pleasant": { title: "Low Energy, Pleasant", subtitle: "Calm, Relaxed, Serene", bg: "bg-[#10B981]/5" },
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.04,
-      delayChildren: 0.05
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 15, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    scale: 1,
-    transition: { type: "spring", stiffness: 350, damping: 25 }
-  }
+const QUADRANT_THEMES: Record<Quadrant, { title: string; subtitle: string; bg: string; fill: string; activeFill: string; text: string }> = {
+  "high-pleasant": { title: "High Energy, Pleasant", subtitle: "Joyful, Excited, Energized", bg: "bg-[#FFC837]/5", fill: "rgba(255, 200, 55, 0.15)", activeFill: "rgba(255, 200, 55, 0.6)", text: "text-[#FFC837]" },
+  "high-unpleasant": { title: "High Energy, Unpleasant", subtitle: "Angry, Anxious, Frustrated", bg: "bg-[#FF3B4E]/5", fill: "rgba(255, 59, 78, 0.15)", activeFill: "rgba(255, 59, 78, 0.6)", text: "text-[#FF3B4E]" },
+  "low-unpleasant": { title: "Low Energy, Unpleasant", subtitle: "Sad, Exhausted, Hopeless", bg: "bg-[#3B82F6]/5", fill: "rgba(59, 130, 246, 0.15)", activeFill: "rgba(59, 130, 246, 0.6)", text: "text-[#3B82F6]" },
+  "low-pleasant": { title: "Low Energy, Pleasant", subtitle: "Calm, Relaxed, Serene", bg: "bg-[#10B981]/5", fill: "rgba(16, 185, 129, 0.15)", activeFill: "rgba(16, 185, 129, 0.6)", text: "text-[#10B981]" },
 };
 
 export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: MoodGridProps) {
@@ -47,34 +26,46 @@ export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: Mood
   const theme = QUADRANT_THEMES[initialQuadrant];
 
   const relevantMoods = useMemo(() => {
-    let moods = MOOD_DATA.filter(w => w.quadrant === initialQuadrant);
-    if (searchQuery.trim() !== "") {
-      const q = searchQuery.toLowerCase();
-      moods = moods.filter(w => w.label.toLowerCase().includes(q));
-    }
-    return moods.sort((a, b) => a.label.localeCompare(b.label));
-  }, [initialQuadrant, searchQuery]);
+    return MOOD_DATA.filter(w => w.quadrant === initialQuadrant).sort((a, b) => a.label.localeCompare(b.label));
+  }, [initialQuadrant]);
 
   const extremeMoods = relevantMoods.filter(w => w.intensity >= 4);
   const moderateMoods = relevantMoods.filter(w => w.intensity === 3);
   const mildMoods = relevantMoods.filter(w => w.intensity <= 2);
 
+  // D3 Pie Generator (evenly distributes items in a full circle)
+  const pieGenerator = pie<any>().value(1).sort(null);
+
+  const R1 = 80;
+  const R2 = 160;
+  const R3 = 240;
+  const R4 = 320;
+
+  // Generate Arc Data
+  const extremeArcs = pieGenerator(extremeMoods);
+  const extremeArcGen = arc<any>().innerRadius(R1).outerRadius(R2).padAngle(0.03).cornerRadius(6);
+
+  const moderateArcs = pieGenerator(moderateMoods);
+  const moderateArcGen = arc<any>().innerRadius(R2 + 8).outerRadius(R3).padAngle(0.02).cornerRadius(4);
+
+  const mildArcs = pieGenerator(mildMoods);
+  const mildArcGen = arc<any>().innerRadius(R3 + 8).outerRadius(R4).padAngle(0.01).cornerRadius(3);
+
+  const allArcsData = [
+    ...extremeArcs.map(d => ({ ...d, arcGen: extremeArcGen, isExtreme: true })),
+    ...moderateArcs.map(d => ({ ...d, arcGen: moderateArcGen, isExtreme: false })),
+    ...mildArcs.map(d => ({ ...d, arcGen: mildArcGen, isExtreme: false }))
+  ];
+
   return (
     <div className={cn("relative w-full h-full flex flex-col overflow-hidden bg-black")}>
       
-      {/* Ambient Breathing Background Gradient */}
+      {/* Ambient Breathing Background */}
       <motion.div 
         className={cn("absolute inset-0 opacity-40 mix-blend-screen pointer-events-none", theme.bg)}
         initial={{ opacity: 0, scale: 1.1 }}
-        animate={{ 
-          opacity: [0.2, 0.4, 0.2],
-          scale: [1, 1.05, 1],
-        }}
-        transition={{ 
-          duration: 8, 
-          repeat: Infinity, 
-          ease: "easeInOut" 
-        }}
+        animate={{ opacity: [0.2, 0.4, 0.2], scale: [1, 1.05, 1] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         style={{ filter: "blur(100px)" }}
       />
 
@@ -87,7 +78,6 @@ export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: Mood
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 16px)" }}
       >
         <div className="flex flex-col gap-4 max-w-4xl mx-auto">
-          {/* Top Bar */}
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold text-white tracking-tight">{theme.title}</h2>
@@ -103,7 +93,6 @@ export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: Mood
             </button>
           </div>
 
-          {/* Search Bar */}
           <div className="relative">
             <Search className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
@@ -117,76 +106,100 @@ export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: Mood
         </div>
       </motion.div>
 
-      {/* Fluid Capsule Cloud List */}
-      <motion.div 
-        className="flex-1 overflow-y-auto overscroll-contain no-scrollbar p-5 pb-32 z-10"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className="max-w-4xl mx-auto flex flex-col items-center gap-10">
+      {/* Emotion Wheel Container */}
+      <div className="flex-1 w-full h-full relative overflow-y-auto no-scrollbar flex items-center justify-center p-5 z-10">
+        
+        {/* We use a fixed aspect ratio container to hold both SVG and HTML labels perfectly aligned */}
+        <div className="relative w-full max-w-[700px] aspect-square flex items-center justify-center min-h-[700px]">
           
-          <AnimatePresence>
-            {relevantMoods.length === 0 && (
-              <motion.div variants={itemVariants} className="text-center py-20 text-white/40 w-full">
-                No moods found matching "{searchQuery}"
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Core Glow */}
+          <div className={cn("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full blur-[40px] pointer-events-none", theme.bg)} />
 
-          {/* Extreme Section */}
-          {extremeMoods.length > 0 && (
-            <motion.section variants={containerVariants} className="w-full">
-              <motion.h3 variants={itemVariants} className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 text-center">Extreme</motion.h3>
-              {/* Magic Flex-Wrap Layout */}
-              <div className="flex flex-wrap justify-center gap-3">
-                <AnimatePresence>
-                  {extremeMoods.map(word => (
-                    <motion.div key={word.id} variants={itemVariants} layout layoutId={`capsule-${word.id}`}>
-                      <MoodBubble word={word} isSelected={selectedId === word.id} onSelect={onSelect} />
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </motion.section>
-          )}
+          {/* SVG Arcs */}
+          <svg viewBox="-350 -350 700 700" className="absolute inset-0 w-full h-full overflow-visible">
+            {allArcsData.map((d, i) => {
+              const word = d.data;
+              const isSelected = selectedId === word.id;
+              const pathString = d.arcGen(d as any) || "";
+              
+              const isMatch = searchQuery === "" || word.label.toLowerCase().includes(searchQuery.toLowerCase());
+              const opacityState = isMatch ? 1 : 0.05;
 
-          {/* Moderate Section */}
-          {moderateMoods.length > 0 && (
-            <motion.section variants={containerVariants} className="w-full">
-              <motion.h3 variants={itemVariants} className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 text-center mt-6">Moderate</motion.h3>
-              {/* Magic Flex-Wrap Layout */}
-              <div className="flex flex-wrap justify-center gap-2.5">
-                <AnimatePresence>
-                  {moderateMoods.map(word => (
-                    <motion.div key={word.id} variants={itemVariants} layout layoutId={`capsule-${word.id}`}>
-                      <MoodBubble word={word} isSelected={selectedId === word.id} onSelect={onSelect} />
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </motion.section>
-          )}
+              return (
+                <motion.path
+                  key={`path-${word.id}`}
+                  d={pathString}
+                  fill={isSelected ? theme.activeFill : theme.fill}
+                  stroke="rgba(255,255,255,0.2)"
+                  strokeWidth={1}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ 
+                    opacity: opacityState,
+                    scale: 1,
+                  }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    filter: "brightness(1.5)",
+                    stroke: "rgba(255,255,255,0.8)",
+                    strokeWidth: 2,
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => onSelect(word.id)}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20,
+                    opacity: { duration: 0.4, delay: i * 0.02 },
+                    scale: { type: "spring", delay: i * 0.02 }
+                  }}
+                  className="cursor-pointer transition-colors duration-300 drop-shadow-2xl"
+                  style={{ transformOrigin: "0 0" }} // Center of viewBox
+                />
+              );
+            })}
+          </svg>
 
-          {/* Mild Section */}
-          {mildMoods.length > 0 && (
-            <motion.section variants={containerVariants} className="w-full">
-              <motion.h3 variants={itemVariants} className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4 text-center mt-6">Mild</motion.h3>
-              {/* Magic Flex-Wrap Layout */}
-              <div className="flex flex-wrap justify-center gap-2">
-                <AnimatePresence>
-                  {mildMoods.map(word => (
-                    <motion.div key={word.id} variants={itemVariants} layout layoutId={`capsule-${word.id}`}>
-                      <MoodBubble word={word} isSelected={selectedId === word.id} onSelect={onSelect} />
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </motion.section>
-          )}
+          {/* HTML Text Labels overlay */}
+          <div className="absolute inset-0 pointer-events-none">
+            {allArcsData.map((d, i) => {
+              const word = d.data;
+              const isSelected = selectedId === word.id;
+              const [cx, cy] = d.arcGen.centroid(d as any);
+              
+              const isMatch = searchQuery === "" || word.label.toLowerCase().includes(searchQuery.toLowerCase());
+              const opacityState = isMatch ? 1 : 0.05;
+
+              // The SVG is viewBox="-350 -350 700 700".
+              // This maps precisely to 50% + percentage based on max radius 350.
+              const xPercent = 50 + (cx / 350) * 50;
+              const yPercent = 50 + (cy / 350) * 50;
+
+              return (
+                <motion.div
+                  key={`label-${word.id}`}
+                  className="absolute flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2"
+                  style={{
+                    left: `${xPercent}%`,
+                    top: `${yPercent}%`,
+                  }}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: opacityState, scale: 1 }}
+                  transition={{ delay: (i * 0.02) + 0.1, duration: 0.3 }}
+                >
+                  <span className={cn(
+                    "font-semibold tracking-tight transition-colors duration-200 text-center drop-shadow-[0_2px_4px_rgba(0,0,0,1)]",
+                    isSelected ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" : "text-white/90",
+                    d.isExtreme ? "text-sm sm:text-base" : "text-[10px] sm:text-xs"
+                  )}>
+                    {word.label}
+                  </span>
+                </motion.div>
+              );
+            })}
+          </div>
 
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
