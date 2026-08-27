@@ -41,9 +41,9 @@ export function MoodGrid({ initialQuadrant = null, selectedId, onSelect, onBack 
   };
 
   const getPebbleOffset = (index: number) => {
-    if (index % 3 === 0) return 10;
-    if (index % 3 === 1) return -8;
-    return 4;
+    if (index % 3 === 0) return 6;
+    if (index % 3 === 1) return -4;
+    return 2;
   };
 
   // Calculate the required translation to center the selected quadrant
@@ -110,19 +110,22 @@ export function MoodGrid({ initialQuadrant = null, selectedId, onSelect, onBack 
           {QUADRANTS.map((quadrant, qIndex) => {
             const quadMoods = getMoodsForQuadrant(quadrant.key);
             
-            // Alignment based on quadrant position to make them pack towards the center
+            // Alignment based on quadrant position to pull them tightly towards the exact center crosshair
             const isLeft = qIndex === 0 || qIndex === 2;
             const isTop = qIndex === 0 || qIndex === 1;
+            
+            const alignY = isTop ? "content-end pb-1" : "content-start pt-1";
+            const alignX = isLeft ? "justify-end pr-1" : "justify-start pl-1";
 
             return (
               <div 
                 key={quadrant.key} 
                 className={cn(
-                  "flex flex-wrap content-center p-8 w-[900px] h-[900px]", 
-                  isLeft ? "justify-end" : "justify-start",
+                  "flex flex-wrap w-[900px] h-[900px]", 
+                  alignY, alignX
                 )}
               >
-                <div className="flex flex-wrap gap-2 justify-center max-w-[800px]">
+                <div className="flex flex-wrap gap-1.5 justify-center max-w-[650px]">
                   {quadMoods.map((word, i) => (
                     <div 
                       key={word.id} 
