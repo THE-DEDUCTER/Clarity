@@ -50,8 +50,8 @@ export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: Mood
     // Top half: Red (Left 3) + Yellow (Right 3)
     const topRowCount = Math.max(Math.ceil(red.length / 3), Math.ceil(yellow.length / 3));
     for (let i = 0; i < topRowCount; i++) {
-      const r = red.slice(i * 3, i * 3 + 3);
-      const y = yellow.slice(i * 3, i * 3 + 3);
+      const r: (MoodWord | null)[] = Array.from(red.slice(i * 3, i * 3 + 3));
+      const y: (MoodWord | null)[] = Array.from(yellow.slice(i * 3, i * 3 + 3));
       while (r.length < 3) r.push(null);
       while (y.length < 3) y.push(null);
       rows.push([...r, ...y]);
@@ -60,8 +60,8 @@ export function MoodGrid({ initialQuadrant, selectedId, onSelect, onBack }: Mood
     // Bottom half: Blue (Left 3) + Green (Right 3)
     const botRowCount = Math.max(Math.ceil(blue.length / 3), Math.ceil(green.length / 3));
     for (let i = 0; i < botRowCount; i++) {
-      const b = blue.slice(i * 3, i * 3 + 3);
-      const g = green.slice(i * 3, i * 3 + 3);
+      const b: (MoodWord | null)[] = Array.from(blue.slice(i * 3, i * 3 + 3));
+      const g: (MoodWord | null)[] = Array.from(green.slice(i * 3, i * 3 + 3));
       while (b.length < 3) b.push(null);
       while (g.length < 3) g.push(null);
       rows.push([...b, ...g]);

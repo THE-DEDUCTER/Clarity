@@ -8,7 +8,7 @@ import { Sparkles, MessageCircle, ArrowLeft, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Quadrant, MOOD_DATA } from "@/lib/mood-data";
-import { MoodGrid } from "./mood/MoodGrid";
+import { AppleWatchMoodField } from "./mood/AppleWatchMoodField";
 import { MoodConfirmSheet } from "./mood/MoodConfirmSheet";
 import Link from "next/link";
 
@@ -226,9 +226,9 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.92 }}
-            className="w-full h-[580px] sm:h-[680px] rounded-[36px] overflow-hidden relative border border-white/10 shadow-2xl bg-black"
+            className="fixed inset-0 z-[100] w-full h-full overflow-hidden bg-black"
           >
-            <MoodGrid
+            <AppleWatchMoodField
               initialQuadrant={activeQuadrant}
               selectedId={selectedWordId}
               onSelect={setSelectedWordId}
