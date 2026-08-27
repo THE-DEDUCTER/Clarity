@@ -226,7 +226,7 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.92 }}
-            className="fixed inset-0 z-[100] w-full h-full overflow-hidden bg-black"
+            className="fixed inset-0 z-[9999] w-full h-full overflow-hidden bg-black"
           >
             <MoodGrid
               initialQuadrant={activeQuadrant}
