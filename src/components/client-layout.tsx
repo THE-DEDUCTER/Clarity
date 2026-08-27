@@ -7,9 +7,11 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { BottomNav } from "@/components/bottom-nav";
 import { MobileNavDrawer } from "@/components/mobile-nav-drawer";
 import Link from "next/link";
+import { useSidebar } from "@/components/ui/sidebar";
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { setOpen, state } = useSidebar();
   const showSOSButton = pathname === "/dashboard" || pathname === "/crisis";
 
   // Routes that should not show the normal app layout
@@ -54,8 +56,24 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       </header>
       
       {/* Main Layout */}
-      <div className="flex h-screen w-full main-content">
-        <div className="hidden md:block">
+      <div className="flex h-screen w-full main-content relative">
+        {/* Transparent hover trigger area on the left edge */}
+        <div 
+          className="hidden md:block absolute left-0 top-0 bottom-0 w-4 z-50"
+          onMouseEnter={() => {
+            if (state === 'collapsed') {
+               setOpen(true);
+            }
+          }}
+        />
+        <div 
+          className="sidebar-overlay hidden md:block absolute left-0 top-0 bottom-0 z-40"
+          onMouseLeave={() => {
+             if (state === 'expanded') {
+                setOpen(false);
+             }
+          }}
+        >
           <AppSidebar />
         </div>
         <div className="flex flex-col flex-1">

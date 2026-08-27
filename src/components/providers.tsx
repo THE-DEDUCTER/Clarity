@@ -15,7 +15,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
-          <SidebarProvider style={style as React.CSSProperties}>
+          <SidebarProvider defaultOpen={false} style={style as React.CSSProperties}>
             {children}
           </SidebarProvider>
         </TooltipProvider>

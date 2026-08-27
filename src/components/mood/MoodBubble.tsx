@@ -75,15 +75,15 @@ export function MoodBubble({
     return hash % MORPH_SHAPES.length;
   }, [word.id]);
 
-  // Base size based on intensity (1-5)
+  // Base size based on intensity (1-5) - Tuned for smoother packing
   const baseSize = useMemo(() => {
     switch (word.intensity) {
-      case 5: return 180;
-      case 4: return 160;
-      case 3: return 145;
-      case 2: return 130;
-      case 1: return 120;
-      default: return 145;
+      case 5: return 175; // anchor
+      case 4: return 155;
+      case 3: return 135; // ordinary
+      case 2: return 120;
+      case 1: return 110; // peripheral
+      default: return 135;
     }
   }, [word.intensity]);
 
@@ -189,9 +189,9 @@ export function MoodBubble({
           scale: isSelected ? 1.05 : 1,
           fontWeight: isSelected ? 800 : isCenterFocal ? 750 : 650
         }}
-        className="relative z-10 text-center leading-[1.1] tracking-tight px-3 py-1 font-serif pointer-events-none drop-shadow-sm select-none"
+        className="relative z-10 text-center leading-[1.1] tracking-tight px-3 py-1 font-sans pointer-events-none drop-shadow-sm select-none"
         style={{
-          fontSize: Math.max(14, Math.round(baseSize * 0.155)),
+          fontSize: Math.max(14, Math.round(baseSize * 0.15)),
           color: colors.text.includes("white") ? "#FFFFFF" : "#0A0A0A"
         }}
       >

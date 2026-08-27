@@ -30,15 +30,13 @@ function generateHoneycombLayout(words: MoodWord[]): PositionedMoodWord[] {
 
   words.forEach(w => quadrants[w.quadrant].push(w));
 
-  // Base offsets for each quadrant center in 2D space
-  // We place the clusters far enough apart (~2400px between centers)
-  // so their ~1000px radii don't overlap with other quadrants,
-  // keeping them separate but together in order.
+  // We place the clusters closer together (~560px between centers)
+  // so they form one single cohesive cloud, rather than four isolated islands.
   const quadrantCenters: Record<Quadrant, { cx: number; cy: number }> = {
-    "high-pleasant": { cx: 1400, cy: -1400 },    // Top-Right = Yellow
-    "high-unpleasant": { cx: -1400, cy: -1400 }, // Top-Left = Red
-    "low-unpleasant": { cx: -1400, cy: 1400 },   // Bottom-Left = Blue
-    "low-pleasant": { cx: 1400, cy: 1400 }       // Bottom-Right = Green
+    "high-unpleasant": { cx: -280, cy: -280 }, // Top-Left  = Red
+    "high-pleasant":   { cx:  280, cy: -280 }, // Top-Right = Yellow
+    "low-unpleasant":  { cx: -280, cy:  280 }, // Bot-Left  = Blue
+    "low-pleasant":    { cx:  280, cy:  280 }, // Bot-Right = Green
   };
 
   const positioned: PositionedMoodWord[] = [];
@@ -57,17 +55,15 @@ function generateHoneycombLayout(words: MoodWord[]): PositionedMoodWord[] {
         return;
       }
 
-      // Spiral / Hex ring placement around quadrant center
       // Fermat's spiral (sunflower) provides organic packing
-      // c is the scaling factor for distance. Larger c = more spacing.
-      const c = 165;
+      // Tighter 'c' (105) because bubbles are scaled down
+      const c = 105;
       const radius = Math.sqrt(index) * c;
       const angle = index * 2.39996; // golden angle in radians
 
-      // Gently pull the clusters slightly toward the absolute center (0,0)
-      // to keep the edges touching nicely.
-      const pullX = q.includes("pleasant") && !q.includes("unpleasant") && q !== "low-unpleasant" ? -60 : 60;
-      const pullY = q.startsWith("high") ? 60 : -60;
+      // Pull each cluster gently toward (0,0) so the four clouds touch at the center.
+      const pullX = cx > 0 ? -25 : 25; 
+      const pullY = cy > 0 ? -25 : 25; 
 
       const posX = cx + Math.cos(angle) * radius + pullX;
       const posY = cy + Math.sin(angle) * radius + pullY;
@@ -123,12 +119,13 @@ export function AppleWatchMoodField({
   }, []);
 
   // Quadrant target center coordinates (inverse of layout centers to center them in viewport)
+  // To bring a quadrant to the viewport center we negate its layout position
   const quadrantTargetPositions = useMemo<Record<Quadrant, { x: number; y: number }>>(() => {
     return {
-      "high-pleasant": { x: -1400, y: 1400 },   // Move yellow to center
-      "high-unpleasant": { x: 1400, y: 1400 },  // Move red to center
-      "low-unpleasant": { x: 1400, y: -1400 },  // Move blue to center
-      "low-pleasant": { x: -1400, y: -1400 }    // Move green to center
+      "high-unpleasant": { x:  280, y:  280 }, // Red   top-left  → pan right+down
+      "high-pleasant":   { x: -280, y:  280 }, // Yellow top-right → pan left+down
+      "low-unpleasant":  { x:  280, y: -280 }, // Blue  bot-left  → pan right+up
+      "low-pleasant":    { x: -280, y: -280 }, // Green bot-right → pan left+up
     };
   }, []);
 
@@ -206,8 +203,8 @@ export function AppleWatchMoodField({
     e.preventDefault();
     const currentX = panX.get();
     const currentY = panY.get();
-    const newX = Math.max(-2800, Math.min(2800, currentX - e.deltaX * 0.8));
-    const newY = Math.max(-2800, Math.min(2800, currentY - e.deltaY * 0.8));
+    const newX = Math.max(-800, Math.min(800, currentX - e.deltaX * 0.8));
+    const newY = Math.max(-800, Math.min(800, currentY - e.deltaY * 0.8));
     panX.set(newX);
     panY.set(newY);
   }, [panX, panY]);
@@ -221,11 +218,12 @@ export function AppleWatchMoodField({
     ).slice(0, 8);
   }, [searchQuery]);
 
+  // Tab order matches circumplex quadrant order: Red, Yellow, Blue, Green
   const quadrantTabs: { id: Quadrant; label: string; color: string; activeColor: string }[] = [
-    { id: "high-pleasant", label: "High Pleasant", color: "text-[#FFD84D]", activeColor: "bg-[#FFD84D] text-black shadow-[0_0_20px_rgba(255,216,77,0.4)]" },
     { id: "high-unpleasant", label: "High Unpleasant", color: "text-[#FF4B5C]", activeColor: "bg-[#FF4B5C] text-white shadow-[0_0_20px_rgba(255,75,92,0.4)]" },
-    { id: "low-unpleasant", label: "Low Unpleasant", color: "text-[#5EB3FF]", activeColor: "bg-[#5EB3FF] text-white shadow-[0_0_20px_rgba(94,179,255,0.4)]" },
-    { id: "low-pleasant", label: "Low Pleasant", color: "text-[#4ADE9E]", activeColor: "bg-[#4ADE9E] text-black shadow-[0_0_20px_rgba(74,222,158,0.4)]" }
+    { id: "high-pleasant",   label: "High Pleasant",   color: "text-[#FFD84D]", activeColor: "bg-[#FFD84D] text-black shadow-[0_0_20px_rgba(255,216,77,0.4)]" },
+    { id: "low-unpleasant",  label: "Low Unpleasant",  color: "text-[#5EB3FF]", activeColor: "bg-[#5EB3FF] text-white shadow-[0_0_20px_rgba(94,179,255,0.4)]" },
+    { id: "low-pleasant",    label: "Low Pleasant",    color: "text-[#4ADE9E]", activeColor: "bg-[#4ADE9E] text-black shadow-[0_0_20px_rgba(74,222,158,0.4)]" },
   ];
 
   return (
@@ -286,10 +284,10 @@ export function AppleWatchMoodField({
       <motion.div
         drag
         dragConstraints={{
-          left: -2800,
-          right: 2800,
-          top: -2800,
-          bottom: 2800
+          left: -800,
+          right: 800,
+          top: -800,
+          bottom: 800
         }}
         dragElastic={0.18}
         dragMomentum={true}

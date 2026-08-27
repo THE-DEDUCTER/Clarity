@@ -2,8 +2,8 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowUpRight, Bot, PenLine, Users2, Headphones, BookOpen, Palette, Activity, Brain, Target, Gamepad2, Phone, Sparkles, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowUpRight, Bot, PenLine, Users2, Headphones, BookOpen, Palette, Brain, Target, Gamepad2, Phone, Sparkles, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import MoodTracker from "@/components/mood-tracker";
 import { PromptInput } from "@/components/ui/ai-chat-input";
@@ -139,7 +139,6 @@ export default function Dashboard() {
         <div className="mb-4">
           <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tracking-wide">Select Mood type</span>
         </div>
-        {/* We reuse the existing MoodTracker but it will automatically inherit the cleaner aesthetic */}
         <MoodTracker variant="inline" />
       </div>
 
