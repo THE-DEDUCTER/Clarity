@@ -1,70 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, MessageCircle, ArrowLeft, Maximize2 } from "lucide-react";
+import { Sparkles, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Quadrant, MOOD_DATA } from "@/lib/mood-data";
 import { MoodGrid } from "./mood/MoodGrid";
 import { MoodConfirmSheet } from "./mood/MoodConfirmSheet";
-import Link from "next/link";
-
-export const moodQuadrants = [
-  {
-    id: "red",
-    quadrantKey: "high-unpleasant" as Quadrant,
-    label: "High Energy\nUnpleasant",
-    color: "bg-[#FF3B30]",
-    textColor: "text-white",
-    valueMapping: 1,
-  },
-  {
-    id: "yellow",
-    quadrantKey: "high-pleasant" as Quadrant,
-    label: "High Energy\nPleasant",
-    color: "bg-[#FFCC00]",
-    textColor: "text-amber-950",
-    valueMapping: 5,
-  },
-  {
-    id: "blue",
-    quadrantKey: "low-unpleasant" as Quadrant,
-    label: "Low Energy\nUnpleasant",
-    color: "bg-[#007AFF]",
-    textColor: "text-white",
-    valueMapping: 2,
-  },
-  {
-    id: "green",
-    quadrantKey: "low-pleasant" as Quadrant,
-    label: "Low Energy\nPleasant",
-    color: "bg-[#34C759]",
-    textColor: "text-white",
-    valueMapping: 4,
-  }
-];
-
-const containerVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 25,
-      staggerChildren: 0.05
-    }
-  },
-  exit: {
-    opacity: 0,
-    scale: 0.9,
-    transition: { duration: 0.2 }
-  }
-};
 
 interface MoodTrackerProps {
   variant?: 'full' | 'compact' | 'inline';
@@ -72,19 +16,9 @@ interface MoodTrackerProps {
   onMoodLogged?: (mood: any) => void;
 }
 
-export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLogged }: MoodTrackerProps) {
-  // Map incoming string identifier to Quadrant type
-  const resolveQuadrant = (q: string | null): Quadrant | null => {
-    if (!q) return null;
-    if (q === "yellow" || q === "high-pleasant") return "high-pleasant";
-    if (q === "red" || q === "high-unpleasant") return "high-unpleasant";
-    if (q === "blue" || q === "low-unpleasant") return "low-unpleasant";
-    if (q === "green" || q === "low-pleasant") return "low-pleasant";
-    return null;
-  };
-
-  const [activeQuadrant, setActiveQuadrant] = useState<Quadrant | null>(resolveQuadrant(defaultQuadrant));
+export function MoodTracker({ variant = 'full', onMoodLogged }: MoodTrackerProps) {
   const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const selectedWord = selectedWordId ? MOOD_DATA.find(w => w.id === selectedWordId) || null : null;
 
@@ -108,8 +42,8 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
         title: "Mood logged successfully!",
         description: selectedWord ? `Saved "${selectedWord.label}" to your check-in history.` : "Your emotion has been saved.",
       });
-      setActiveQuadrant(null);
       setSelectedWordId(null);
+      setIsFullscreen(false);
       if (onMoodLogged) onMoodLogged({ value: selectedWord?.intensity, name: selectedWord?.label });
     },
     onError: () => {
@@ -117,8 +51,8 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
         title: "Saved locally",
         description: "Mood check-in recorded.",
       });
-      setActiveQuadrant(null);
       setSelectedWordId(null);
+      setIsFullscreen(false);
     },
   });
 
@@ -138,108 +72,57 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
     });
   };
 
-  // 1. Quadrant selection view
-  const renderQuadrants = () => (
-    <motion.div
-      key="quadrants"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      className="flex flex-col items-center w-full py-4 sm:py-8 bg-black dark:bg-black rounded-[40px] shadow-2xl px-4 overflow-hidden border border-gray-800 relative"
-    >
-      <div className="flex items-center justify-center w-full px-4 mb-8">
-        <span className="text-xs uppercase tracking-widest text-gray-400 font-semibold flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-          Interactive Mood Meter
-        </span>
-      </div>
-
-      <motion.h3
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="text-xl sm:text-2xl font-semibold mb-10 text-center text-white tracking-tight font-serif"
-      >
-        Tap the color that best describes<br />how you feel right now
-      </motion.h3>
-
-      <div className="relative w-64 h-64 sm:w-80 sm:h-80 mb-8">
-        {moodQuadrants.map((quad, index) => {
-          const isTop = index < 2;
-          const isLeft = index % 2 === 0;
-
-          return (
-            <motion.button
-              key={quad.id}
-              onClick={() => setActiveQuadrant(quad.quadrantKey)}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{
-                opacity: 0.9,
-                scale: 1,
-                y: [0, (index % 2 === 0 ? -5 : 5), 0],
-              }}
-              transition={{
-                opacity: { duration: 0.4, delay: index * 0.1 },
-                scale: { type: "spring", stiffness: 200, damping: 15, delay: index * 0.1 },
-                y: { repeat: Infinity, duration: 4, ease: "easeInOut", delay: index * 0.5 }
-              }}
-              whileHover={{ scale: 1.1, opacity: 1, zIndex: 10 }}
-              whileTap={{ scale: 0.95 }}
-              className={cn(
-                "absolute w-36 h-36 sm:w-44 sm:h-44 rounded-full flex items-center justify-center text-center p-4 cursor-pointer",
-                "shadow-[0_0_40px_rgba(0,0,0,0.3)]",
-                quad.color, quad.textColor
-              )}
-              style={{
-                top: isTop ? '0%' : 'auto',
-                bottom: !isTop ? '0%' : 'auto',
-                left: isLeft ? '0%' : 'auto',
-                right: !isLeft ? '0%' : 'auto',
-                transform: `translate(${isLeft ? '14%' : '-14%'}, ${isTop ? '14%' : '-14%'})`
-              }}
-            >
-              <span className="font-bold text-sm sm:text-base whitespace-pre-line leading-tight pointer-events-none">
-                {quad.label}
-              </span>
-            </motion.button>
-          );
-        })}
-      </div>
-    </motion.div>
-  );
-
   return (
-    <div className="w-full relative min-h-[420px]">
-      <AnimatePresence mode="wait">
-        {!activeQuadrant && renderQuadrants()}
+    <div className="w-full relative flex flex-col bg-black rounded-[32px] sm:rounded-[40px] shadow-2xl overflow-hidden border border-gray-800">
+      
+      {/* Header Area */}
+      <div className="flex items-center justify-between w-full px-6 py-5 z-20 bg-black/60 backdrop-blur-xl border-b border-white/5">
+        <span className="text-xs uppercase tracking-widest text-gray-400 font-semibold flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-yellow-400" />
+          Unified Mood Map
+        </span>
+        <button 
+          onClick={() => setIsFullscreen(true)}
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+          title="Expand Map"
+        >
+          <Maximize2 className="w-4 h-4 text-white/70" />
+        </button>
+      </div>
 
-        {activeQuadrant && (
+      {/* Inline Map View */}
+      <div className="relative w-full h-[500px] bg-black">
+        <MoodGrid
+          selectedId={selectedWordId}
+          onSelect={setSelectedWordId}
+        />
+      </div>
+
+      {/* Fullscreen Overlay */}
+      <AnimatePresence>
+        {isFullscreen && (
           <motion.div
-            key="mood-grid-field"
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.92 }}
-            className="fixed inset-0 z-[9999] w-full h-full overflow-hidden bg-black"
+            key="fullscreen-map"
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="fixed inset-0 z-[9999] w-full h-full bg-black overflow-hidden flex flex-col"
           >
             <MoodGrid
-              initialQuadrant={activeQuadrant}
               selectedId={selectedWordId}
               onSelect={setSelectedWordId}
-              onBack={() => {
-                setActiveQuadrant(null);
-                setSelectedWordId(null);
-              }}
-            />
-
-            <MoodConfirmSheet
-              word={selectedWord}
-              onConfirm={handleConfirmMood}
-              isLoading={addMoodMutation.isPending}
+              onBack={() => setIsFullscreen(false)}
             />
           </motion.div>
         )}
       </AnimatePresence>
+
+      <MoodConfirmSheet
+        word={selectedWord}
+        onConfirm={handleConfirmMood}
+        isLoading={addMoodMutation.isPending}
+      />
     </div>
   );
 }
