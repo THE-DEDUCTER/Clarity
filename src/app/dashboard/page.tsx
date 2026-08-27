@@ -1,14 +1,39 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowUpRight, Bot, PenLine, Users2, Headphones, BookOpen, Palette, Activity, Brain, Target, Gamepad2, Phone, Sparkles } from "lucide-react";
+import { ArrowUpRight, Bot, PenLine, Users2, Headphones, BookOpen, Palette, Activity, Brain, Target, Gamepad2, Phone, Sparkles, X } from "lucide-react";
 import Link from "next/link";
 import MoodTracker from "@/components/mood-tracker";
+import { PromptInput } from "@/components/ui/ai-chat-input";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const name = user?.firstName || user?.username || "Friend";
+  const [analyzing, setAnalyzing] = useState(false);
+  const [detectedQuadrant, setDetectedQuadrant] = useState<string | null>(null);
+
+  const handlePromptSubmit = (message: string) => {
+    setAnalyzing(true);
+    
+    // Simulate API delay and mock sentiment analysis based on keywords
+    setTimeout(() => {
+      const lowerMsg = message.toLowerCase();
+      let quadrant = "green"; // Default to calm/relaxed
+      
+      if (lowerMsg.match(/(angry|mad|furious|frustrated|stressed|overwhelmed|panic|hate|annoyed|shit|fuck|bad day)/)) {
+        quadrant = "red";
+      } else if (lowerMsg.match(/(excited|happy|great|awesome|amazing|joy|love|good day)/)) {
+        quadrant = "yellow";
+      } else if (lowerMsg.match(/(sad|depressed|tired|lonely|bored|down|bad|cry|exhausted)/)) {
+        quadrant = "blue";
+      }
+
+      setDetectedQuadrant(quadrant);
+      setAnalyzing(false);
+    }, 1200);
+  };
 
   const quickPills = [
     { title: "Self-Assessment", href: "/assessment", icon: Brain, bg: "bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300" },
@@ -176,6 +201,45 @@ export default function Dashboard() {
           </div>
         </Link>
       </div>
+      
+      {/* Global Command Palette */}
+      <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 w-full max-w-lg px-4 flex justify-center pointer-events-none">
+        <div className="pointer-events-auto flex justify-center w-full shadow-2xl rounded-3xl relative">
+          {analyzing && (
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-2 animate-pulse shadow-lg whitespace-nowrap">
+              <Sparkles className="w-3 h-3" />
+              Analyzing your mood...
+            </div>
+          )}
+          <PromptInput 
+            placeholder="How are you feeling right now?"
+            onSubmit={handlePromptSubmit}
+          />
+        </div>
+      </div>
+
+      {/* Mood Overlay */}
+      {detectedQuadrant && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="w-full max-w-lg bg-black rounded-[44px] shadow-2xl relative overflow-hidden border border-white/10 animate-in zoom-in-95 duration-400">
+             <button 
+               onClick={() => setDetectedQuadrant(null)}
+               className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center z-50 text-white hover:bg-white/20 transition-colors"
+               aria-label="Close"
+             >
+               <X className="w-4 h-4" />
+             </button>
+             
+             <div className="pt-6 relative z-10 max-h-[85vh] overflow-y-auto no-scrollbar">
+               <MoodTracker 
+                 variant="inline" 
+                 defaultQuadrant={detectedQuadrant} 
+                 onMoodLogged={() => setDetectedQuadrant(null)} 
+               />
+             </div>
+          </div>
+        </div>
+      )}
       
       <style>{`
         @keyframes slideInBounce {

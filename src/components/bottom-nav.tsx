@@ -22,7 +22,7 @@ export function BottomNav() {
   }
 
   return (
-    <nav aria-label="Mobile Navigation" className="md:hidden fixed bottom-4 left-3 right-3 z-50">
+    <nav id="bottom-nav" aria-label="Mobile Navigation" className="md:hidden fixed bottom-4 left-3 right-3 z-50 transition-transform duration-300">
       <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl border border-gray-200/70 dark:border-gray-800/80 shadow-2xl rounded-[28px] px-2 py-1.5 flex justify-around items-center">
         {navItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname?.startsWith(item.href));

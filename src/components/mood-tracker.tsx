@@ -9,7 +9,7 @@ import { Sparkles, MessageCircle, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
-const moodQuadrants = [
+export const moodQuadrants = [
   {
     id: "red",
     label: "High Energy\nUnpleasant",
@@ -116,10 +116,12 @@ const bubbleVariants = {
 
 interface MoodTrackerProps {
   variant?: 'full' | 'compact' | 'inline';
+  defaultQuadrant?: string | null;
+  onMoodLogged?: (mood: any) => void;
 }
 
-export function MoodTracker({ variant = 'full' }: MoodTrackerProps) {
-  const [activeQuadrant, setActiveQuadrant] = useState<string | null>(null);
+export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLogged }: MoodTrackerProps) {
+  const [activeQuadrant, setActiveQuadrant] = useState<string | null>(defaultQuadrant);
   const [selectedEmotion, setSelectedEmotion] = useState<{name: string, value: number, color: string, textColor: string} | null>(null);
   const [note, setNote] = useState("");
   
@@ -143,9 +145,10 @@ export function MoodTracker({ variant = 'full' }: MoodTrackerProps) {
         title: "Mood logged successfully!",
         description: "Your emotion has been saved.",
       });
-      setActiveQuadrant(null);
+      setActiveQuadrant(defaultQuadrant);
       setSelectedEmotion(null);
       setNote("");
+      if (onMoodLogged) onMoodLogged({ value: selectedEmotion?.value, name: selectedEmotion?.name });
     },
     onError: (error) => {
       toast({

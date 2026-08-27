@@ -361,7 +361,7 @@ function AnimatedGLBDog({
     else animToPlay = findAnim(["idle", "stand"]) || animToPlay;
 
     if (animToPlay && actions[animToPlay]) {
-      actions[animToPlay].reset().fadeIn(0.2).play();
+      actions[animToPlay]?.reset().fadeIn(0.2).play();
       return () => {
         actions[animToPlay]?.fadeOut(0.2);
       };

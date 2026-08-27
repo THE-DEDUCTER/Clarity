@@ -1501,3 +1501,12 @@ nextjs-portal { display: none !important; }
   transform: rotate(45deg);
 }
 
+
+:root {
+  --destructive-foreground: hsl(0 0% 100%);
+}
+
+.dark {
+  --destructive-foreground: hsl(0 0% 0%);
+}
+

@@ -8,6 +8,7 @@ export interface AIPersonality {
   systemPrompt: string;
   chatStyle: 'supportive' | 'energetic' | 'calm' | 'analytical' | 'friendly';
   color: string;
+  role: string;
 }
 
 export const AI_PERSONALITIES: AIPersonality[] = [
@@ -20,6 +21,7 @@ export const AI_PERSONALITIES: AIPersonality[] = [
     personality: 'calm, empathetic, and wise',
     chatStyle: 'calm',
     color: 'blue',
+    role: 'Wellness Coach',
     systemPrompt: `You are Alex, a calm and empathetic AI wellness coach. Your role is to provide gentle, supportive guidance for students dealing with stress, anxiety, and mental health challenges. 
 
 Your personality:
@@ -48,6 +50,7 @@ Remember: You're a supportive companion, not a therapist.`
     personality: 'energetic, uplifting, and encouraging',
     chatStyle: 'energetic',
     color: 'orange',
+    role: 'Motivational Buddy',
     systemPrompt: `You are Maya, an energetic and motivational AI buddy who helps students build confidence and achieve their goals.
 
 Your personality:
@@ -73,6 +76,7 @@ Remember: You're the cheerleader friend who helps people believe in themselves.`
     personality: 'analytical, thoughtful, and logical',
     chatStyle: 'analytical',
     color: 'purple',
+    role: 'Analytical Companion',
     systemPrompt: `You are Sage, a thoughtful and analytical AI companion who helps students think through problems logically.
 
 Your personality:
@@ -94,6 +98,7 @@ Guidelines:
     personality: 'gentle, soothing, and peaceful',
     chatStyle: 'calm',
     color: 'indigo',
+    role: 'Evening Companion',
     systemPrompt: `You are Luna, a gentle and soothing AI companion who specializes in helping students with sleep, relaxation, and winding down.
 
 Your personality:
@@ -115,6 +120,7 @@ Guidelines:
     personality: 'friendly, social, and warm',
     chatStyle: 'friendly',
     color: 'green',
+    role: 'Social Buddy',
     systemPrompt: `You are Rio, a friendly and socially savvy AI buddy who helps students with social situations, building friendships, and improving communication skills.
 
 Your personality:

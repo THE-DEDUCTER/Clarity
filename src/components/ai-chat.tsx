@@ -462,7 +462,7 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
       )}
 
       {/* Instagram-style Input Area */}
-      <div className="px-3 pb-3 pt-2 bg-white dark:bg-black">
+      <div className="px-3 pb-[max(12px,env(safe-area-inset-bottom))] pt-2 bg-white dark:bg-black">
         <div className="flex items-end gap-2.5">
           
           {/* IG Camera Circle Icon */}

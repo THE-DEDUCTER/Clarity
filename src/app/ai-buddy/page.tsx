@@ -58,6 +58,24 @@ export default function AIBuddyPage() {
     }
   }, [pathname, selectedPersonality]);
 
+  // Hide bottom nav when in an active chat on mobile
+  useEffect(() => {
+    const bottomNav = document.getElementById('bottom-nav');
+    if (bottomNav) {
+      if (selectedPersonality) {
+        bottomNav.style.transform = 'translateY(150%)';
+      } else {
+        bottomNav.style.transform = 'translateY(0)';
+      }
+    }
+    
+    return () => {
+      if (bottomNav) {
+        bottomNav.style.transform = 'translateY(0)';
+      }
+    };
+  }, [selectedPersonality]);
+
   // Update last messages when conversations change (but don't save to localStorage)
   useEffect(() => {
     const lastMsgs: Record<string, string> = {};
