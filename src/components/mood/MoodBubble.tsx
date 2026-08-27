@@ -9,9 +9,9 @@ export interface MoodBubbleProps {
   word: MoodWord;
   isSelected: boolean;
   isCenterFocal?: boolean;
-  scaleFactor?: number;
   onSelect: (id: string) => void;
   style?: React.CSSProperties;
+  bubbleSize?: number; // Injected by react-bubble-ui if provideProps is true
 }
 
 const QUADRANT_GRADIENTS: Record<Quadrant, { from: string; via: string; to: string; glow: string; text: string }> = {
@@ -67,7 +67,8 @@ export function MoodBubble({
   isCenterFocal = false,
   scaleFactor = 1,
   onSelect,
-  style
+  style,
+  bubbleSize
 }: MoodBubbleProps) {
   // Deterministic seed from word id to assign unique shape profile
   const shapeIndex = useMemo(() => {
@@ -75,26 +76,27 @@ export function MoodBubble({
     return hash % MORPH_SHAPES.length;
   }, [word.id]);
 
-  // Base size based on intensity (1-5) - Tuned for smoother packing
-  const baseSize = useMemo(() => {
+  // Base size based on intensity (1-5) - Responsive clamping for mobile optimization
+  const internalBaseSize = useMemo(() => {
     switch (word.intensity) {
-      case 5: return 175; // anchor
-      case 4: return 155;
-      case 3: return 135; // ordinary
-      case 2: return 120;
-      case 1: return 110; // peripheral
-      default: return 135;
+      case 5: return "clamp(100px, 16vw, 175px)"; // anchor
+      case 4: return "clamp(90px, 14vw, 155px)";
+      case 3: return "clamp(80px, 12vw, 135px)"; // ordinary
+      case 2: return "clamp(70px, 10vw, 120px)";
+      case 1: return "clamp(60px, 8vw, 110px)"; // peripheral
+      default: return "clamp(80px, 12vw, 135px)";
     }
   }, [word.intensity]);
+
+  const finalSize = bubbleSize ? `${bubbleSize}px` : internalBaseSize;
 
   const colors = QUADRANT_GRADIENTS[word.quadrant] || QUADRANT_GRADIENTS["high-pleasant"];
   
   // Decide whether to morph
-  const shouldMorph = isSelected || isCenterFocal;
-  const targetPath = shouldMorph ? MORPH_SHAPES[shapeIndex] : CIRCLE_PATH;
+  const targetPath = isSelected ? MORPH_SHAPES[shapeIndex] : CIRCLE_PATH;
 
   // Visual scale combination of base size and center proximity factor
-  const totalScale = (isSelected ? 1.22 : isCenterFocal ? 1.15 : 1) * scaleFactor;
+  const totalScale = (isSelected ? 1.22 : 1) * scaleFactor;
 
   return (
     <motion.button
@@ -116,8 +118,8 @@ export function MoodBubble({
         colors.text
       )}
       style={{
-        width: baseSize,
-        height: baseSize,
+        width: finalSize,
+        height: finalSize,
         ...style
       }}
     >
@@ -141,22 +143,30 @@ export function MoodBubble({
           </radialGradient>
         </defs>
 
-        {/* Pulsing breathing morph animation when focal */}
-        <motion.path
-          d={targetPath}
-          fill={`url(#grad-${word.id})`}
-          animate={{
-            d: targetPath,
-            rotate: isCenterFocal || isSelected ? [0, 2, -2, 0] : 0,
-            scale: isCenterFocal || isSelected ? [1, 1.02, 0.99, 1] : 1
-          }}
-          transition={{
-            d: { type: "spring", stiffness: 280, damping: 20 },
-            rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-            scale: { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
-          }}
-          className="transition-all duration-300"
-        />
+        {/* Pulsing breathing morph animation only when selected to save FPS */}
+        {isSelected ? (
+          <motion.path
+            d={targetPath}
+            fill={`url(#grad-${word.id})`}
+            animate={{
+              d: targetPath,
+              rotate: [0, 2, -2, 0],
+              scale: [1, 1.02, 0.99, 1]
+            }}
+            transition={{
+              d: { type: "spring", stiffness: 280, damping: 20 },
+              rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+              scale: { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
+            }}
+            className="transition-all duration-300"
+          />
+        ) : (
+          <path
+            d={targetPath}
+            fill={`url(#grad-${word.id})`}
+            className="transition-all duration-300"
+          />
+        )}
 
         {/* 3D Glass / Apple Watch light highlight rim on top */}
         <motion.path
@@ -191,7 +201,7 @@ export function MoodBubble({
         }}
         className="relative z-10 text-center leading-[1.1] tracking-tight px-3 py-1 font-sans pointer-events-none drop-shadow-sm select-none"
         style={{
-          fontSize: Math.max(14, Math.round(baseSize * 0.15)),
+          fontSize: `clamp(10px, ${word.intensity * 0.4 + 1.2}vw, 18px)`,
           color: colors.text.includes("white") ? "#FFFFFF" : "#0A0A0A"
         }}
       >
