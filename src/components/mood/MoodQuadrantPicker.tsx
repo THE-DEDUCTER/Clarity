@@ -1,117 +1,97 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { X, Search } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Quadrant } from "@/lib/mood-data";
+import { Sparkles } from "lucide-react";
 
 interface MoodQuadrantPickerProps {
   onSelect: (quadrant: Quadrant) => void;
-  onClose?: () => void;
 }
 
-// ── Circle order matches the standard affect circumplex:
-//   Top-left:     Red    = High Energy / Unpleasant
-//   Top-right:    Yellow = High Energy / Pleasant
-//   Bottom-left:  Blue   = Low Energy  / Unpleasant
-//   Bottom-right: Green  = Low Energy  / Pleasant
-const QUADRANTS = [
+const quadrants = [
   {
-    id: "high-unpleasant" as Quadrant,
+    id: "red",
+    quadrantKey: "high-unpleasant" as Quadrant,
     label: "High Energy\nUnpleasant",
-    bg: "radial-gradient(circle at 35% 30%, #FF7A5C 0%, #FF2244 100%)",
-    glow: "rgba(255,34,68,0.50)",
+    color: "bg-[#FF3B30]",
+    textColor: "text-white"
   },
   {
-    id: "high-pleasant" as Quadrant,
+    id: "yellow",
+    quadrantKey: "high-pleasant" as Quadrant,
     label: "High Energy\nPleasant",
-    bg: "radial-gradient(circle at 35% 30%, #FFE870 0%, #FFA818 100%)",
-    glow: "rgba(255,168,24,0.50)",
+    color: "bg-[#FFCC00]",
+    textColor: "text-amber-950"
   },
   {
-    id: "low-unpleasant" as Quadrant,
+    id: "blue",
+    quadrantKey: "low-unpleasant" as Quadrant,
     label: "Low Energy\nUnpleasant",
-    bg: "radial-gradient(circle at 35% 30%, #80CAFF 0%, #3372F0 100%)",
-    glow: "rgba(51,114,240,0.50)",
+    color: "bg-[#007AFF]",
+    textColor: "text-white"
   },
   {
-    id: "low-pleasant" as Quadrant,
+    id: "green",
+    quadrantKey: "low-pleasant" as Quadrant,
     label: "Low Energy\nPleasant",
-    bg: "radial-gradient(circle at 35% 30%, #50EDAA 0%, #08BE7A 100%)",
-    glow: "rgba(8,190,122,0.50)",
-  },
+    color: "bg-[#34C759]",
+    textColor: "text-white"
+  }
 ];
 
-export function MoodQuadrantPicker({ onSelect, onClose }: MoodQuadrantPickerProps) {
+export function MoodQuadrantPicker({ onSelect }: MoodQuadrantPickerProps) {
   return (
-    <div
-      className="absolute inset-0 w-full h-full bg-black flex flex-col overflow-hidden"
-      style={{ paddingTop: "env(safe-area-inset-top)" }}
-    >
-      {/* Serif two-line title */}
-      <div className="flex-shrink-0 text-center mt-12 mb-8 px-8 select-none z-10">
-        <p
-          className="text-white font-medium leading-[1.45]"
-          style={{
-            fontFamily: "Georgia, 'Times New Roman', Times, serif",
-            fontSize: 22,
-          }}
-        >
-          Tap the color that best describes
-          <br />
-          how you feel right now
-        </p>
+    <div className="flex-1 flex flex-col items-center justify-center w-full px-4">
+      
+      <div className="flex items-center justify-center w-full px-4 mb-8">
+        <span className="text-xs uppercase tracking-widest text-gray-400 font-semibold flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+          Interactive Mood Meter
+        </span>
       </div>
 
-      {/* 2×2 tight circle cluster */}
-      <div className="flex flex-col items-center justify-center flex-1 pb-10 px-4 z-10">
-        <div className="grid grid-cols-2 gap-4">
-          {QUADRANTS.map((q, i) => (
-            <motion.button
-              key={q.id}
-              onClick={() => onSelect(q.id)}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: "spring",
-                stiffness: 260,
-                damping: 20,
-                delay: i * 0.08,
-              }}
-              className="relative flex items-center justify-center rounded-[40px] focus:outline-none w-[160px] h-[160px] sm:w-[180px] sm:h-[180px]"
-              style={{
-                background: q.bg,
-                boxShadow: `0 0 44px ${q.glow}, 0 0 90px ${q.glow.replace("0.50", "0.18")}`,
-                border: "1.5px solid rgba(255,255,255,0.13)",
-              }}
-            >
-              {/* Top-left specular highlight */}
-              <div
-                className="absolute inset-0 rounded-[40px] pointer-events-none"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 26%, rgba(255,255,255,0.30) 0%, transparent 52%)",
-                }}
-              />
-              {/* Inner depth rim */}
-              <div
-                className="absolute inset-0 rounded-[40px] pointer-events-none"
-                style={{ boxShadow: "inset 0 -5px 16px rgba(0,0,0,0.22)" }}
-              />
+      <motion.h3 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="text-xl sm:text-2xl font-semibold mb-12 text-center text-white tracking-tight font-serif"
+      >
+        Tap the color that best describes<br/>how you feel right now
+      </motion.h3>
 
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.25 + i * 0.08 }}
-                className="relative z-10 text-black font-bold text-center leading-tight whitespace-pre-line select-none"
-                style={{ fontSize: 14, maxWidth: 112, lineHeight: 1.35 }}
-              >
-                {q.label}
-              </motion.span>
-            </motion.button>
-          ))}
-        </div>
+      {/* Tightly packed 2x2 Grid */}
+      <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+        {quadrants.map((quad, index) => (
+          <motion.button
+            key={quad.id}
+            onClick={() => onSelect(quad.quadrantKey)}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ 
+              opacity: 0.9, 
+              scale: 1,
+              y: [0, (index % 2 === 0 ? -3 : 3), 0],
+            }}
+            transition={{ 
+              opacity: { duration: 0.4, delay: index * 0.1 },
+              scale: { type: "spring", stiffness: 200, damping: 15, delay: index * 0.1 },
+              y: { repeat: Infinity, duration: 4, ease: "easeInOut", delay: index * 0.5 }
+            }}
+            whileHover={{ scale: 1.05, opacity: 1, zIndex: 10 }}
+            whileTap={{ scale: 0.95 }}
+            className={cn(
+              "w-36 h-36 sm:w-44 sm:h-44 rounded-full flex items-center justify-center text-center p-4 cursor-pointer",
+              "shadow-[0_0_40px_rgba(0,0,0,0.3)]",
+              quad.color, quad.textColor
+            )}
+          >
+            <span className="font-bold text-sm sm:text-base whitespace-pre-line leading-tight pointer-events-none">
+              {quad.label}
+            </span>
+          </motion.button>
+        ))}
       </div>
+      
     </div>
   );
 }

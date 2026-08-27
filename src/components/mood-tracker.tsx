@@ -9,7 +9,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Quadrant, MOOD_DATA } from "@/lib/mood-data";
 import { MoodGrid } from "./mood/MoodGrid";
 import { MoodConfirmSheet } from "./mood/MoodConfirmSheet";
-import { MoodQuadrantPicker } from "./mood/MoodQuadrantPicker";
 
 interface MoodTrackerProps {
   variant?: 'full' | 'compact' | 'inline';
@@ -17,18 +16,9 @@ interface MoodTrackerProps {
   onMoodLogged?: (mood: any) => void;
 }
 
-export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLogged }: MoodTrackerProps) {
-  const resolveQuadrant = (q: string | null): Quadrant | null => {
-    if (!q) return null;
-    if (q === "yellow" || q === "high-pleasant") return "high-pleasant";
-    if (q === "red" || q === "high-unpleasant") return "high-unpleasant";
-    if (q === "blue" || q === "low-unpleasant") return "low-unpleasant";
-    if (q === "green" || q === "low-pleasant") return "low-pleasant";
-    return null;
-  };
-
-  const [activeQuadrant, setActiveQuadrant] = useState<Quadrant | null>(resolveQuadrant(defaultQuadrant));
+export function MoodTracker({ variant = 'full', onMoodLogged }: MoodTrackerProps) {
   const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const selectedWord = selectedWordId ? MOOD_DATA.find(w => w.id === selectedWordId) || null : null;
 
@@ -52,8 +42,8 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
         title: "Mood logged successfully!",
         description: selectedWord ? `Saved "${selectedWord.label}" to your check-in history.` : "Your emotion has been saved.",
       });
-      setActiveQuadrant(null);
       setSelectedWordId(null);
+      setIsFullscreen(false);
       if (onMoodLogged) onMoodLogged({ value: selectedWord?.intensity, name: selectedWord?.label });
     },
     onError: () => {
@@ -61,8 +51,8 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
         title: "Saved locally",
         description: "Mood check-in recorded.",
       });
-      setActiveQuadrant(null);
       setSelectedWordId(null);
+      setIsFullscreen(false);
     },
   });
 
@@ -83,48 +73,56 @@ export function MoodTracker({ variant = 'full', defaultQuadrant = null, onMoodLo
   };
 
   return (
-    <div className="w-full relative min-h-[420px] rounded-[32px] sm:rounded-[40px] overflow-hidden">
-      <AnimatePresence mode="wait">
-        {!activeQuadrant && (
-          <motion.div
-            key="quadrant-picker"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.3 }}
-            className="w-full h-[500px] relative rounded-[32px] sm:rounded-[40px] overflow-hidden"
-          >
-             <MoodQuadrantPicker onSelect={setActiveQuadrant} />
-          </motion.div>
-        )}
+    <div className="w-full relative flex flex-col bg-black rounded-[32px] sm:rounded-[40px] shadow-2xl overflow-hidden border border-gray-800">
+      
+      {/* Header Area */}
+      <div className="flex items-center justify-between w-full px-6 py-5 z-20 bg-black/60 backdrop-blur-xl border-b border-white/5">
+        <span className="text-xs uppercase tracking-widest text-gray-400 font-semibold flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-yellow-400" />
+          Unified Mood Map
+        </span>
+        <button 
+          onClick={() => setIsFullscreen(true)}
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+          title="Expand Map"
+        >
+          <Maximize2 className="w-4 h-4 text-white/70" />
+        </button>
+      </div>
 
-        {activeQuadrant && (
+      {/* Inline Map View */}
+      <div className="relative w-full h-[500px] bg-black">
+        <MoodGrid
+          selectedId={selectedWordId}
+          onSelect={setSelectedWordId}
+        />
+      </div>
+
+      {/* Fullscreen Overlay */}
+      <AnimatePresence>
+        {isFullscreen && (
           <motion.div
-            key="mood-grid-field"
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.92 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-0 z-[9999] w-full h-full overflow-hidden bg-black"
+            key="fullscreen-map"
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="fixed inset-0 z-[9999] w-full h-full bg-black overflow-hidden flex flex-col"
           >
             <MoodGrid
-              initialQuadrant={activeQuadrant}
               selectedId={selectedWordId}
               onSelect={setSelectedWordId}
-              onBack={() => {
-                setActiveQuadrant(null);
-                setSelectedWordId(null);
-              }}
-            />
-
-            <MoodConfirmSheet
-              word={selectedWord}
-              onConfirm={handleConfirmMood}
-              isLoading={addMoodMutation.isPending}
+              onBack={() => setIsFullscreen(false)}
             />
           </motion.div>
         )}
       </AnimatePresence>
+
+      <MoodConfirmSheet
+        word={selectedWord}
+        onConfirm={handleConfirmMood}
+        isLoading={addMoodMutation.isPending}
+      />
     </div>
   );
 }

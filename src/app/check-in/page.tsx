@@ -30,10 +30,6 @@ export default function CheckInPage() {
     setSelectedWordId(null);
   };
 
-  const handleBackToHome = () => {
-    router.push('/dashboard');
-  };
-
   const handleConfirm = async () => {
     if (!selectedWord) return;
     setIsSubmitting(true);
@@ -105,7 +101,7 @@ export default function CheckInPage() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.94 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="w-full h-full"
+            className="w-full h-full absolute inset-0"
           >
             <MoodGrid 
               initialQuadrant={activeQuadrant} 
