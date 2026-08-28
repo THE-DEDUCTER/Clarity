@@ -79,6 +79,33 @@ export default function WellnessPage() {
           </div>
         </div>
 
+        {/* Wellness Toolkit - Hub Navigation */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-light text-gray-800 text-center">Your Wellness Toolkit</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { title: "Goal Tracker", description: "Track progress & milestones", href: "/goals", icon: Activity, color: "text-amber-600", bgColor: "bg-amber-50" },
+              { title: "Audio Sessions", description: "Soundscapes & guided audio", href: "/audio-sessions", icon: Headphones, color: "text-emerald-600", bgColor: "bg-emerald-50" },
+              { title: "Creative Zone", description: "Art therapy & calming canvas", href: "/creative", icon: MessageCircle, color: "text-sky-600", bgColor: "bg-sky-50" },
+            ].map((tool) => {
+              const ToolIcon = tool.icon;
+              return (
+                <Link key={tool.title} href={tool.href}>
+                  <div className={`${tool.bgColor} rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-gray-100 flex items-center gap-4`}>
+                    <div className={`p-3 rounded-xl bg-white shadow-sm ${tool.color}`}>
+                      <ToolIcon className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-medium text-gray-800">{tool.title}</h3>
+                      <p className="text-sm text-gray-600">{tool.description}</p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
         <div className="grid gap-12 lg:grid-cols-3">
           {/* Mood Tracker */}
           <div className="lg:col-span-1">

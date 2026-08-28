@@ -12,10 +12,30 @@ interface MoodBlobProps {
 }
 
 const QUADRANT_THEME: Record<Quadrant, { base: string; active: string; text: string; border: string }> = {
-  "high-pleasant": { base: "bg-[#FFC837]/10", active: "bg-[#FFC837]/40", text: "text-[#FFC837]", border: "border-[#FFC837]/20" },
-  "high-unpleasant": { base: "bg-[#FF3B4E]/10", active: "bg-[#FF3B4E]/40", text: "text-[#FF3B4E]", border: "border-[#FF3B4E]/20" },
-  "low-unpleasant": { base: "bg-[#3B82F6]/10", active: "bg-[#3B82F6]/40", text: "text-[#3B82F6]", border: "border-[#3B82F6]/20" },
-  "low-pleasant": { base: "bg-[#10B981]/10", active: "bg-[#10B981]/40", text: "text-[#10B981]", border: "border-[#10B981]/20" },
+  "high-pleasant": { 
+    base: "bg-amber-500 dark:bg-amber-500", 
+    active: "bg-amber-400 dark:bg-amber-400", 
+    text: "text-white", 
+    border: "border-amber-400 dark:border-amber-400" 
+  },
+  "high-unpleasant": { 
+    base: "bg-rose-500 dark:bg-rose-500", 
+    active: "bg-rose-400 dark:bg-rose-400", 
+    text: "text-white", 
+    border: "border-rose-400 dark:border-rose-400" 
+  },
+  "low-unpleasant": { 
+    base: "bg-blue-600 dark:bg-blue-600", 
+    active: "bg-blue-500 dark:bg-blue-500", 
+    text: "text-white", 
+    border: "border-blue-500 dark:border-blue-500" 
+  },
+  "low-pleasant": { 
+    base: "bg-emerald-500 dark:bg-emerald-500", 
+    active: "bg-emerald-400 dark:bg-emerald-400", 
+    text: "text-white", 
+    border: "border-emerald-400 dark:border-emerald-400" 
+  },
 };
 
 // Organic blob shapes for the breathing animation
@@ -82,20 +102,20 @@ export function MoodBlob({
         isModerate ? "w-[130px] h-[110px]" : 
         "w-[110px] h-[95px]",
         isSelected 
-          ? [theme.active, "border-white/50 shadow-[0_0_40px_rgba(255,255,255,0.15)] z-30"] 
-          : [theme.base, theme.border, "shadow-lg z-10 hover:border-white/30 hover:bg-white/5"]
+          ? [theme.active, "border-gray-900/30 dark:border-white/50 shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:shadow-[0_0_40px_rgba(255,255,255,0.15)] z-30"] 
+          : [theme.base, theme.border, "shadow-sm dark:shadow-lg z-10 hover:border-gray-900/20 dark:hover:border-white/30 hover:bg-black/5 dark:hover:bg-white/5"]
       )}
     >
       {/* Soft internal glow for selected state */}
       {isSelected && (
-        <div className="absolute inset-0 bg-white/10 mix-blend-overlay rounded-inherit pointer-events-none" />
+        <div className="absolute inset-0 bg-white/30 dark:bg-white/10 mix-blend-overlay rounded-inherit pointer-events-none" />
       )}
 
       {/* Text Content */}
       <div className="relative z-10 flex flex-col items-center px-4 w-full">
         <span className={cn(
           "font-medium tracking-wide transition-colors duration-200 leading-[1.2]",
-          isSelected ? "text-white drop-shadow-md" : theme.text,
+          isSelected ? "text-white drop-shadow-md font-bold scale-110" : "text-white/90 drop-shadow-sm",
           isExtreme ? "text-lg" :
           isModerate ? "text-base" :
           "text-sm"

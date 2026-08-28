@@ -83,35 +83,41 @@ export function MoodTracker({ variant = 'full', onMoodLogged }: MoodTrackerProps
   };
 
   return (
-    <div className="w-full relative flex flex-col bg-black rounded-[32px] sm:rounded-[40px] shadow-2xl overflow-hidden border border-gray-800">
+    <div 
+      className="w-full relative flex flex-col overflow-hidden"
+      style={{
+        WebkitMaskImage: 'radial-gradient(50% 50% at 50% 50%, black 60%, transparent 100%)',
+        maskImage: 'radial-gradient(50% 50% at 50% 50%, black 60%, transparent 100%)'
+      }}
+    >
       
       {/* Header Area */}
-      <div className="flex items-center justify-between w-full px-6 py-5 z-20 bg-black/60 backdrop-blur-xl border-b border-white/5">
-        <span className="text-xs uppercase tracking-widest text-gray-400 font-semibold flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-yellow-400" />
+      <div className="flex items-center justify-between w-full px-6 py-5 z-20">
+        <span className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-semibold flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-yellow-500 dark:text-yellow-400" />
           Interactive Mood Meter
         </span>
         {step === 'grid' && (
           <div className="flex items-center gap-2">
             <button 
               onClick={() => { setStep('quadrant'); setActiveQuadrant(null); }}
-              className="text-xs font-semibold text-white/50 hover:text-white px-3 py-1.5 rounded-full bg-white/5"
+              className="text-xs font-semibold text-gray-600 dark:text-white/50 hover:text-black dark:hover:text-white px-3 py-1.5 rounded-full bg-gray-100 dark:bg-white/5"
             >
               Back to Menu
             </button>
             <button 
               onClick={() => setIsFullscreen(true)}
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
               title="Expand Map"
             >
-              <Maximize2 className="w-4 h-4 text-white/70" />
+              <Maximize2 className="w-4 h-4 text-gray-600 dark:text-white/70" />
             </button>
           </div>
         )}
       </div>
 
       {/* Main View Area */}
-      <div className="relative w-full h-[560px] bg-black">
+      <div className="relative w-full h-[450px] sm:h-[550px] lg:h-[600px]">
         <AnimatePresence mode="wait">
           {step === 'quadrant' && (
             <motion.div

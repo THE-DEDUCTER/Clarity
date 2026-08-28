@@ -12,7 +12,6 @@ import { useSidebar } from "@/components/ui/sidebar";
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { setOpen, state } = useSidebar();
-  const showSOSButton = pathname === "/dashboard" || pathname === "/crisis";
 
   // Routes that should not show the normal app layout
   const isSpecialRoute =
@@ -50,7 +49,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
         <div className="header-right flex items-center gap-2">
-          {showSOSButton && <SOSButton />}
+          <SOSButton variant="compact" />
           <ThemeToggle />
         </div>
       </header>
@@ -76,8 +75,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         >
           <AppSidebar />
         </div>
-        <div className="flex flex-col flex-1">
-          <main className={`flex-1 overflow-auto android-scroll ${pathname.startsWith("/ai-buddy") ? "p-0" : "p-2 xxs:p-1 sm:p-3 md:p-4 lg:p-6 pb-24 md:pb-6"}`}>
+        <div className="flex flex-col flex-1 min-w-0">
+          <main className={`flex-1 min-w-0 overflow-auto android-scroll ${pathname.startsWith("/ai-buddy") ? "p-0" : "p-2 xxs:p-1 sm:p-3 md:p-4 lg:p-6 pb-24 md:pb-6"}`}>
             {children}
           </main>
         </div>

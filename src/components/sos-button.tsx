@@ -15,8 +15,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { cn } from "@/lib/utils";
 
-export function SOSButton() {
+interface SOSButtonProps {
+  variant?: "default" | "compact";
+}
+
+export function SOSButton({ variant = "default" }: SOSButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
   const { toast } = useToast();
 
@@ -24,19 +29,16 @@ export function SOSButton() {
     const telmanusNumber = '18008914416';
     console.log(`Connecting to Telemanus helpline: ${telmanusNumber}`);
     
-    // Show immediate feedback
     toast({
       title: "Connecting to Telemanus Helpline",
       description: "Redirecting to call 1800 891 4416. Help is on the way.",
       duration: 5000,
     });
     
-    // For web browsers, try to initiate a phone call
     try {
       window.location.href = `tel:${telmanusNumber}`;
     } catch (error) {
       console.error('Failed to initiate call:', error);
-      // Fallback: Copy number to clipboard
       navigator.clipboard.writeText(telmanusNumber).then(() => {
         toast({
           title: "Number Copied",
@@ -56,21 +58,30 @@ export function SOSButton() {
 
   const handleCampusAuthorities = () => {
     console.log('Contacting campus authorities...');
-    // TODO: Contact campus security/counselors
   };
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button 
-          variant="destructive" 
-          size="default"
-          className="bg-destructive hover:bg-destructive/90 font-medium"
-          data-testid="button-sos"
-        >
-          <Phone className="w-4 h-4 mr-2" />
-          SOS
-        </Button>
+        {variant === "compact" ? (
+          <button
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/40 border border-rose-200/60 dark:border-rose-800/40 hover:bg-rose-100 dark:hover:bg-rose-950/60 transition-colors"
+            data-testid="button-sos"
+          >
+            <Phone className="w-3.5 h-3.5" />
+            <span>SOS</span>
+          </button>
+        ) : (
+          <Button 
+            variant="destructive" 
+            size="default"
+            className="bg-destructive hover:bg-destructive/90 font-medium"
+            data-testid="button-sos"
+          >
+            <Phone className="w-4 h-4 mr-2" />
+            SOS
+          </Button>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent className="sm:max-w-md">
         <AlertDialogHeader>
@@ -79,7 +90,7 @@ export function SOSButton() {
             Emergency Mental Health Support
           </AlertDialogTitle>
           <AlertDialogDescription className="text-left">
-            You're reaching out for emergency help. Get immediate professional mental health support:
+            You&apos;re reaching out for emergency help. Get immediate professional mental health support:
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="space-y-3">
@@ -108,7 +119,7 @@ export function SOSButton() {
           </Button>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel data-testid="button-cancel-sos">I'm Safe Now</AlertDialogCancel>
+          <AlertDialogCancel data-testid="button-cancel-sos">I&apos;m Safe Now</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

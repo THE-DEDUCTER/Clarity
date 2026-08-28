@@ -83,9 +83,10 @@ export default function AIBuddyPage() {
       const msgs = conversations[personalityId];
       if (msgs.length > 0) {
         const lastMsg = msgs[msgs.length - 1];
+        const safeContent = lastMsg.content || "";
         lastMsgs[personalityId] = lastMsg.sender === 'user' 
-          ? `You: ${lastMsg.content.slice(0, 50)}${lastMsg.content.length > 50 ? '...' : ''}`
-          : `${lastMsg.content.slice(0, 50)}${lastMsg.content.length > 50 ? '...' : ''}`;
+          ? `You: ${safeContent.slice(0, 50)}${safeContent.length > 50 ? '...' : ''}`
+          : `${safeContent.slice(0, 50)}${safeContent.length > 50 ? '...' : ''}`;
       }
     });
     setLastMessages(lastMsgs);

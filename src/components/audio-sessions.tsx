@@ -473,12 +473,12 @@ export function AudioSessions() {
         </div>
         
         {/* Track List Header */}
-        <div className="grid grid-cols-12 gap-4 items-center text-sm text-gray-500 border-b border-gray-200 pb-2 mb-4">
-          <div className="col-span-1">#</div>
-          <div className="col-span-6">Title</div>
-          <div className="col-span-2">Category</div>
-          <div className="col-span-2">Plays</div>
-          <div className="col-span-1 text-center">
+        <div className="grid grid-cols-12 gap-2 sm:gap-4 items-center text-sm text-gray-500 border-b border-gray-200 pb-2 mb-4">
+          <div className="col-span-1 hidden sm:block">#</div>
+          <div className="col-span-10 sm:col-span-6">Title</div>
+          <div className="col-span-2 hidden md:block">Category</div>
+          <div className="col-span-2 hidden md:block">Plays</div>
+          <div className="col-span-2 sm:col-span-1 text-center">
             <Heart className="w-4 h-4 mx-auto" />
           </div>
         </div>
@@ -492,13 +492,13 @@ export function AudioSessions() {
             return (
               <div 
                 key={session.id}
-                className={`grid grid-cols-12 gap-4 items-center p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer group ${
+                className={`grid grid-cols-12 gap-2 sm:gap-4 items-center p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer group ${
                   isCurrentSession ? 'bg-blue-50' : ''
                 }`}
                 onClick={() => handleSessionSelect(session)}
               >
                 {/* Track Number / Play Button */}
-                <div className="col-span-1">
+                <div className="col-span-1 hidden sm:block">
                   <div className="relative">
                     <span className={`text-sm ${
                       isCurrentSession ? 'text-blue-600' : 'text-gray-500 group-hover:hidden'
@@ -510,39 +510,39 @@ export function AudioSessions() {
                 </div>
                 
                 {/* Title and Artist */}
-                <div className="col-span-6 flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center shadow-sm">
+                <div className="col-span-10 sm:col-span-6 flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
                     {(() => {
                       const Icon = session.category === 'sleep' ? Moon : session.category === 'meditation' ? Sparkles : session.category === 'focus' ? Music : Wind;
                       return <Icon className="w-5 h-5 text-white" />;
                     })()}
                   </div>
-                  <div>
-                    <div className={`font-medium ${
+                  <div className="min-w-0">
+                    <div className={`font-medium truncate ${
                       isCurrentSession ? 'text-blue-600' : 'text-gray-800'
                     }`}>
                       {session.title}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-gray-500 truncate">
                       {session.instructor || 'Various Artists'}
                     </div>
                   </div>
                 </div>
                 
                 {/* Category */}
-                <div className="col-span-2">
-                  <Badge className={`${getCategoryColor(session.category)} border-0`}>
+                <div className="col-span-2 hidden md:block">
+                  <Badge className={`${getCategoryColor(session.category)} border-0 truncate max-w-full block text-center`}>
                     {session.category}
                   </Badge>
                 </div>
                 
                 {/* Plays */}
-                <div className="col-span-2 text-gray-500 text-sm">
+                <div className="col-span-2 text-gray-500 text-sm hidden md:block">
                   {formatPlays(session.plays || 0)}
                 </div>
                 
                 {/* Favorite Button */}
-                <div className="col-span-1 text-center">
+                <div className="col-span-2 sm:col-span-1 text-center">
                   <Button
                     variant="ghost"
                     size="sm"

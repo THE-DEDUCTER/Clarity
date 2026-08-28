@@ -756,7 +756,7 @@ export function CreativeZone() {
                     ref={chakraCanvasRef}
                     width={300}
                     height={300}
-                    className="border border-gray-200 rounded cursor-pointer mx-auto block"
+                    className="border border-gray-200 rounded cursor-pointer mx-auto block max-w-full h-auto"
                     onClick={handleChakraClick}
                     data-testid="canvas-chakra"
                   />

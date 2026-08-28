@@ -92,11 +92,11 @@ export function SocialCard({
                 alt={author?.name}
                 className="w-10 h-10 rounded-full ring-2 ring-white dark:ring-zinc-800"
               />
-              <div>
-                <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
                   {author?.name}
                 </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
                   @{author?.username} · {author?.timeAgo}
                 </p>
               </div>
@@ -112,7 +112,7 @@ export function SocialCard({
           </div>
 
           {/* Content section */}
-          <p className="text-zinc-600 dark:text-zinc-300 mb-4">
+          <p className="text-zinc-600 dark:text-zinc-300 mb-4 break-words">
             {content?.text}
           </p>
 
@@ -124,11 +124,11 @@ export function SocialCard({
                   <div className="p-2 bg-white dark:bg-zinc-700 rounded-xl">
                     {content.link.icon}
                   </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
                       {content.link.title}
                     </h4>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
                       {content.link.description}
                     </p>
                   </div>

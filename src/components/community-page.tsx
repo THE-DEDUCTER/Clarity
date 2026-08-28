@@ -573,7 +573,7 @@ export function CommunityPage() {
                     </div>
 
                     {/* Post Content */}
-                    <div className="flex-1 space-y-3">
+                    <div className="flex-1 min-w-0 space-y-3">
                       <div className="flex items-center gap-2 flex-wrap">
                         {post.isPinned && (
                           <div className="flex items-center gap-1 px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-full">
@@ -598,11 +598,11 @@ export function CommunityPage() {
                         )}
                       </div>
                       
-                      <h3 className="font-bold text-xl text-gray-900 hover:text-blue-600 cursor-pointer transition-colors duration-300 leading-tight">
+                      <h3 className="font-bold text-xl text-gray-900 hover:text-blue-600 cursor-pointer transition-colors duration-300 leading-tight break-words">
                         {post.title}
                       </h3>
                       
-                      <p className="text-gray-600 text-sm leading-relaxed">{post.content}</p>
+                      <p className="text-gray-600 text-sm leading-relaxed break-words">{post.content}</p>
                       
                       <div className="flex items-center gap-4 pt-3">
                         <Button 

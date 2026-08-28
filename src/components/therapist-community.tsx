@@ -270,10 +270,10 @@ export function TherapistCommunity() {
 
             {/* Content */}
             <div className="px-4 pb-3">
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors cursor-pointer">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors cursor-pointer break-words">
                 {post.title}
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-3 leading-relaxed mb-3">
+              <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-3 leading-relaxed mb-3 break-words">
                 {post.content}
               </p>
 

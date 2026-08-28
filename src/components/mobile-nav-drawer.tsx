@@ -56,46 +56,57 @@ interface FeatureCategory {
 
 const FEATURE_CATEGORIES: FeatureCategory[] = [
   {
-    title: "Mind and Reflection",
+    title: "My Mind",
     items: [
-      { title: "Dashboard", description: "Your daily wellness overview and growth", href: "/dashboard", icon: Home, color: "text-indigo-600 bg-indigo-50 dark:bg-indigo-950/50" },
+      { title: "My Mind Hub", description: "Your mental and emotional toolkit", href: "/my-mind", icon: Brain, color: "text-violet-600 bg-violet-50 dark:bg-violet-950/50" },
       { title: "AI Buddy", description: "Empathetic companion with voice support", href: "/ai-buddy", icon: Bot, color: "text-pink-600 bg-pink-50 dark:bg-pink-950/50", badge: "Live" },
       { title: "Emotional Diary", description: "Journal your thoughts and emotions", href: "/diary", icon: PenLine, color: "text-orange-600 bg-orange-50 dark:bg-orange-950/50" },
       { title: "Self-Assessment", description: "Clinically backed mental wellbeing tests", href: "/assessment", icon: Brain, color: "text-purple-600 bg-purple-50 dark:bg-purple-950/50" },
-    ]
-  },
-  {
-    title: "Therapeutic Play and Pets",
-    items: [
-      { title: "Games Hub", description: "Explore all therapeutic mini-games", href: "/games", icon: Gamepad2, color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50" },
-      { title: "Pet Care Companion", description: "Interactive emotional pet simulation", href: "/petcare-game", icon: PawPrint, color: "text-amber-600 bg-amber-50 dark:bg-amber-950/50" },
       { title: "Inner Gatekeeper", description: "Mind strategy and thought management", href: "/inner-gatekeeper", icon: Castle, color: "text-blue-600 bg-blue-50 dark:bg-blue-950/50" },
     ]
   },
   {
-    title: "Community and Peer Care",
-    items: [
-      { title: "Peer Support", description: "Connect with empathetic companions", href: "/peer-support", icon: Users2, color: "text-amber-600 bg-amber-50 dark:bg-amber-950/50" },
-      { title: "Clarity Connect", description: "Professional wellness community feed", href: "/professional-community", icon: GraduationCap, color: "text-cyan-600 bg-cyan-50 dark:bg-cyan-950/50" },
-      { title: "Mentorship", description: "1-on-1 guidance and mentor pairing", href: "/mentorship", icon: UserCheck, color: "text-teal-600 bg-teal-50 dark:teal-950/50" },
-      { title: "Anonymous Chat", description: "Confidential counselor connection", href: "/anonymous-chat", icon: MessageSquare, color: "text-violet-600 bg-violet-50 dark:bg-violet-950/50" },
-    ]
-  },
-  {
-    title: "Wellness and Creativity",
+    title: "Wellness",
     items: [
       { title: "Wellness Hub", description: "Daily habits, breathwork and mindfulness", href: "/wellness", icon: Heart, color: "text-rose-600 bg-rose-50 dark:bg-rose-950/50" },
       { title: "Goal Tracker", description: "Step-by-step progress and micro-milestones", href: "/goals", icon: Target, color: "text-red-600 bg-red-50 dark:bg-red-950/50" },
       { title: "Audio Sessions", description: "Binaural soundscapes and soothing sleep", href: "/audio-sessions", icon: Headphones, color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50" },
       { title: "Creative Zone", description: "Mandala art therapy and calming canvas", href: "/creative", icon: Palette, color: "text-sky-600 bg-sky-50 dark:bg-sky-950/50" },
+    ]
+  },
+  {
+    title: "Play",
+    items: [
+      { title: "Games Hub", description: "Explore all therapeutic mini-games", href: "/games", icon: Gamepad2, color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50" },
+      { title: "Pet Care Companion", description: "Interactive emotional pet simulation", href: "/petcare-game", icon: PawPrint, color: "text-amber-600 bg-amber-50 dark:bg-amber-950/50" },
+    ]
+  },
+  {
+    title: "Community",
+    items: [
+      { title: "Community Hub", description: "Connect, share, and find support", href: "/community", icon: Users2, color: "text-cyan-600 bg-cyan-50 dark:bg-cyan-950/50" },
+      { title: "Peer Support", description: "Connect with empathetic companions", href: "/peer-support", icon: Users2, color: "text-amber-600 bg-amber-50 dark:bg-amber-950/50" },
+      { title: "Clarity Connect", description: "Professional wellness community feed", href: "/professional-community", icon: GraduationCap, color: "text-teal-600 bg-teal-50 dark:bg-teal-950/50" },
+      { title: "Mentorship", description: "1-on-1 guidance and mentor pairing", href: "/mentorship", icon: UserCheck, color: "text-violet-600 bg-violet-50 dark:bg-violet-950/50" },
+      { title: "Anonymous Chat", description: "Confidential counselor connection", href: "/anonymous-chat", icon: MessageSquare, color: "text-indigo-600 bg-indigo-50 dark:bg-indigo-950/50" },
+    ]
+  },
+  {
+    title: "Explore",
+    items: [
       { title: "Resources", description: "Articles, guides and psychological literacy", href: "/resources", icon: BookOpen, color: "text-indigo-600 bg-indigo-50 dark:bg-indigo-950/50" },
     ]
   },
   {
-    title: "Safety and Account",
+    title: "Safety",
     items: [
       { title: "Crisis Support", description: "24/7 emergency helplines and SOS", href: "/crisis", icon: Phone, color: "text-rose-700 bg-rose-100 dark:bg-rose-950" },
-      { title: "Safety and Report", description: "Confidential issue reporting", href: "/report", icon: Shield, color: "text-slate-600 bg-slate-100 dark:bg-slate-800" },
+      { title: "Safety & Report", description: "Confidential issue reporting", href: "/report", icon: Shield, color: "text-slate-600 bg-slate-100 dark:bg-slate-800" },
+    ]
+  },
+  {
+    title: "Account",
+    items: [
       { title: "Profile", description: "Account settings and personal stats", href: "/profile", icon: User, color: "text-gray-600 bg-gray-100 dark:bg-gray-800" },
       { title: "Settings", description: "Theme, privacy and notification preferences", href: "/settings", icon: Settings, color: "text-gray-600 bg-gray-100 dark:bg-gray-800" },
     ]
@@ -144,7 +155,7 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
             />
             <div>
               <SheetTitle className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                Clarity Ecosystem
+                Clarity
               </SheetTitle>
               <p className="text-xs text-muted-foreground">All features at your fingertips</p>
             </div>
@@ -155,7 +166,7 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <Input 
               type="text"
-              placeholder="Search features (e.g. Diary, Pets, SOS)..."
+              placeholder="Search features..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9 bg-white/90 dark:bg-gray-800/90 rounded-2xl h-10 text-sm border-gray-200/60 dark:border-gray-700/60 shadow-sm"
@@ -163,17 +174,22 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
           </div>
         </SheetHeader>
 
-        {/* Feature List Scroll Area */}
+        {/* Feature List */}
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
           {filteredCategories.length === 0 ? (
             <div className="text-center py-10 text-muted-foreground text-sm">
               <Sparkles className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-              No features match "{searchQuery}"
+              No features match &quot;{searchQuery}&quot;
             </div>
           ) : (
             filteredCategories.map((category) => (
               <div key={category.title} className="space-y-2">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-2">
+                <h4 className={cn(
+                  "text-xs font-bold uppercase tracking-wider px-2",
+                  category.title === "Safety" 
+                    ? "text-rose-600 dark:text-rose-400" 
+                    : "text-muted-foreground"
+                )}>
                   {category.title}
                 </h4>
                 <div className="grid grid-cols-1 gap-1.5">
@@ -181,7 +197,7 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
                     const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname?.startsWith(item.href));
                     return (
                       <Link
-                        key={item.href}
+                        key={item.href + item.title}
                         href={item.href}
                         onClick={() => setOpen(false)}
                         className={cn(

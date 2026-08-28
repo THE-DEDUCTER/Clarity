@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const { message, personalityId, conversationHistory } = await req.json();
 
     const apiKey = process.env.NUGEN_API_KEY || process.env.NEXT_PUBLIC_NUGEN_API_KEY;
-    const apiUrl = process.env.NUGEN_API_URL || 'https://api.nugen.ai/v1/chat/completions';
+    const apiUrl = process.env.NUGEN_API_URL || 'https://api.nugen.in/api/v3/inference/chat/completions';
 
     const systemPrompt = systemPrompts[personalityId] || "You are a helpful, empathetic mental wellness companion. Be concise, warm, and supportive.";
 
@@ -25,25 +25,26 @@ export async function POST(req: Request) {
       }, { status: 401 });
     }
 
-    const messages = [
-      { role: "system", content: systemPrompt },
-      ...(Array.isArray(conversationHistory) ? conversationHistory.slice(-6) : []),
-      { role: "user", content: message }
-    ];
+    const payload = {
+      model: "model_conversation-bank-everyday-topics-llama-v3p2-3b-reasoning-aligned_alignment_01m13fd11eyw1a8",
+      messages: [
+        { role: "system", content: systemPrompt, name: "system" },
+        ...(Array.isArray(conversationHistory) ? conversationHistory.slice(-6) : []),
+        { role: "user", content: message }
+      ],
+      max_tokens: 200,
+      prompt_truncate_len: 123,
+      temperature: 1,
+      stream: false // Set to false to avoid breaking frontend. Set to true if streaming is implemented.
+    };
 
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': "Bearer " + apiKey,
-        'x-api-key': apiKey,
       },
-      body: JSON.stringify({
-        model: process.env.NUGEN_MODEL || 'nugen-chat-default',
-        messages: messages,
-        temperature: 0.7,
-        max_tokens: 600,
-      }),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {

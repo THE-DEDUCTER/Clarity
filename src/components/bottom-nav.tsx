@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Bot, PenLine, Gamepad2, LayoutGrid } from "lucide-react";
+import { Home, Brain, Heart, Users2, LayoutGrid } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MobileNavDrawer } from "@/components/mobile-nav-drawer";
 
@@ -11,9 +11,9 @@ export function BottomNav() {
 
   const navItems = [
     { name: "Home", href: "/dashboard", icon: Home },
-    { name: "AI Buddy", href: "/ai-buddy", icon: Bot },
-    { name: "Diary", href: "/diary", icon: PenLine },
-    { name: "Games", href: "/games", icon: Gamepad2 },
+    { name: "My Mind", href: "/my-mind", icon: Brain },
+    { name: "Wellness", href: "/wellness", icon: Heart },
+    { name: "Community", href: "/community", icon: Users2 },
   ];
 
   // Don't show bottom nav on root, login, or register
@@ -22,7 +22,7 @@ export function BottomNav() {
   }
 
   return (
-    <nav id="bottom-nav" aria-label="Mobile Navigation" className="md:hidden fixed bottom-4 left-3 right-3 z-50 transition-transform duration-300">
+    <nav id="bottom-nav" aria-label="Mobile Navigation" className="md:hidden fixed bottom-4 left-3 right-3 z-50 transition-transform duration-300" suppressHydrationWarning>
       <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl border border-gray-200/70 dark:border-gray-800/80 shadow-2xl rounded-[28px] px-2 py-1.5 flex justify-around items-center">
         {navItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname?.startsWith(item.href));

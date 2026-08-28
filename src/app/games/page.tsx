@@ -107,7 +107,7 @@ export default function GamesPage() {
           </div>
           <div>
             <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-              Wellness Games
+              Play
             </h1>
             <p className="text-sm text-muted-foreground">
               Therapeutic interactive games designed to build emotional resilience, mindfulness, and cognitive strength.

@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 
 const systemPrompts: Record<string, string> = {
-  alex: "You are Alex, a calm, grounding wellness coach. Speak warmly, concisely, and with deep empathy. Guide the user with calming breathing exercises, stress management tips, and balanced perspective.",
-  maya: "You are Maya, an energetic, uplifting, and motivational buddy. Keep your responses encouraging, positive, and energizing.",
-  sage: "You are Sage, a thoughtful, analytical companion. Help the user break down complex challenges into structured, manageable steps.",
-  luna: "You are Luna, a gentle nighttime companion. Your tone is soft, soothing, and serene. Help the user unwind and find peaceful rest.",
-  rio: "You are Rio, a friendly, casual social buddy. Help users navigate social anxiety, friends, and everyday life with warmth.",
+  alex: "You are Alex, a calm, grounding wellness coach. Speak warmly, concisely (1-2 short sentences max), and with deep empathy. DO NOT start giving breathing exercises or long paragraphs unless the user specifically expresses stress, anxiety, or asks for help. If they just say 'hi', respond with a short, warm greeting and ask how their day is going.",
+  maya: "You are Maya, an energetic, uplifting, and motivational buddy. Keep your responses short (1-2 sentences), encouraging, positive, and energizing. Do not preach or give long speeches.",
+  sage: "You are Sage, a thoughtful, analytical companion. Help the user break down complex challenges. Keep responses under 3 sentences unless explaining a complex concept.",
+  luna: "You are Luna, a gentle nighttime companion. Your tone is soft and soothing. Keep responses very short and peaceful.",
+  rio: "You are Rio, a friendly, casual social buddy. Speak like a supportive friend in a text message (short, natural, no essays).",
 };
 
 function generateSmartOfflineResponse(personalityId: string, message: string): string {
@@ -48,70 +48,75 @@ function generateSmartOfflineResponse(personalityId: string, message: string): s
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { message, personalityId } = body;
+    const { messages, personalityId } = body;
+    
+    // Safely extract the last user message for the fallback engine
+    const lastUserMessage = Array.isArray(messages) 
+      ? messages.filter(m => m.role === 'user').pop()?.content || ""
+      : "";
 
     // 1. Try NuGen API if key is present
     const nugenKey = process.env.NUGEN_API_KEY || process.env.NEXT_PUBLIC_NUGEN_API_KEY;
     if (nugenKey) {
       try {
-        const nugenUrl = process.env.NUGEN_API_URL || 'https://api.nugen.ai/v1/chat/completions';
+        const nugenUrl = 'https://api.nugen.in/api/v3/inference/chat/completions';
+        
+        const systemMessage = { 
+          role: "system", 
+          content: systemPrompts[personalityId] || "You are a wellness coach.",
+          name: "system"
+        };
+        
+        // Use the full message history from the frontend, ensuring we map 'ai' to 'assistant' for Nugen compatibility
+        const mappedHistory = Array.isArray(messages) ? messages.map((m: any) => ({
+          role: m.role === 'ai' || m.role === 'assistant' ? 'assistant' : 'user',
+          content: m.content
+        })) : [{ role: "user", content: lastUserMessage }];
+
+        const nugenMessages = [
+          systemMessage,
+          ...mappedHistory
+        ];
+        
+        const payload = {
+          model: "model_conversation-bank-everyday-topics-llama-v3p2-3b-reasoning-aligned_alignment_01m13fd11eyw1a8",
+          messages: nugenMessages,
+          max_tokens: 200,
+          prompt_truncate_len: 123,
+          temperature: 0.6,
+          stream: false
+        };
+
         const nugenRes = await fetch(nugenUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + nugenKey,
-            'x-api-key': nugenKey,
           },
-          body: JSON.stringify({
-            model: process.env.NUGEN_MODEL || 'nugen-chat-default',
-            messages: [
-              { role: "system", content: systemPrompts[personalityId] || "You are a wellness coach." },
-              { role: "user", content: message }
-            ],
-            temperature: 0.7,
-            max_tokens: 500,
-          }),
+          body: JSON.stringify(payload),
         });
 
         if (nugenRes.ok) {
           const data = await nugenRes.json();
           const reply = data.choices?.[0]?.message?.content || data.response || data.text;
           if (reply) {
-            return NextResponse.json({ success: true, provider: 'nugen', response: reply });
+            return NextResponse.json({ success: true, provider: 'nugen', message: reply, response: reply });
+          } else {
+            return NextResponse.json({ success: false, provider: 'nugen', message: `NuGen API returned 200 but format was unexpected: ${JSON.stringify(data)}`, response: `NuGen API returned 200 but format was unexpected: ${JSON.stringify(data)}` });
           }
+        } else {
+          const errText = await nugenRes.text();
+          console.error(`NuGen API Error! Status: ${nugenRes.status}, Body: ${errText}`);
+          return NextResponse.json({ success: false, provider: 'nugen', message: `NuGen API Error: ${nugenRes.status} - ${errText}`, response: `NuGen API Error: ${nugenRes.status} - ${errText}` });
         }
-      } catch (err) {
-        console.warn('NuGen attempt failed, trying fallback...', err);
+      } catch (err: any) {
+        console.error('NuGen attempt failed with exception:', err);
+        return NextResponse.json({ success: false, provider: 'nugen', message: `NuGen Exception: ${err.message}`, response: `NuGen Exception: ${err.message}` });
       }
+    } else {
+      return NextResponse.json({ success: false, provider: 'nugen', message: "NUGEN_API_KEY is missing from environment variables.", response: "NUGEN_API_KEY is missing from environment variables." });
     }
 
-    // 2. Try Gemini API if key is present
-    const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
-    if (geminiKey) {
-      try {
-        const { google } = await import('@ai-sdk/google');
-        const { generateText } = await import('ai');
-        const { text } = await generateText({
-          model: google('gemini-1.5-flash'),
-          system: systemPrompts[personalityId] || "You are a helpful wellness companion.",
-          prompt: message,
-        });
-        if (text) {
-          return NextResponse.json({ success: true, provider: 'gemini', response: text });
-        }
-      } catch (err) {
-        console.warn('Gemini attempt failed, using smart offline engine...', err);
-      }
-    }
-
-    // 3. Smart Offline Persona Simulation Engine (Instant, 100% resilient response)
-    const smartResponse = generateSmartOfflineResponse(personalityId, message);
-    return NextResponse.json({
-      success: true,
-      provider: 'offline-smart-engine',
-      response: smartResponse,
-      note: 'To use live NuGen AI, set NUGEN_API_KEY in your .env.local file'
-    });
 
   } catch (error: any) {
     console.error('Universal Chat Route Error:', error);

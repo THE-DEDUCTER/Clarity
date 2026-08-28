@@ -94,113 +94,102 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6 sm:space-y-8 pb-20 px-2 sm:px-4 animate-in fade-in zoom-in-95 duration-500">
+    <div className="w-full max-w-none mx-auto space-y-8 sm:space-y-12 pb-16 px-4 md:px-8 lg:px-16 xl:px-24 animate-in fade-in zoom-in-95 duration-500">
       
-      {/* Top Banner Area */}
-      <div className="bg-[#FAE9E6] dark:bg-[#3d211e] rounded-[36px] sm:rounded-[48px] p-6 sm:p-10 relative overflow-hidden shadow-sm mt-2">
-        <div className="flex justify-between items-start mb-4 sm:mb-8">
+      {/* Top Banner Area (Sleek, integrated typography instead of a box) */}
+      <div className="pt-6 sm:pt-10 relative">
+        <div className="flex flex-col gap-6">
           <span className="text-sm font-medium text-gray-500 dark:text-gray-400 tracking-wide uppercase">Your Daily Growth</span>
-          <div className="w-10 h-10 bg-white dark:bg-black/40 rounded-full flex items-center justify-center shadow-sm cursor-pointer hover:bg-gray-50 transition-colors">
-            <div className="flex gap-1">
-              <div className="w-1 h-1 bg-gray-400 rounded-full" />
-              <div className="w-1 h-1 bg-gray-400 rounded-full" />
-              <div className="w-1 h-1 bg-gray-400 rounded-full" />
-            </div>
-          </div>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-gray-900 dark:text-white leading-[1.1] tracking-tight">
+            Hello,<br />
+            <span className="text-gray-400 dark:text-gray-500">How are you feeling today?</span>
+          </h1>
         </div>
-        
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#2d3748] dark:text-[#f7fafc] leading-[1.15] tracking-tight">
-          Hello, {name}<br />
-          <span className="text-[#4a5568] dark:text-[#cbd5e0]">How are you<br />feeling today?</span>
-        </h1>
-        
-        {/* Subtle background decoration */}
-        <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-white/20 dark:bg-black/10 rounded-full blur-3xl pointer-events-none" />
-      </div>
 
-      {/* Quick Jump Shortcuts (Mobile horizontal scroll + Desktop flex wrap) */}
-      <div className="px-2 overflow-x-auto pb-1 no-scrollbar -mt-2">
-        <div className="flex items-center gap-2.5 min-w-max">
+        {/* Quick Jump Shortcuts */}
+        <div className="mt-8 flex flex-wrap items-center gap-3">
           {quickPills.map((pill) => (
             <Link
               key={pill.title}
               href={pill.href}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-semibold shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 border border-black/5 dark:border-white/10 ${pill.bg}`}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 active:scale-95 border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/40 text-gray-700 dark:text-gray-300 backdrop-blur-md hover:bg-gray-100 dark:hover:bg-white/10"
             >
-              <pill.icon className="w-3.5 h-3.5" />
+              <pill.icon className="w-4 h-4" />
               <span>{pill.title}</span>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Mood Tracker */}
-      <div className="px-2">
-        <div className="mb-4">
-          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tracking-wide">Select Mood type</span>
+      {/* Main Content Layout Grid */}
+      <div className="flex flex-col gap-12 lg:gap-16">
+        
+        {/* Mood Tracker */}
+        <div className="flex flex-col gap-6 w-full">
+          <MoodTracker variant="inline" />
         </div>
-        <MoodTracker variant="inline" />
-      </div>
 
-      {/* Bento Grid Features */}
-      <div className="px-2 pt-6">
-        <div className="mb-4">
-          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tracking-wide">Explore Activities</span>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
-          {bentoCards.map((card, index) => (
-            <Link key={card.title} href={card.href} className={card.span}>
-              <div 
-                className={`group relative h-40 sm:h-48 rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 ${card.bg} ${card.textColor} overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-95 flex flex-col justify-between`}
-                style={{
-                  animationDelay: `${index * 100}ms`,
-                  animation: 'slideInBounce 0.8s ease-out forwards'
-                }}
-              >
-                <div className="flex justify-between items-start z-10">
-                  <h3 className="text-lg sm:text-xl font-semibold leading-tight max-w-[70%]">
-                    {card.title}
-                  </h3>
-                  <div className="w-8 h-8 rounded-full bg-white/20 dark:bg-black/10 flex items-center justify-center backdrop-blur-md group-hover:bg-white/30 transition-colors">
-                    <ArrowUpRight className="w-4 h-4" />
-                  </div>
-                </div>
-                
-                <div className="w-16 h-16 rounded-2xl bg-white/20 dark:bg-black/15 backdrop-blur-md flex items-center justify-center self-end mt-auto opacity-95 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 z-10 shadow-sm">
-                  <card.icon className="w-8 h-8 text-current stroke-[2.2]" />
-                </div>
-                
-                {/* Decorative blob */}
-                <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Progress / Wellness Card */}
-      <div className="px-2 pt-2">
-        <Link href="/wellness">
-          <div className="relative overflow-hidden bg-[#e2e8f0] dark:bg-[#1a202c] rounded-[36px] p-6 sm:p-10 flex flex-col justify-center h-48 sm:h-56 group transition-all hover:shadow-lg">
-            <div className="relative z-10">
-              <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 tracking-wide">Your Wellness Score</span>
-              <div className="text-6xl sm:text-7xl font-bold text-gray-800 dark:text-gray-100 mt-2">
-                85%
-              </div>
-            </div>
-            
-            {/* Abstract hexagon-like background shapes mimicking the first reference image */}
-            <div className="absolute right-0 bottom-0 opacity-40 dark:opacity-20 translate-x-1/4 translate-y-1/4 group-hover:scale-105 transition-transform duration-700">
-              <div className="w-64 h-64 grid grid-cols-3 gap-2 rotate-12">
-                {[...Array(9)].map((_, i) => (
-                  <div key={i} className="w-20 h-20 bg-white dark:bg-gray-600 rounded-2xl opacity-70" style={{ transform: i % 2 === 0 ? 'translateY(20px)' : 'none' }} />
-                ))}
-              </div>
-            </div>
+        {/* Bento Grid Features */}
+        <div className="pt-2">
+          <div className="mb-6">
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tracking-wide">Explore Activities</span>
           </div>
-        </Link>
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+            {bentoCards.map((card, index) => (
+              <Link key={card.title} href={card.href} className={card.span}>
+                <div 
+                  className={`group relative h-40 sm:h-56 rounded-[28px] sm:rounded-[36px] p-5 sm:p-6 ${card.bg} ${card.textColor} overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-95 flex flex-col justify-between`}
+                  style={{
+                    animationDelay: `${index * 100}ms`,
+                    animation: 'slideInBounce 0.8s ease-out forwards'
+                  }}
+                >
+                  <div className="flex justify-between items-start z-10">
+                    <h3 className="text-lg sm:text-2xl font-semibold leading-tight max-w-[70%] drop-shadow-sm">
+                      {card.title}
+                    </h3>
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 dark:bg-black/10 flex items-center justify-center backdrop-blur-md group-hover:bg-white/30 transition-colors">
+                      <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                  </div>
+                  
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/20 dark:bg-black/15 backdrop-blur-md flex items-center justify-center self-end mt-auto opacity-95 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 z-10 shadow-sm">
+                    <card.icon className="w-8 h-8 sm:w-10 sm:h-10 text-current stroke-[2.2]" />
+                  </div>
+                  
+                  {/* Decorative blob */}
+                  <div className="absolute -bottom-4 -left-4 w-24 h-24 sm:w-32 sm:h-32 bg-white/10 rounded-full blur-xl pointer-events-none" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Progress / Wellness Card */}
+        <div className="pt-2">
+          <Link href="/wellness">
+            <div className="relative overflow-hidden bg-[#e2e8f0] dark:bg-[#1a202c] rounded-[36px] p-6 sm:p-10 flex flex-col justify-center h-48 sm:h-56 group transition-all hover:shadow-lg">
+              <div className="relative z-10">
+                <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 tracking-wide">Your Wellness Score</span>
+                <div className="text-6xl sm:text-7xl font-bold text-gray-800 dark:text-gray-100 mt-2">
+                  85%
+                </div>
+              </div>
+              
+              {/* Abstract hexagon-like background shapes mimicking the first reference image */}
+              <div className="absolute right-0 bottom-0 opacity-40 dark:opacity-20 translate-x-1/4 translate-y-1/4 group-hover:scale-105 transition-transform duration-700">
+                <div className="w-64 h-64 grid grid-cols-3 gap-2 rotate-12">
+                  {[...Array(9)].map((_, i) => (
+                    <div key={i} className="w-20 h-20 bg-white dark:bg-gray-600 rounded-2xl opacity-70" style={{ transform: i % 2 === 0 ? 'translateY(20px)' : 'none' }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+
       </div>
-      
+
       {/* Global Command Palette */}
       <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 w-full max-w-lg px-4 flex justify-center pointer-events-none">
         <div className="pointer-events-auto flex justify-center w-full shadow-2xl rounded-3xl relative">
@@ -239,14 +228,6 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-      
-      <style>{`
-        @keyframes slideInBounce {
-          0% { opacity: 0; transform: translateY(30px) scale(0.95); }
-          50% { transform: translateY(-5px) scale(1.02); }
-          100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-      `}</style>
     </div>
   );
 }
