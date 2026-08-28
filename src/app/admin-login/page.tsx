@@ -70,10 +70,10 @@ export default function AdminLogin() {
           <div className="flex justify-center">
             <Shield className="w-12 h-12 text-indigo-600" />
           </div>
-          <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
+          <CardTitle className="text-2xl font-bold text-foreground dark:text-white">
             Admin Access
           </CardTitle>
-          <CardDescription className="text-gray-600 dark:text-gray-300">
+          <CardDescription className="text-muted-foreground dark:text-gray-300">
             Secure login for Clarity administrators
           </CardDescription>
         </CardHeader>
@@ -137,7 +137,7 @@ export default function AdminLogin() {
           </form>
           
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground dark:text-gray-400">
               This is a secure area. Unauthorized access is prohibited.
             </p>
           </div>

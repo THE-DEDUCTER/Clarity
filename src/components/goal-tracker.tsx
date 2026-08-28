@@ -129,7 +129,7 @@ export function GoalTracker() {
       academic: { icon: Trophy, color: 'blue', bgColor: 'bg-blue-50', textColor: 'text-blue-700', borderColor: 'border-blue-200' },
       personal: { icon: Star, color: 'purple', bgColor: 'bg-purple-50', textColor: 'text-purple-700', borderColor: 'border-purple-200' },
       fitness: { icon: Zap, color: 'orange', bgColor: 'bg-orange-50', textColor: 'text-orange-700', borderColor: 'border-orange-200' },
-      career: { icon: Award, color: 'gray', bgColor: 'bg-gray-50', textColor: 'text-gray-700', borderColor: 'border-gray-200' }
+      career: { icon: Award, color: 'gray', bgColor: 'bg-background', textColor: 'text-muted-foreground', borderColor: 'border-border' }
     };
     return configs[category] || configs.personal;
   };
@@ -159,7 +159,7 @@ export function GoalTracker() {
         <Card className="border-0 shadow-lg">
           <CardContent className="p-8 text-center">
             <div className="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-4"></div>
-            <div className="text-gray-600">Loading your goals...</div>
+            <div className="text-muted-foreground">Loading your goals...</div>
           </CardContent>
         </Card>
       </div>
@@ -170,7 +170,7 @@ export function GoalTracker() {
     <div className="space-y-6" data-testid="goal-tracker">
       {/* Compact Header with Stats */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border-0 shadow-lg bg-white">
+        <Card className="border-0 shadow-lg bg-card">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -178,8 +178,8 @@ export function GoalTracker() {
                   <Target className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-semibold text-gray-900">Goal Tracker</h1>
-                  <p className="text-sm text-gray-600">Track your wellness journey</p>
+                  <h1 className="text-xl font-semibold text-foreground">Goal Tracker</h1>
+                  <p className="text-sm text-muted-foreground">Track your wellness journey</p>
                 </div>
               </div>
               <Button 
@@ -209,20 +209,20 @@ export function GoalTracker() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-white">
+        <Card className="border-0 shadow-lg bg-card">
           <CardContent className="p-6">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-gray-600" />
-                <h3 className="font-semibold text-gray-900">Overall Progress</h3>
+                <BarChart3 className="w-5 h-5 text-muted-foreground" />
+                <h3 className="font-semibold text-foreground">Overall Progress</h3>
               </div>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Total Progress</span>
-                  <span className="font-semibold text-gray-900">{totalProgress}%</span>
+                  <span className="text-sm text-muted-foreground">Total Progress</span>
+                  <span className="font-semibold text-foreground">{totalProgress}%</span>
                 </div>
                 <Progress value={totalProgress} className="h-3" />
-                <p className="text-sm text-gray-600 italic">
+                <p className="text-sm text-muted-foreground italic">
                   {motivationalQuote}
                 </p>
               </div>
@@ -249,7 +249,7 @@ export function GoalTracker() {
               </SelectContent>
             </Select>
             
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>Showing {filteredGoals.length} of {goals.length} goals</span>
             </div>
           </div>
@@ -341,7 +341,7 @@ export function GoalTracker() {
                           <CategoryIcon className={`w-5 h-5 ${categoryConfig.textColor}`} />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900">{goal.title}</h3>
+                          <h3 className="font-semibold text-foreground">{goal.title}</h3>
                           <Badge variant="outline" className={`text-xs ${priorityConfig.borderColor}`}>
                             <PriorityIcon className="w-3 h-3 mr-1" /> {goal.priority}
                           </Badge>
@@ -358,25 +358,25 @@ export function GoalTracker() {
                     </div>
                     
                     {goal.description && (
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">{goal.description}</p>
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{goal.description}</p>
                     )}
                     
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-gray-700">Progress</span>
+                        <span className="text-sm font-medium text-muted-foreground">Progress</span>
                         <div className="flex items-center gap-2">
                           {goal.streak && (
                             <Badge variant="outline" className="text-xs bg-orange-50 border-orange-200 text-orange-700">
                               <Zap className="w-3 h-3 mr-1" />{goal.streak}d
                             </Badge>
                           )}
-                          <span className="font-bold text-gray-900">{goal.progress}%</span>
+                          <span className="font-bold text-foreground">{goal.progress}%</span>
                         </div>
                       </div>
                       <Progress value={goal.progress} className="h-2" />
                     </div>
                     
-                    <div className="flex justify-between items-center mt-4 text-sm text-gray-500">
+                    <div className="flex justify-between items-center mt-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
                         {formatDate(goal.targetDate)}
@@ -414,7 +414,7 @@ export function GoalTracker() {
                 const CategoryIcon = categoryConfig.icon;
                 
                 return (
-                  <div key={goal.id} className="flex items-center gap-4 p-4 bg-white rounded-lg border border-green-200 shadow-sm">
+                  <div key={goal.id} className="flex items-center gap-4 p-4 bg-card rounded-lg border border-green-200 shadow-sm">
                     <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                       <CheckCircle2 className="w-5 h-5 text-green-600" />
                     </div>
@@ -442,12 +442,12 @@ export function GoalTracker() {
 
       {/* Empty State */}
       {activeGoals.length === 0 && completedGoals.length === 0 && (
-        <Card className="text-center p-12 border-2 border-dashed border-gray-200">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <Card className="text-center p-12 border-2 border-dashed border-border">
+          <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
             <Target className="w-8 h-8 text-gray-400" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">No Goals Yet</h3>
-          <p className="text-gray-500 mb-6 max-w-md mx-auto">
+          <h3 className="text-xl font-semibold text-muted-foreground mb-2">No Goals Yet</h3>
+          <p className="text-muted-foreground mb-6 max-w-md mx-auto">
             Start your wellness journey by creating your first goal. Set achievable targets and track your progress.
           </p>
           <Button 

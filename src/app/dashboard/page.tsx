@@ -99,10 +99,10 @@ export default function Dashboard() {
       {/* Top Banner Area (Sleek, integrated typography instead of a box) */}
       <div className="pt-6 sm:pt-10 relative">
         <div className="flex flex-col gap-6">
-          <span className="text-sm font-medium text-gray-500 dark:text-gray-400 tracking-wide uppercase">Your Daily Growth</span>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-gray-900 dark:text-white leading-[1.1] tracking-tight">
+          <span className="text-sm font-medium text-muted-foreground dark:text-gray-400 tracking-wide uppercase">Your Daily Growth</span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-foreground dark:text-white leading-[1.1] tracking-tight">
             Hello,<br />
-            <span className="text-gray-400 dark:text-gray-500">How are you feeling today?</span>
+            <span className="text-gray-400 dark:text-muted-foreground">How are you feeling today?</span>
           </h1>
         </div>
 
@@ -112,7 +112,7 @@ export default function Dashboard() {
             <Link
               key={pill.title}
               href={pill.href}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 active:scale-95 border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/40 text-gray-700 dark:text-gray-300 backdrop-blur-md hover:bg-gray-100 dark:hover:bg-white/10"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 active:scale-95 border border-border dark:border-white/10 bg-white/50 dark:bg-black/40 text-muted-foreground dark:text-gray-300 backdrop-blur-md hover:bg-muted dark:hover:bg-white/10"
             >
               <pill.icon className="w-4 h-4" />
               <span>{pill.title}</span>
@@ -132,7 +132,7 @@ export default function Dashboard() {
         {/* Bento Grid Features */}
         <div className="pt-2">
           <div className="mb-6">
-            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tracking-wide">Explore Activities</span>
+            <span className="text-sm font-semibold text-muted-foreground dark:text-gray-300 tracking-wide">Explore Activities</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
             {bentoCards.map((card, index) => (
@@ -170,8 +170,8 @@ export default function Dashboard() {
           <Link href="/wellness">
             <div className="relative overflow-hidden bg-[#e2e8f0] dark:bg-[#1a202c] rounded-[36px] p-6 sm:p-10 flex flex-col justify-center h-48 sm:h-56 group transition-all hover:shadow-lg">
               <div className="relative z-10">
-                <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 tracking-wide">Your Wellness Score</span>
-                <div className="text-6xl sm:text-7xl font-bold text-gray-800 dark:text-gray-100 mt-2">
+                <span className="text-sm font-semibold text-muted-foreground dark:text-gray-400 tracking-wide">Your Wellness Score</span>
+                <div className="text-6xl sm:text-7xl font-bold text-foreground dark:text-gray-100 mt-2">
                   85%
                 </div>
               </div>
@@ -180,7 +180,7 @@ export default function Dashboard() {
               <div className="absolute right-0 bottom-0 opacity-40 dark:opacity-20 translate-x-1/4 translate-y-1/4 group-hover:scale-105 transition-transform duration-700">
                 <div className="w-64 h-64 grid grid-cols-3 gap-2 rotate-12">
                   {[...Array(9)].map((_, i) => (
-                    <div key={i} className="w-20 h-20 bg-white dark:bg-gray-600 rounded-2xl opacity-70" style={{ transform: i % 2 === 0 ? 'translateY(20px)' : 'none' }} />
+                    <div key={i} className="w-20 h-20 bg-card dark:bg-gray-600 rounded-2xl opacity-70" style={{ transform: i % 2 === 0 ? 'translateY(20px)' : 'none' }} />
                   ))}
                 </div>
               </div>

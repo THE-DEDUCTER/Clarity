@@ -166,7 +166,7 @@ export function AntiRaggingSystem() {
       case "resolved": return "text-green-600 bg-green-50";
       case "investigating": return "text-blue-600 bg-blue-50";
       case "pending": return "text-yellow-600 bg-yellow-50";
-      default: return "text-gray-600 bg-gray-50";
+      default: return "text-muted-foreground bg-background";
     }
   };
 

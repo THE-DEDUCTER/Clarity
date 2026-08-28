@@ -19,7 +19,7 @@ export default function EmojiMorphDemo() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 p-6">
+    <div className="min-h-screen bg-card dark:bg-gray-900 p-6">
       <div className="max-w-4xl mx-auto space-y-8">
         <BackButton to="/dashboard" />
         
@@ -50,7 +50,7 @@ export default function EmojiMorphDemo() {
                   key={mood.value}
                   variant="outline"
                   onClick={() => handleMoodSelect(mood)}
-                  className="h-32 flex flex-col items-center justify-center gap-3 border-2 rounded-2xl hover:scale-105 hover:shadow-lg transition-all duration-300 group bg-white dark:bg-gray-800"
+                  className="h-32 flex flex-col items-center justify-center gap-3 border-2 rounded-2xl hover:scale-105 hover:shadow-lg transition-all duration-300 group bg-card dark:bg-gray-800"
                   style={{
                     animationDelay: `${index * 100}ms`,
                     animation: 'slideInBounce 0.8s ease-out forwards'

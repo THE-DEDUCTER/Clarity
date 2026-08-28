@@ -107,8 +107,8 @@ const FEATURE_CATEGORIES: FeatureCategory[] = [
   {
     title: "Account",
     items: [
-      { title: "Profile", description: "Account settings and personal stats", href: "/profile", icon: User, color: "text-gray-600 bg-gray-100 dark:bg-gray-800" },
-      { title: "Settings", description: "Theme, privacy and notification preferences", href: "/settings", icon: Settings, color: "text-gray-600 bg-gray-100 dark:bg-gray-800" },
+      { title: "Profile", description: "Account settings and personal stats", href: "/profile", icon: User, color: "text-muted-foreground bg-muted dark:bg-gray-800" },
+      { title: "Settings", description: "Theme, privacy and notification preferences", href: "/settings", icon: Settings, color: "text-muted-foreground bg-muted dark:bg-gray-800" },
     ]
   }
 ];
@@ -134,9 +134,9 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="md:hidden rounded-2xl w-10 h-10 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow-sm border border-gray-100 dark:border-gray-700"
+            className="md:hidden rounded-2xl w-10 h-10 bg-white/70 dark:bg-gray-800/70 backdrop-blur-md shadow-sm border border-border dark:border-gray-700"
           >
-            <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+            <Menu className="w-5 h-5 text-muted-foreground dark:text-gray-200" />
             <span className="sr-only">Open feature menu</span>
           </Button>
         )}
@@ -144,9 +144,9 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
 
       <SheetContent 
         side="left" 
-        className="w-[88vw] sm:max-w-md p-0 flex flex-col bg-slate-50/95 dark:bg-gray-900/95 backdrop-blur-2xl border-r border-gray-200/50 dark:border-gray-800/50 z-[100]"
+        className="w-[88vw] sm:max-w-md p-0 flex flex-col bg-slate-50/95 dark:bg-gray-900/95 backdrop-blur-2xl border-r border-border/50 dark:border-gray-800/50 z-[100]"
       >
-        <SheetHeader className="p-4 sm:p-6 pb-2 border-b border-gray-200/40 dark:border-gray-800/40 text-left">
+        <SheetHeader className="p-4 sm:p-6 pb-2 border-b border-border/40 dark:border-gray-800/40 text-left">
           <div className="flex items-center gap-3">
             <img 
               src="/assets/clarity-logo.png" 
@@ -154,7 +154,7 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
               className="h-8 w-auto rounded-xl drop-shadow-sm" 
             />
             <div>
-              <SheetTitle className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              <SheetTitle className="text-lg font-bold text-foreground dark:text-gray-100">
                 Clarity
               </SheetTitle>
               <p className="text-xs text-muted-foreground">All features at your fingertips</p>
@@ -169,7 +169,7 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
               placeholder="Search features..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-white/90 dark:bg-gray-800/90 rounded-2xl h-10 text-sm border-gray-200/60 dark:border-gray-700/60 shadow-sm"
+              className="pl-9 bg-white/90 dark:bg-gray-800/90 rounded-2xl h-10 text-sm border-border/60 dark:border-gray-700/60 shadow-sm"
             />
           </div>
         </SheetHeader>
@@ -203,7 +203,7 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
                         className={cn(
                           "flex items-center gap-3.5 p-2.5 rounded-2xl transition-all duration-200 group active:scale-[0.98]",
                           isActive
-                            ? "bg-white dark:bg-gray-800 shadow-md border border-gray-200/60 dark:border-gray-700"
+                            ? "bg-card dark:bg-gray-800 shadow-md border border-border/60 dark:border-gray-700"
                             : "hover:bg-white/60 dark:hover:bg-gray-800/60"
                         )}
                       >
@@ -212,7 +212,7 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
+                            <span className="text-sm font-semibold text-foreground dark:text-gray-200 truncate">
                               {item.title}
                             </span>
                             {item.badge && (

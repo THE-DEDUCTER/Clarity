@@ -40,17 +40,17 @@ export default function HomePage() {
         <header className="flex justify-between items-center p-4 sm:p-6 h-20 shrink-0">
           <div className="flex items-center space-x-2">
             <Heart className="w-6 h-6 text-emerald-600" />
-            <span className="text-lg font-bold text-gray-800 dark:text-gray-200">Clarity</span>
+            <span className="text-lg font-bold text-foreground dark:text-gray-200">Clarity</span>
           </div>
           
           <div className="flex items-center space-x-3">
             {isLoading ? (
-              <div className="w-8 h-8 animate-pulse bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+              <div className="w-8 h-8 animate-pulse bg-secondary dark:bg-gray-700 rounded-full"></div>
             ) : isAuthenticated && user ? (
               <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2 bg-white/80 dark:bg-black/80 backdrop-blur-sm rounded-full px-3 py-1.5 border border-gray-200 dark:border-gray-800 shadow-sm">
+                <div className="flex items-center space-x-2 bg-white/80 dark:bg-black/80 backdrop-blur-sm rounded-full px-3 py-1.5 border border-border dark:border-gray-800 shadow-sm">
                   <User className="w-4 h-4 text-emerald-600" />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-muted-foreground dark:text-gray-300">
                     {user.firstName || user.username}
                   </span>
                 </div>
@@ -58,7 +58,7 @@ export default function HomePage() {
                   variant="outline"
                   size="sm"
                   onClick={handleLogout}
-                  className="bg-white/80 dark:bg-black/80 backdrop-blur-sm hover:bg-white dark:hover:bg-black border-gray-200 dark:border-gray-800"
+                  className="bg-white/80 dark:bg-black/80 backdrop-blur-sm hover:bg-card dark:hover:bg-black border-border dark:border-gray-800"
                 >
                   <LogOut className="w-4 h-4 sm:mr-2" />
                   <span className="hidden sm:inline">Logout</span>
@@ -70,7 +70,7 @@ export default function HomePage() {
                   variant="outline"
                   size="sm"
                   onClick={() => router.push("/login")}
-                  className="bg-white/80 dark:bg-black/80 backdrop-blur-sm hover:bg-white dark:hover:bg-black"
+                  className="bg-white/80 dark:bg-black/80 backdrop-blur-sm hover:bg-card dark:hover:bg-black"
                 >
                   <LogIn className="w-4 h-4 sm:mr-2" />
                   <span className="hidden sm:inline">Login</span>
@@ -121,7 +121,7 @@ export default function HomePage() {
                   <Button
                     onClick={handleEnterApp}
                     variant="ghost"
-                    className="rounded-[0.95rem] px-8 py-6 text-lg font-semibold bg-white/95 hover:bg-white dark:bg-gray-950 dark:hover:bg-black text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50"
+                    className="rounded-[0.95rem] px-8 py-6 text-lg font-semibold bg-white/95 hover:bg-card dark:bg-gray-950 dark:hover:bg-black text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50"
                   >
                     <Sparkles className="w-5 h-5 mr-3" />
                     Go to Dashboard
@@ -133,7 +133,7 @@ export default function HomePage() {
                   <Button
                     onClick={() => router.push("/register")}
                     variant="ghost"
-                    className="rounded-[0.95rem] px-8 py-6 text-lg font-semibold bg-white/95 hover:bg-white dark:bg-gray-950 dark:hover:bg-black text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50"
+                    className="rounded-[0.95rem] px-8 py-6 text-lg font-semibold bg-white/95 hover:bg-card dark:bg-gray-950 dark:hover:bg-black text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50"
                   >
                     <UserPlus className="w-5 h-5 mr-3" />
                     Get Started Free
@@ -162,7 +162,7 @@ export default function HomePage() {
         </div>
 
         {/* Footer */}
-        <footer className="h-12 flex-shrink-0 flex items-center justify-center text-xs sm:text-sm text-gray-500 dark:text-gray-400 bg-white/30 dark:bg-black/30 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-800/50">
+        <footer className="h-12 flex-shrink-0 flex items-center justify-center text-xs sm:text-sm text-muted-foreground dark:text-gray-400 bg-white/30 dark:bg-black/30 backdrop-blur-md border-t border-border/50 dark:border-gray-800/50">
           © 2025 Clarity. Supporting student mental health with compassion and innovation.
         </footer>
       </div>

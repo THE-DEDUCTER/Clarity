@@ -45,7 +45,7 @@ export function MoodQuadrantPicker({ onSelect }: MoodQuadrantPickerProps) {
     <div className="flex-1 flex flex-col items-center justify-center w-full px-4">
       
       <div className="flex items-center justify-center w-full px-4 mb-8">
-        <span className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-semibold flex items-center gap-1.5">
+        <span className="text-xs uppercase tracking-widest text-muted-foreground dark:text-gray-400 font-semibold flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-yellow-500 dark:text-yellow-400" />
           Interactive Mood Meter
         </span>
@@ -55,7 +55,7 @@ export function MoodQuadrantPicker({ onSelect }: MoodQuadrantPickerProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="text-xl sm:text-2xl font-semibold mb-12 text-center text-gray-900 dark:text-white tracking-tight font-serif"
+        className="text-xl sm:text-2xl font-semibold mb-12 text-center text-foreground dark:text-white tracking-tight font-serif"
       >
         Tap the color that best describes<br/>how you feel right now
       </motion.h2>

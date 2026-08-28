@@ -172,7 +172,7 @@ export function TherapistCommunity() {
       relationships: 'bg-pink-100 text-pink-800 border-pink-200',
       academic: 'bg-green-100 text-green-800 border-green-200',
       trauma: 'bg-purple-100 text-purple-800 border-purple-200',
-      general: 'bg-gray-100 text-gray-800 border-gray-200'
+      general: 'bg-muted text-foreground border-border'
     };
     return colors[category as keyof typeof colors] || colors.general;
   };
@@ -222,7 +222,7 @@ export function TherapistCommunity() {
       {/* Posts Grid */}
       <div className="space-y-3 xxs:space-y-2 sm:space-y-4">
         {filteredPosts.map((post) => (
-          <div key={post.id} className="bg-white dark:bg-gray-900 rounded-xl xxs:rounded-lg border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-300 hover:shadow-lg overflow-hidden group">
+          <div key={post.id} className="bg-card dark:bg-gray-900 rounded-xl xxs:rounded-lg border border-border dark:border-gray-800 hover:border-border dark:hover:border-gray-700 transition-all duration-300 hover:shadow-lg overflow-hidden group">
             {/* Header with Author Info */}
             <div className="p-3 xxs:p-2 sm:p-4 pb-2 xxs:pb-1 sm:pb-3">
               <div className="flex items-start justify-between mb-3">
@@ -242,13 +242,13 @@ export function TherapistCommunity() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm truncate">{post.authorName}</h4>
+                      <h4 className="font-semibold text-foreground dark:text-gray-100 text-sm truncate">{post.authorName}</h4>
                       <Badge className={getCategoryColor(post.category)} variant="outline">
                         {post.category}
                       </Badge>
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{post.authorTitle}</p>
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 dark:text-gray-500">
+                    <p className="text-xs text-muted-foreground dark:text-gray-400 mb-2">{post.authorTitle}</p>
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground dark:text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
                         {post.authorRating}
@@ -264,28 +264,28 @@ export function TherapistCommunity() {
                     </div>
                   </div>
                 </div>
-                <span className="text-xs text-gray-500 dark:text-gray-500 whitespace-nowrap">{post.readTime}</span>
+                <span className="text-xs text-muted-foreground dark:text-muted-foreground whitespace-nowrap">{post.readTime}</span>
               </div>
             </div>
 
             {/* Content */}
             <div className="px-4 pb-3">
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors cursor-pointer break-words">
+              <h3 className="font-semibold text-foreground dark:text-gray-100 text-base mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors cursor-pointer break-words">
                 {post.title}
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-3 leading-relaxed mb-3 break-words">
+              <p className="text-muted-foreground dark:text-gray-300 text-sm line-clamp-3 leading-relaxed mb-3 break-words">
                 {post.content}
               </p>
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-4">
                 {post.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+                  <span key={tag} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-muted dark:bg-gray-800 text-muted-foreground dark:text-gray-300 hover:bg-secondary dark:hover:bg-gray-700 transition-colors cursor-pointer">
                     #{tag}
                   </span>
                 ))}
                 {post.tags.length > 3 && (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-muted dark:bg-gray-800 text-muted-foreground dark:text-gray-400">
                     +{post.tags.length - 3} more
                   </span>
                 )}
@@ -293,18 +293,18 @@ export function TherapistCommunity() {
             </div>
 
             {/* Actions Bar */}
-            <div className="px-4 py-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50">
+            <div className="px-4 py-3 border-t border-border dark:border-gray-800 bg-background/50 dark:bg-gray-800/50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-6">
-                  <button className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors group/heart">
+                  <button className="flex items-center gap-2 text-muted-foreground dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors group/heart">
                     <Heart className="w-4 h-4 group-hover/heart:scale-110 transition-transform" />
                     <span className="text-sm font-medium">{post.likes}</span>
                   </button>
-                  <button className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors group/comment">
+                  <button className="flex items-center gap-2 text-muted-foreground dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors group/comment">
                     <MessageCircle className="w-4 h-4 group-hover/comment:scale-110 transition-transform" />
                     <span className="text-sm font-medium">{post.comments}</span>
                   </button>
-                  <button className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-green-500 dark:hover:text-green-400 transition-colors group/helpful">
+                  <button className="flex items-center gap-2 text-muted-foreground dark:text-gray-400 hover:text-green-500 dark:hover:text-green-400 transition-colors group/helpful">
                     <ThumbsUp className="w-4 h-4 group-hover/helpful:scale-110 transition-transform" />
                     <span className="text-sm font-medium">{post.helpfulCount}</span>
                   </button>

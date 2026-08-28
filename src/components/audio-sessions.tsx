@@ -321,7 +321,7 @@ export function AudioSessions() {
       case "meditation": return "text-purple-600 bg-purple-100 border border-purple-200";
       case "focus": return "text-blue-600 bg-blue-100 border border-blue-200"; 
       case "breathing": return "text-green-600 bg-green-100 border border-green-200";
-      default: return "text-gray-600 bg-gray-100 border border-gray-200";
+      default: return "text-muted-foreground bg-muted border border-border";
     }
   };
 
@@ -347,18 +347,18 @@ export function AudioSessions() {
   const progress = totalDuration > 0 ? (currentTime / (totalDuration * 60)) * 100 : 0;
 
   return (
-    <div className="min-h-screen text-gray-800 px-4 pb-6">
+    <div className="min-h-screen text-foreground px-4 pb-6">
       {/* Clean Header */}
       <div className="mb-8">
         <div className="flex items-center gap-4 mb-6">
-          <div className="p-4 bg-white rounded-2xl shadow-lg border border-gray-100">
+          <div className="p-4 bg-card rounded-2xl shadow-lg border border-border">
             <Headphones className="w-12 h-12 text-blue-600" />
           </div>
           <div>
-            <h1 className="text-5xl font-light text-gray-800 mb-2">
+            <h1 className="text-5xl font-light text-foreground mb-2">
               Wellness Audio
             </h1>
-            <p className="text-gray-600 text-lg">
+            <p className="text-muted-foreground text-lg">
               {AUDIO_SESSIONS.length} sessions • By certified instructors • Made for you
             </p>
           </div>
@@ -375,14 +375,14 @@ export function AudioSessions() {
           </Button>
           <Button 
             variant="ghost" 
-            className="text-gray-600 hover:text-gray-800 p-3 rounded-full hover:bg-gray-100"
+            className="text-muted-foreground hover:text-foreground p-3 rounded-full hover:bg-muted"
             onClick={() => setIsShuffled(!isShuffled)}
           >
             <Shuffle className={`w-6 h-6 ${isShuffled ? 'text-blue-600' : ''}`} />
           </Button>
           <Button 
             variant="ghost" 
-            className="text-gray-600 hover:text-gray-800 p-3 rounded-full hover:bg-gray-100"
+            className="text-muted-foreground hover:text-foreground p-3 rounded-full hover:bg-muted"
             onClick={() => setRepeatMode(repeatMode === 'none' ? 'all' : repeatMode === 'all' ? 'one' : 'none')}
           >
             <Repeat className={`w-6 h-6 ${repeatMode !== 'none' ? 'text-blue-600' : ''}`} />
@@ -400,7 +400,7 @@ export function AudioSessions() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAIRecommend()}
-              className="pl-12 pr-32 bg-white border-gray-200 text-gray-800 placeholder-gray-400 rounded-full h-12 focus:ring-2 focus:ring-blue-500 shadow-sm w-full"
+              className="pl-12 pr-32 bg-card border-border text-foreground placeholder-gray-400 rounded-full h-12 focus:ring-2 focus:ring-blue-500 shadow-sm w-full"
             />
             <div className="absolute right-1">
               <Button
@@ -418,11 +418,11 @@ export function AudioSessions() {
             </div>
           </div>
           <Select value={activeTab} onValueChange={setActiveTab}>
-            <SelectTrigger className="w-40 bg-white border-gray-200 text-gray-800 rounded-full shadow-sm h-12">
+            <SelectTrigger className="w-40 bg-card border-border text-foreground rounded-full shadow-sm h-12">
               <Filter className="w-4 h-4 mr-2" />
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-white border-gray-200">
+            <SelectContent className="bg-card border-border">
               <SelectItem value="all">All Categories</SelectItem>
               <SelectItem value="sleep">Sleep</SelectItem>
               <SelectItem value="meditation">Meditation</SelectItem>
@@ -442,8 +442,8 @@ export function AudioSessions() {
                 </div>
                 <div>
                   <div className="text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">AI Pick for You</div>
-                  <h4 className="text-gray-900 font-semibold text-base">{aiRecommendation.resource.title}</h4>
-                  <p className="text-gray-600 text-sm mt-1 leading-relaxed">
+                  <h4 className="text-foreground font-semibold text-base">{aiRecommendation.resource.title}</h4>
+                  <p className="text-muted-foreground text-sm mt-1 leading-relaxed">
                     "{aiRecommendation.reasoning}"
                   </p>
                   <Button 
@@ -464,16 +464,16 @@ export function AudioSessions() {
       </div>
 
       {/* Clean Track List */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 mb-6 shadow-lg border border-gray-100">
+      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 mb-6 shadow-lg border border-border">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-light text-gray-800">Sessions</h2>
-          <div className="text-sm text-gray-500">
+          <h2 className="text-2xl font-light text-foreground">Sessions</h2>
+          <div className="text-sm text-muted-foreground">
             {filteredSessions.length} session{filteredSessions.length !== 1 ? 's' : ''}
           </div>
         </div>
         
         {/* Track List Header */}
-        <div className="grid grid-cols-12 gap-2 sm:gap-4 items-center text-sm text-gray-500 border-b border-gray-200 pb-2 mb-4">
+        <div className="grid grid-cols-12 gap-2 sm:gap-4 items-center text-sm text-muted-foreground border-b border-border pb-2 mb-4">
           <div className="col-span-1 hidden sm:block">#</div>
           <div className="col-span-10 sm:col-span-6">Title</div>
           <div className="col-span-2 hidden md:block">Category</div>
@@ -492,7 +492,7 @@ export function AudioSessions() {
             return (
               <div 
                 key={session.id}
-                className={`grid grid-cols-12 gap-2 sm:gap-4 items-center p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer group ${
+                className={`grid grid-cols-12 gap-2 sm:gap-4 items-center p-3 rounded-lg hover:bg-background transition-all duration-200 cursor-pointer group ${
                   isCurrentSession ? 'bg-blue-50' : ''
                 }`}
                 onClick={() => handleSessionSelect(session)}
@@ -501,7 +501,7 @@ export function AudioSessions() {
                 <div className="col-span-1 hidden sm:block">
                   <div className="relative">
                     <span className={`text-sm ${
-                      isCurrentSession ? 'text-blue-600' : 'text-gray-500 group-hover:hidden'
+                      isCurrentSession ? 'text-blue-600' : 'text-muted-foreground group-hover:hidden'
                     }`}>
                       {isCurrentSession && isPlaying ? <Volume2 className="w-3.5 h-3.5 text-blue-600 animate-pulse" /> : index + 1}
                     </span>
@@ -519,11 +519,11 @@ export function AudioSessions() {
                   </div>
                   <div className="min-w-0">
                     <div className={`font-medium truncate ${
-                      isCurrentSession ? 'text-blue-600' : 'text-gray-800'
+                      isCurrentSession ? 'text-blue-600' : 'text-foreground'
                     }`}>
                       {session.title}
                     </div>
-                    <div className="text-sm text-gray-500 truncate">
+                    <div className="text-sm text-muted-foreground truncate">
                       {session.instructor || 'Various Artists'}
                     </div>
                   </div>
@@ -537,7 +537,7 @@ export function AudioSessions() {
                 </div>
                 
                 {/* Plays */}
-                <div className="col-span-2 text-gray-500 text-sm hidden md:block">
+                <div className="col-span-2 text-muted-foreground text-sm hidden md:block">
                   {formatPlays(session.plays || 0)}
                 </div>
                 
@@ -569,7 +569,7 @@ export function AudioSessions() {
 
       {/* Fixed Bottom Player */}
       {currentSession && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-4 z-[1001] shadow-xl">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-border p-4 z-[1001] shadow-xl">
           <div className="max-w-screen-xl mx-auto">
             <div className="flex items-center justify-between">
               {/* Current Track Info */}
@@ -581,8 +581,8 @@ export function AudioSessions() {
                   })()}
                 </div>
                 <div className="min-w-0">
-                  <div className="text-gray-800 font-medium truncate">{currentSession.title}</div>
-                  <div className="text-gray-500 text-sm truncate">{currentSession.instructor || 'Various Artists'}</div>
+                  <div className="text-foreground font-medium truncate">{currentSession.title}</div>
+                  <div className="text-muted-foreground text-sm truncate">{currentSession.instructor || 'Various Artists'}</div>
                 </div>
                 <Button
                   variant="ghost"
@@ -603,7 +603,7 @@ export function AudioSessions() {
               {/* Player Controls */}
               <div className="flex flex-col items-center gap-2 w-2/4 max-w-lg">
                 <div className="flex items-center gap-4">
-                  <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-800">
+                  <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
                     <SkipBack className="w-4 h-4" />
                   </Button>
                   <Button
@@ -612,18 +612,18 @@ export function AudioSessions() {
                   >
                     {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
                   </Button>
-                  <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-800">
+                  <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
                     <SkipForward className="w-4 h-4" />
                   </Button>
                 </div>
                 
                 {/* Progress Bar */}
                 <div className="flex items-center gap-2 w-full">
-                  <span className="text-xs text-gray-500 w-10 text-right">{formatTime(currentTime)}</span>
+                  <span className="text-xs text-muted-foreground w-10 text-right">{formatTime(currentTime)}</span>
                   <div className="flex-1">
-                    <Progress value={progress} className="h-1 bg-gray-200" />
+                    <Progress value={progress} className="h-1 bg-secondary" />
                   </div>
-                  <span className="text-xs text-gray-500 w-10">{formatTime(totalDuration * 60)}</span>
+                  <span className="text-xs text-muted-foreground w-10">{formatTime(totalDuration * 60)}</span>
                 </div>
               </div>
 
@@ -632,7 +632,7 @@ export function AudioSessions() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-gray-500 hover:text-gray-800"
+                  className="text-muted-foreground hover:text-foreground"
                   onClick={toggleMute}
                 >
                   {isMuted || volume === 0 ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}

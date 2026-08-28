@@ -208,10 +208,10 @@ export const InnerGatekeeper: React.FC = () => {
             <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg text-white">
               <Shield className="w-8 h-8" />
             </div>
-            <h1 className="text-3xl font-bold mb-3 text-gray-800">
+            <h1 className="text-3xl font-bold mb-3 text-foreground">
               Inner Gatekeeper
             </h1>
-            <p className="text-base text-gray-600 mb-6 leading-relaxed">
+            <p className="text-base text-muted-foreground mb-6 leading-relaxed">
               Welcome, Guardian! You are the protector of your mind castle. 
               Thoughts, feelings, and experiences will approach your gates. 
               Choose wisely whether to accept, reject, or challenge them.
@@ -219,15 +219,15 @@ export const InnerGatekeeper: React.FC = () => {
             <div className="space-y-3 mb-8 text-left">
               <div className="flex items-center space-x-3 p-3 rounded-xl bg-emerald-50/80 border border-emerald-100">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                <span className="text-sm text-gray-700"><strong>Accept:</strong> Welcome positive thoughts and beneficial experiences</span>
+                <span className="text-sm text-muted-foreground"><strong>Accept:</strong> Welcome positive thoughts and beneficial experiences</span>
               </div>
               <div className="flex items-center space-x-3 p-3 rounded-xl bg-rose-50/80 border border-rose-100">
                 <XCircle className="w-5 h-5 text-rose-600 flex-shrink-0" />
-                <span className="text-sm text-gray-700"><strong>Reject:</strong> Turn away harmful or destructive influences</span>
+                <span className="text-sm text-muted-foreground"><strong>Reject:</strong> Turn away harmful or destructive influences</span>
               </div>
               <div className="flex items-center space-x-3 p-3 rounded-xl bg-purple-50/80 border border-purple-100">
                 <Swords className="w-5 h-5 text-purple-600 flex-shrink-0" />
-                <span className="text-sm text-gray-700"><strong>Challenge:</strong> Face difficult thoughts with courage and wisdom</span>
+                <span className="text-sm text-muted-foreground"><strong>Challenge:</strong> Face difficult thoughts with courage and wisdom</span>
               </div>
             </div>
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">

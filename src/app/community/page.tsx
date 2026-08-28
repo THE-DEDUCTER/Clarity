@@ -78,11 +78,11 @@ export default function CommunityPage() {
             <span>You&apos;re Not Alone</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-bold text-foreground dark:text-gray-50 tracking-tight">
             Community
           </h1>
 
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground dark:text-gray-300 leading-relaxed">
             Connect with empathetic peers, discover trusted mentors, consult certified mental health professionals, and share your journey in a safe, compassionate space.
           </p>
         </div>
@@ -91,7 +91,7 @@ export default function CommunityPage() {
       {/* Feature Bento Grid */}
       <section className="space-y-3 sm:space-y-4">
         <div className="px-1">
-          <h2 className="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200 tracking-wide">
+          <h2 className="text-sm sm:text-base font-semibold text-foreground dark:text-gray-200 tracking-wide">
             Connection &amp; Support Hubs
           </h2>
         </div>
@@ -143,23 +143,23 @@ export default function CommunityPage() {
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
             <Heart className="w-4 h-4 text-rose-500" />
-            <h2 className="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200 tracking-wide">
+            <h2 className="text-sm sm:text-base font-semibold text-foreground dark:text-gray-200 tracking-wide">
               Community Activity
             </h2>
           </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-[28px] border border-gray-200/80 dark:border-gray-800/80 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md p-6 sm:p-8 shadow-sm">
+        <div className="relative overflow-hidden rounded-[28px] border border-border/80 dark:border-gray-800/80 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md p-6 sm:p-8 shadow-sm">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2 max-w-xl">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>Safe &amp; Moderated</span>
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
+              <h3 className="text-lg sm:text-xl font-bold text-foreground dark:text-gray-100">
                 Join active discussions and share your journey
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-sm text-muted-foreground dark:text-gray-400 leading-relaxed">
                 Connect in group discussions, exchange daily encouragement, and ask anonymous questions in our warm, supportive space.
               </p>
             </div>
@@ -176,28 +176,28 @@ export default function CommunityPage() {
           </div>
 
           {/* Activity Preview Pills */}
-          <div className="mt-6 pt-6 border-t border-gray-200/60 dark:border-gray-800/60 grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10">
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+          <div className="mt-6 pt-6 border-t border-border/60 dark:border-gray-800/60 grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10">
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-background dark:bg-gray-800/40 border border-border dark:border-gray-800">
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
               <div className="text-xs">
-                <p className="font-semibold text-gray-800 dark:text-gray-200">Active Peer Circles</p>
-                <p className="text-gray-500 dark:text-gray-400">Open for daily sharing</p>
+                <p className="font-semibold text-foreground dark:text-gray-200">Active Peer Circles</p>
+                <p className="text-muted-foreground dark:text-gray-400">Open for daily sharing</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-background dark:bg-gray-800/40 border border-border dark:border-gray-800">
               <div className="w-2.5 h-2.5 rounded-full bg-blue-500" />
               <div className="text-xs">
-                <p className="font-semibold text-gray-800 dark:text-gray-200">100% Confidential</p>
-                <p className="text-gray-500 dark:text-gray-400">Anonymous handles &amp; avatars</p>
+                <p className="font-semibold text-foreground dark:text-gray-200">100% Confidential</p>
+                <p className="text-muted-foreground dark:text-gray-400">Anonymous handles &amp; avatars</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-800">
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-background dark:bg-gray-800/40 border border-border dark:border-gray-800">
               <div className="w-2.5 h-2.5 rounded-full bg-purple-500" />
               <div className="text-xs">
-                <p className="font-semibold text-gray-800 dark:text-gray-200">Guided Facilitation</p>
-                <p className="text-gray-500 dark:text-gray-400">Mentors &amp; counselor support</p>
+                <p className="font-semibold text-foreground dark:text-gray-200">Guided Facilitation</p>
+                <p className="text-muted-foreground dark:text-gray-400">Mentors &amp; counselor support</p>
               </div>
             </div>
           </div>

@@ -288,7 +288,7 @@ export function WellnessDashboard() {
                 className={`group relative overflow-hidden transition-all duration-500 hover:scale-105 cursor-pointer ${
                   badge.earned 
                     ? 'bg-green-100 dark:bg-green-900/30 shadow-lg hover:shadow-xl' 
-                    : 'bg-gray-100 dark:bg-gray-800 opacity-60 hover:opacity-80'
+                    : 'bg-muted dark:bg-gray-800 opacity-60 hover:opacity-80'
                 }`}
                 style={{ borderRadius: '16px', padding: '1rem' }}
                 data-testid={`badge-${badge.name.toLowerCase().replace(/\s+/g, '-')}`}

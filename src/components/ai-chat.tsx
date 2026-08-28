@@ -285,13 +285,13 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
   const starters = conversationStarters[personality.id] || [];
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-black font-sans w-full max-w-full">
+    <div className="flex flex-col h-full bg-card dark:bg-black font-sans w-full max-w-full">
       
       {/* Instagram-style Header */}
-      <div className="flex items-center justify-between px-4 h-[60px] border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black shrink-0 z-10 sticky top-0">
+      <div className="flex items-center justify-between px-4 h-[60px] border-b border-border dark:border-gray-800 bg-card dark:bg-black shrink-0 z-10 sticky top-0">
         <div className="flex items-center gap-3 cursor-pointer">
           {onBack && (
-            <button onClick={onBack} className="p-1 -ml-1 text-black dark:text-white hover:opacity-70 transition-opacity">
+            <button onClick={onBack} className="p-1 -ml-1 text-foreground dark:text-white hover:opacity-70 transition-opacity">
               <ArrowLeft className="w-6 h-6" />
             </button>
           )}
@@ -301,16 +301,16 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <span className="text-[15px] font-semibold text-black dark:text-white leading-tight">
+            <span className="text-[15px] font-semibold text-foreground dark:text-white leading-tight">
               {personality.name}
             </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+            <span className="text-xs text-muted-foreground dark:text-gray-400 font-medium">
               {personality.role}
             </span>
           </div>
         </div>
         
-        <div className="flex items-center gap-5 text-black dark:text-white">
+        <div className="flex items-center gap-5 text-foreground dark:text-white">
           <button 
             onClick={() => setSpeechEnabled(!speechEnabled)} 
             className="hover:opacity-70 transition-opacity relative"
@@ -331,7 +331,7 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
                 <Info className="w-7 h-7" strokeWidth={2} />
               </button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 rounded-2xl">
+            <DialogContent className="sm:max-w-[425px] bg-card dark:bg-gray-900 border-border dark:border-gray-800 rounded-2xl">
               <DialogHeader>
                 <DialogTitle className="text-center">Details</DialogTitle>
               </DialogHeader>
@@ -342,7 +342,7 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
                   </AvatarFallback>
                 </Avatar>
                 <span className="text-xl font-bold">{personality.name}</span>
-                <span className="text-sm text-gray-500">{personality.description}</span>
+                <span className="text-sm text-muted-foreground">{personality.description}</span>
                 
                 <div className="flex gap-4 mt-6 w-full">
                   <Button variant="outline" className="flex-1 rounded-xl flex flex-col h-auto py-3 gap-2" onClick={handleExportChat}>
@@ -355,7 +355,7 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
                   </Button>
                 </div>
                 
-                <div className="w-full mt-6 bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 flex items-center justify-between">
+                <div className="w-full mt-6 bg-background dark:bg-gray-800/50 rounded-xl p-4 flex items-center justify-between">
                   <span className="text-sm font-medium">Provider Status</span>
                   <div className="flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400 font-medium">
                     <CheckCircle2 className="w-4 h-4" />
@@ -403,7 +403,7 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
                 className={cn(
                   "max-w-[72%] px-4 py-2.5 text-[15px] leading-[1.35rem]",
                   isAI 
-                    ? "bg-[#EFEFEF] dark:bg-[#262626] text-black dark:text-white" 
+                    ? "bg-[#EFEFEF] dark:bg-[#262626] text-foreground dark:text-white" 
                     : "bg-[#0095F6] text-white",
                   // Instagram rounded corners logic
                   isAI && isFirstInGroup && isLastInGroup ? "rounded-[22px]" :
@@ -446,13 +446,13 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
 
       {/* Quick Conversation Starter Chips (Horizontal Scroll like IG Highlights) */}
       {messages.length <= 2 && starters.length > 0 && (
-        <div className="px-4 py-3 bg-white dark:bg-black">
+        <div className="px-4 py-3 bg-card dark:bg-black">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
             {starters.map((starter, i) => (
               <button
                 key={i}
                 onClick={() => handleSend(starter)}
-                className="whitespace-nowrap rounded-full bg-[#EFEFEF] dark:bg-[#262626] px-4 py-2.5 text-[14px] text-black dark:text-white font-medium active:opacity-70 transition-opacity"
+                className="whitespace-nowrap rounded-full bg-[#EFEFEF] dark:bg-[#262626] px-4 py-2.5 text-[14px] text-foreground dark:text-white font-medium active:opacity-70 transition-opacity"
               >
                 {starter}
               </button>
@@ -462,7 +462,7 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
       )}
 
       {/* Instagram-style Input Area */}
-      <div className="px-3 pb-[max(12px,env(safe-area-inset-bottom))] pt-2 bg-white dark:bg-black">
+      <div className="px-3 pb-[max(12px,env(safe-area-inset-bottom))] pt-2 bg-card dark:bg-black">
         <div className="flex items-end gap-2.5">
           
           {/* IG Camera Circle Icon */}
@@ -473,7 +473,7 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
           {/* Input Pill */}
           <div className="flex-1 flex items-end bg-[#F1F1F1] dark:bg-[#262626] rounded-[24px] pl-1 pr-1.5 py-1 min-h-[44px]">
             
-            <button className="p-2.5 flex-shrink-0 text-black dark:text-white hover:opacity-70" title="Emoji">
+            <button className="p-2.5 flex-shrink-0 text-foreground dark:text-white hover:opacity-70" title="Emoji">
               <Smile className="w-[22px] h-[22px]" strokeWidth={2} />
             </button>
             
@@ -482,7 +482,7 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder={isListening ? "Listening..." : "Message..."}
-              className="flex-1 border-0 bg-transparent text-[15px] focus-visible:ring-0 px-0 py-2.5 max-h-[100px] shadow-none text-black dark:text-white placeholder:text-gray-500 resize-none outline-none scrollbar-none leading-tight"
+              className="flex-1 border-0 bg-transparent text-[15px] focus-visible:ring-0 px-0 py-2.5 max-h-[100px] shadow-none text-foreground dark:text-white placeholder:text-muted-foreground resize-none outline-none scrollbar-none leading-tight"
               rows={1}
               style={{
                 minHeight: "40px",
@@ -500,7 +500,7 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
                 Send
               </button>
             ) : (
-              <div className="flex items-center gap-0.5 pr-0.5 text-black dark:text-white">
+              <div className="flex items-center gap-0.5 pr-0.5 text-foreground dark:text-white">
                 <button 
                   onClick={toggleListening}
                   className={cn(

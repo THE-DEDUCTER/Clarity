@@ -65,11 +65,11 @@ export default function MyMindPage() {
             <span>Your Inner World</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-bold text-foreground dark:text-gray-50 tracking-tight">
             My Mind
           </h1>
 
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground dark:text-gray-300 leading-relaxed">
             Your central sanctuary for self-reflection, AI guidance, mood exploration, and emotional resilience. Check in with yourself and nurture your mental well-being every day.
           </p>
         </div>
@@ -80,7 +80,7 @@ export default function MyMindPage() {
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-purple-500" />
-            <h2 className="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200 tracking-wide">
+            <h2 className="text-sm sm:text-base font-semibold text-foreground dark:text-gray-200 tracking-wide">
               Daily Mood Check-In
             </h2>
           </div>
@@ -93,7 +93,7 @@ export default function MyMindPage() {
       {/* Feature Bento Grid */}
       <section className="space-y-3 sm:space-y-4">
         <div className="px-1">
-          <h2 className="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200 tracking-wide">
+          <h2 className="text-sm sm:text-base font-semibold text-foreground dark:text-gray-200 tracking-wide">
             Explore Mind Tools
           </h2>
         </div>

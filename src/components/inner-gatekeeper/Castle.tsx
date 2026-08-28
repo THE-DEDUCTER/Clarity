@@ -104,7 +104,7 @@ export function Castle({ health, weather, gatekeeperMood }: CastleProps) {
               ></div>
             ))}
             {/* Lightning */}
-            <div className="absolute inset-0 bg-white opacity-0 animate-lightning"></div>
+            <div className="absolute inset-0 bg-card opacity-0 animate-lightning"></div>
           </div>
         );
       default:

@@ -82,10 +82,10 @@ export default function ProfessionalCommunityPage() {
             <GraduationCap className="w-3.5 h-3.5" />
             <span>Clinical Knowledge & Dialogue</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground dark:text-gray-100">
             Clarity Connect
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+          <p className="text-sm sm:text-base text-muted-foreground dark:text-gray-300">
             A verified professional space connecting licensed therapists, psychological researchers, and student wellness advocates.
           </p>
         </div>
@@ -102,7 +102,7 @@ export default function ProfessionalCommunityPage() {
             <div className="text-center mb-8">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Users className="w-5 h-5 text-indigo-600" />
-                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Featured Insights</h2>
+                <h2 className="text-xl font-bold text-foreground dark:text-gray-100">Featured Insights</h2>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto">
                 Evidence-based findings, clinical takeaways, and peer-reviewed strategies shared by certified practitioners.
@@ -141,10 +141,10 @@ export default function ProfessionalCommunityPage() {
                   <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-sky-200/20 to-cyan-200/20 rounded-full translate-y-2 -translate-x-2"></div>
                   <Brain className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold mb-2">Join the Conversation</h3>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-muted-foreground mb-4">
                     Share your insights, experiences, and resources to help build a supportive community.
                   </p>
-                  <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
+                  <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-rose-400/20 to-pink-400/20 rounded-full">
                       <Heart className="w-4 h-4 text-rose-600" />
                       <span className="text-rose-700 font-medium">Share Support</span>

@@ -145,7 +145,7 @@ export function TraumaAnalytics() {
         <CardContent>
           <div className="space-y-3">
             {patterns.map((pattern, index) => (
-              <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+              <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-background">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-medium">{pattern.trigger}</span>
@@ -183,7 +183,7 @@ export function TraumaAnalytics() {
                   </div>
                   <div className="flex-1">
                     <h4 className="font-semibold mb-1">{insight.title}</h4>
-                    <p className="text-sm text-gray-700">{insight.description}</p>
+                    <p className="text-sm text-muted-foreground">{insight.description}</p>
                   </div>
                 </div>
               </div>

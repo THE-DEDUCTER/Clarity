@@ -161,7 +161,7 @@ export default function PeerSupportPage() {
         <TabsContent value={activeTab} className="mt-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredCommunities.map((community) => (
-              <div key={community.id} className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-sm rounded-[32px] overflow-hidden flex flex-col">
+              <div key={community.id} className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-card dark:bg-gray-900 border border-border dark:border-gray-800 shadow-sm rounded-[32px] overflow-hidden flex flex-col">
                 <div className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
@@ -174,7 +174,7 @@ export default function PeerSupportPage() {
                         </h3>
                         <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                           {community.isSpecialized && (
-                            <div className="px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">
+                            <div className="px-2 py-0.5 bg-muted dark:bg-gray-800 text-muted-foreground dark:text-gray-300 text-xs font-semibold rounded-full">
                               Specialized
                             </div>
                           )}
@@ -190,11 +190,11 @@ export default function PeerSupportPage() {
                   </div>
                 </div>
                 <div className="px-6 flex-1 flex flex-col space-y-4">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                  <p className="text-sm text-muted-foreground dark:text-gray-400 font-medium leading-relaxed">
                     {community.description}
                   </p>
                   
-                  <div className="flex items-center gap-4 text-sm font-semibold text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-2xl w-fit">
+                  <div className="flex items-center gap-4 text-sm font-semibold text-muted-foreground dark:text-gray-300 bg-background dark:bg-gray-800/50 p-3 rounded-2xl w-fit">
                     <div className="flex items-center gap-1.5">
                       <Users className="w-4 h-4 text-gray-400" />
                       <span>{formatNumber(community.memberCount)}</span>
@@ -216,7 +216,7 @@ export default function PeerSupportPage() {
                           </div>
                         ))}
                         {community.accessibilitySupport.length > 2 && (
-                          <div className="px-2 py-1 bg-gray-50 text-gray-500 dark:bg-gray-800 dark:text-gray-400 text-[11px] font-semibold rounded-lg border border-gray-100">
+                          <div className="px-2 py-1 bg-background text-muted-foreground dark:bg-gray-800 dark:text-gray-400 text-[11px] font-semibold rounded-lg border border-border">
                             +{community.accessibilitySupport.length - 2} more
                           </div>
                         )}
@@ -232,7 +232,7 @@ export default function PeerSupportPage() {
                         Join Community
                       </Button>
                     </Link>
-                    <Button variant="outline" className="w-11 h-11 rounded-xl border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 p-0">
+                    <Button variant="outline" className="w-11 h-11 rounded-xl border-border dark:border-gray-800 hover:bg-background dark:hover:bg-gray-800 p-0">
                       <Star className="w-4 h-4 text-gray-400" />
                     </Button>
                   </div>

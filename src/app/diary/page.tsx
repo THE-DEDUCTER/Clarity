@@ -172,12 +172,12 @@ function BookView({ onClose }: { onClose: () => void }) {
                   }}
                   className={cn(
                     "flex flex-col items-center px-2 py-1.5 rounded-xl transition-all w-14",
-                    i === 0 ? "bg-sky-500 text-white shadow-sm shadow-sky-300" : "hover:bg-sky-50 text-gray-500"
+                    i === 0 ? "bg-sky-500 text-white shadow-sm shadow-sky-300" : "hover:bg-sky-50 text-muted-foreground"
                   )}
                 >
                   {d.year && <span className="text-[8px] font-medium opacity-60 mb-0.5">{d.label}</span>}
                   {!d.year && i === 0 && <span className="text-[8px] font-bold opacity-80">今天</span>}
-                  <span className={cn("text-base font-bold leading-none", i === 0 ? "text-white" : "text-gray-700")}>{d.day}</span>
+                  <span className={cn("text-base font-bold leading-none", i === 0 ? "text-white" : "text-muted-foreground")}>{d.day}</span>
                   <span className={cn("text-[9px] mt-0.5", i === 0 ? "text-sky-100" : "text-gray-400")}>{d.month}</span>
                 </button>
               ))}
@@ -196,12 +196,12 @@ function BookView({ onClose }: { onClose: () => void }) {
                   </div>
                   <div>
                     <p className="text-[10px] text-gray-400 font-medium">{format(selectedDate, "EEEE")}</p>
-                    <p className="text-xs font-bold text-gray-700">{format(selectedDate, "MMM d, yyyy")}</p>
+                    <p className="text-xs font-bold text-muted-foreground">{format(selectedDate, "MMM d, yyyy")}</p>
                   </div>
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 transition-colors text-xs font-medium"
+                  className="p-1.5 rounded-lg hover:bg-muted text-gray-400 transition-colors text-xs font-medium"
                 >
                   ✕
                 </button>
@@ -272,7 +272,7 @@ function BookView({ onClose }: { onClose: () => void }) {
                           "h-6 w-6 mx-auto rounded-full text-[10px] font-semibold transition-all",
                           isSel ? "bg-sky-500 text-white shadow-sm" :
                           tod ? "bg-sky-100 text-sky-600" :
-                          "text-gray-500 hover:bg-gray-100"
+                          "text-muted-foreground hover:bg-muted"
                         )}
                       >
                         {format(d, "d")}
@@ -295,7 +295,7 @@ function BookView({ onClose }: { onClose: () => void }) {
             {/* Spiral binding */}
             <div className="w-8 flex-shrink-0 flex flex-col items-center justify-around py-6 bg-gradient-to-b from-sky-50 to-blue-50 border-x border-sky-100 z-10">
               {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="w-5 h-5 rounded-full border-2 border-sky-300 bg-white shadow-sm flex-shrink-0" />
+                <div key={i} className="w-5 h-5 rounded-full border-2 border-sky-300 bg-card shadow-sm flex-shrink-0" />
               ))}
             </div>
 
@@ -304,7 +304,7 @@ function BookView({ onClose }: { onClose: () => void }) {
 
               {/* Quote card */}
               <div className="px-6 pt-5 pb-3">
-                <div className="rounded-2xl bg-gray-50 border border-gray-200 p-4">
+                <div className="rounded-2xl bg-background border border-border p-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-1.5 text-[11px] text-gray-400 font-medium">
                       <BookMarked className="w-3.5 h-3.5 text-sky-400" />
@@ -312,11 +312,11 @@ function BookView({ onClose }: { onClose: () => void }) {
                     </div>
                     <span className="text-[10px] text-gray-400">{format(new Date(), "h:mm a")}</span>
                   </div>
-                  <p className="text-sm font-bold text-gray-700 leading-snug text-center px-4 py-2 italic">
+                  <p className="text-sm font-bold text-muted-foreground leading-snug text-center px-4 py-2 italic">
                     "{todayPrompt}"
                   </p>
-                  <div className="flex items-center justify-center gap-5 mt-2 pt-2 border-t border-gray-100">
-                    <button className="p-1 rounded text-gray-400 hover:text-gray-600 transition-colors">
+                  <div className="flex items-center justify-center gap-5 mt-2 pt-2 border-t border-border">
+                    <button className="p-1 rounded text-gray-400 hover:text-muted-foreground transition-colors">
                       <Copy className="w-3.5 h-3.5" />
                     </button>
                     <button
@@ -325,7 +325,7 @@ function BookView({ onClose }: { onClose: () => void }) {
                     >
                       <Heart className="w-3.5 h-3.5" fill={liked ? "currentColor" : "none"} />
                     </button>
-                    <button className="p-1 rounded text-gray-400 hover:text-gray-600 transition-colors">
+                    <button className="p-1 rounded text-gray-400 hover:text-muted-foreground transition-colors">
                       <Share2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -342,14 +342,14 @@ function BookView({ onClose }: { onClose: () => void }) {
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   placeholder="Entry title (optional)..."
-                  className="w-full text-xs font-semibold text-gray-600 bg-transparent border-0 outline-none mb-2 placeholder:text-gray-300"
+                  className="w-full text-xs font-semibold text-muted-foreground bg-transparent border-0 outline-none mb-2 placeholder:text-gray-300"
                 />
                 {/* Lined paper */}
                 <div className="relative">
                   {Array.from({ length: 8 }).map((_, i) => (
                     <div
                       key={i}
-                      className="absolute left-0 right-0 border-b border-gray-100 pointer-events-none"
+                      className="absolute left-0 right-0 border-b border-border pointer-events-none"
                       style={{ top: i * 30 + 26 }}
                     />
                   ))}
@@ -357,14 +357,14 @@ function BookView({ onClose }: { onClose: () => void }) {
                     value={content}
                     onChange={e => setContent(e.target.value)}
                     placeholder="Feel free to journal your current thoughts or anything else you'd like..."
-                    className="w-full bg-transparent border-0 outline-none resize-none text-[13px] text-gray-600 leading-[30px] placeholder:text-gray-300 placeholder:text-xs placeholder:italic relative z-10"
+                    className="w-full bg-transparent border-0 outline-none resize-none text-[13px] text-muted-foreground leading-[30px] placeholder:text-gray-300 placeholder:text-xs placeholder:italic relative z-10"
                     style={{ minHeight: 220, lineHeight: "30px" }}
                   />
                 </div>
               </div>
 
               {/* Bottom bar */}
-              <div className="px-6 py-3 border-t border-gray-100 flex items-center gap-3">
+              <div className="px-6 py-3 border-t border-border flex items-center gap-3">
                 <MapPin className="w-3.5 h-3.5 text-gray-300 flex-shrink-0" />
                 <input
                   value={location}
@@ -445,7 +445,7 @@ export default function DiaryPage() {
             <div className="w-7 h-7 rounded-full bg-sky-500 flex items-center justify-center shadow-sm">
               <Feather className="w-4 h-4 text-white" />
             </div>
-            <span className="text-base font-bold text-gray-800 dark:text-gray-100">Clarity</span>
+            <span className="text-base font-bold text-foreground dark:text-gray-100">Clarity</span>
           </div>
 
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-3 mb-1">Menu</p>
@@ -457,8 +457,8 @@ export default function DiaryPage() {
                 className={cn(
                   "flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-sm font-medium transition-all",
                   activeNav === item.id
-                    ? "bg-white dark:bg-gray-900 text-sky-600 dark:text-sky-400 shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-gray-900/60"
+                    ? "bg-card dark:bg-gray-900 text-sky-600 dark:text-sky-400 shadow-sm"
+                    : "text-muted-foreground dark:text-gray-400 hover:bg-white/60 dark:hover:bg-gray-900/60"
                 )}
               >
                 {item.icon}
@@ -467,7 +467,7 @@ export default function DiaryPage() {
               {item.children && activeNav === item.id && (
                 <div className="ml-4 mt-0.5 space-y-0.5">
                   {item.children.map(child => (
-                    <button key={child.id} className="flex items-center gap-2 w-full px-3 py-1.5 rounded-lg text-xs text-gray-500 dark:text-gray-400 hover:bg-white/60 dark:hover:bg-gray-900/60 transition-all">
+                    <button key={child.id} className="flex items-center gap-2 w-full px-3 py-1.5 rounded-lg text-xs text-muted-foreground dark:text-gray-400 hover:bg-white/60 dark:hover:bg-gray-900/60 transition-all">
                       {child.icon}
                       {child.label}
                     </button>
@@ -477,12 +477,12 @@ export default function DiaryPage() {
             </div>
           ))}
 
-          <div className="mt-4 border-t border-gray-200 dark:border-gray-800 pt-4">
+          <div className="mt-4 border-t border-border dark:border-gray-800 pt-4">
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-3 mb-1">General</p>
-            <button className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-sm text-gray-500 hover:bg-white/60 dark:hover:bg-gray-900/60 transition-all">
+            <button className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-sm text-muted-foreground hover:bg-white/60 dark:hover:bg-gray-900/60 transition-all">
               <Settings className="w-4 h-4" /> Settings
             </button>
-            <button className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-sm text-gray-500 hover:bg-white/60 dark:hover:bg-gray-900/60 transition-all">
+            <button className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-sm text-muted-foreground hover:bg-white/60 dark:hover:bg-gray-900/60 transition-all">
               <BookOpen className="w-4 h-4" /> Support
             </button>
           </div>
@@ -501,7 +501,7 @@ export default function DiaryPage() {
               <BackButton to="/dashboard" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">My Journal</h1>
+              <h1 className="text-2xl font-bold text-foreground dark:text-gray-100">My Journal</h1>
               <p className="text-sm text-gray-400 mt-0.5">Let's get started — take the first step towards your story.</p>
             </div>
             <div className="flex items-center gap-3">
@@ -511,7 +511,7 @@ export default function DiaryPage() {
                   placeholder="Search or type command"
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
-                  className="pl-9 h-9 w-52 text-sm bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-full shadow-sm"
+                  className="pl-9 h-9 w-52 text-sm bg-card dark:bg-gray-900 border-border dark:border-gray-700 rounded-full shadow-sm"
                 />
               </div>
               <Button
@@ -521,7 +521,7 @@ export default function DiaryPage() {
                 <Plus className="w-4 h-4" />
                 New Entry
               </Button>
-              <button className="p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-500 hover:text-gray-800 shadow-sm">
+              <button className="p-2 rounded-xl bg-card dark:bg-gray-900 border border-border dark:border-gray-700 text-muted-foreground hover:text-foreground shadow-sm">
                 <Bell className="w-4 h-4" />
               </button>
             </div>
@@ -529,20 +529,20 @@ export default function DiaryPage() {
 
           {/* Templates row (like DoDo) */}
           <div className="mb-6">
-            <h2 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Templates</h2>
+            <h2 className="text-sm font-bold text-muted-foreground dark:text-gray-300 mb-3">Templates</h2>
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
               {templates.map((t, i) => (
                 <button
                   key={i}
                   onClick={() => setShowNewEntry(true)}
                   className={cn(
-                    "flex-shrink-0 flex items-start gap-3 p-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:shadow-md transition-all active:scale-95 w-40 text-left",
+                    "flex-shrink-0 flex items-start gap-3 p-3 rounded-2xl border border-border dark:border-gray-700 bg-card dark:bg-gray-900 hover:shadow-md transition-all active:scale-95 w-40 text-left",
                     "hover:-translate-y-0.5"
                   )}
                 >
                   <div className={cn("p-2 rounded-xl flex-shrink-0", t.bg)}>{t.icon}</div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 truncate">{t.label}</p>
+                    <p className="text-xs font-semibold text-muted-foreground dark:text-gray-200 truncate">{t.label}</p>
                     <p className="text-[10px] text-gray-400 mt-0.5 line-clamp-2 leading-snug">{t.sub}</p>
                   </div>
                 </button>
@@ -552,7 +552,7 @@ export default function DiaryPage() {
 
           {/* My Drafts heading */}
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-bold text-gray-700 dark:text-gray-300">My drafts</h2>
+            <h2 className="text-sm font-bold text-muted-foreground dark:text-gray-300">My drafts</h2>
             <span className="text-xs text-gray-400">{filteredEntries.length} entries</span>
           </div>
 
@@ -583,7 +583,7 @@ export default function DiaryPage() {
                         {entry.tag}
                       </span>
                       {entry.category && (
-                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/60 dark:bg-black/20 text-gray-500">
+                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/60 dark:bg-black/20 text-muted-foreground">
                           {entry.category}
                         </span>
                       )}
@@ -595,19 +595,19 @@ export default function DiaryPage() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-sm font-bold text-gray-800 dark:text-gray-100 leading-snug mb-2">
+                    <h3 className="text-sm font-bold text-foreground dark:text-gray-100 leading-snug mb-2">
                       {entry.title}
                     </h3>
 
                     {/* Content */}
-                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-3">
+                    <p className="text-xs text-muted-foreground dark:text-gray-400 leading-relaxed mb-3">
                       {isLong ? `${entry.content.substring(0, 110)}…` : entry.content}
                     </p>
 
                     {/* Footer */}
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] text-gray-400">{format(entry.date, "MMM d, yyyy")}</span>
-                      <button className="opacity-0 group-hover:opacity-100 w-6 h-6 rounded-lg bg-white/80 dark:bg-gray-800/80 flex items-center justify-center text-gray-500 hover:text-gray-800 shadow-sm transition-all">
+                      <button className="opacity-0 group-hover:opacity-100 w-6 h-6 rounded-lg bg-white/80 dark:bg-gray-800/80 flex items-center justify-center text-muted-foreground hover:text-foreground shadow-sm transition-all">
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -625,7 +625,7 @@ export default function DiaryPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: filteredEntries.length * 0.06 }}
               onClick={() => setShowNewEntry(true)}
-              className="break-inside-avoid mb-4 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 p-6 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-sky-400 hover:bg-sky-50 dark:hover:bg-sky-900/10 transition-all group min-h-[120px]"
+              className="break-inside-avoid mb-4 rounded-2xl border-2 border-dashed border-border dark:border-gray-700 p-6 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-sky-400 hover:bg-sky-50 dark:hover:bg-sky-900/10 transition-all group min-h-[120px]"
             >
               <div className="w-10 h-10 rounded-2xl bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Plus className="w-5 h-5 text-sky-500" />

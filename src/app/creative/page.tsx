@@ -16,10 +16,10 @@ export default function CreativePage() {
             <Palette className="w-3.5 h-3.5" />
             <span>Art Therapy & Mindfulness</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground dark:text-gray-100">
             Creative Expression Canvas
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+          <p className="text-sm sm:text-base text-muted-foreground dark:text-gray-300">
             Explore therapeutic coloring, chakra balancing mandalas, and freeform canvas tools to soothe anxiety and stimulate imaginative focus.
           </p>
         </div>

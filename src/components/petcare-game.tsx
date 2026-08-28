@@ -352,7 +352,7 @@ export const PetCareDashboard: React.FC = () => {
         <div className={`absolute inset-0 rounded-full ${
           pet.health < 30 ? 'bg-red-100 animate-pulse' :
           pet.hunger < 20 ? 'bg-orange-100 animate-bounce' :
-          pet.happiness < 30 ? 'bg-gray-100' :
+          pet.happiness < 30 ? 'bg-muted' :
           currentAnimation === 'playing' ? 'bg-purple-100 animate-spin' :
           'bg-blue-100'
         } opacity-30`} style={{animationDuration: currentAnimation === 'playing' ? '2s' : '3s'}} />
@@ -406,7 +406,7 @@ export const PetCareDashboard: React.FC = () => {
             <Badge className="bg-orange-100 text-orange-800 animate-bounce">Very Hungry</Badge>
           )}
           {pet.happiness < 30 && (
-            <Badge className="bg-gray-100 text-gray-800">Feeling Sad</Badge>
+            <Badge className="bg-muted text-foreground">Feeling Sad</Badge>
           )}
         </div>
       </div>
@@ -418,12 +418,12 @@ export const PetCareDashboard: React.FC = () => {
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3">
           <PawPrint className="w-8 h-8 text-blue-600" />
-          <h1 className="text-3xl font-bold text-gray-800">Pet Care Dashboard</h1>
+          <h1 className="text-3xl font-bold text-foreground">Pet Care Dashboard</h1>
         </div>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           Take care of your virtual pet to practice responsibility and mindfulness
         </p>
-        <div className="flex justify-center gap-4 text-sm text-gray-500">
+        <div className="flex justify-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
             <span>Play Time: {Math.floor(playTime / 20)}min</span>
@@ -471,7 +471,7 @@ export const PetCareDashboard: React.FC = () => {
         <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50">
           <CardHeader className="text-center pb-4">
             <AnimatedDog />
-            <CardTitle className="text-2xl text-gray-800">
+            <CardTitle className="text-2xl text-foreground">
               {pet.name} - Level {pet.level}
             </CardTitle>
             <div className="flex justify-center gap-2">
@@ -480,7 +480,7 @@ export const PetCareDashboard: React.FC = () => {
               </Badge>
               <Badge className={`${
                 pet.mood === 'happy' ? 'bg-green-100 text-green-800' :
-                pet.mood === 'sad' ? 'bg-gray-100 text-gray-800' :
+                pet.mood === 'sad' ? 'bg-muted text-foreground' :
                 pet.mood === 'tired' ? 'bg-red-100 text-red-800' :
                 pet.mood === 'hungry' ? 'bg-orange-100 text-orange-800' :
                 pet.mood === 'playful' ? 'bg-purple-100 text-purple-800' :
@@ -575,7 +575,7 @@ export const PetCareDashboard: React.FC = () => {
                 >
                   <IconComponent className={`w-6 h-6 ${activity.color}`} />
                   <span className="font-semibold">{activity.name}</span>
-                  <span className="text-xs text-gray-500 text-center leading-tight">
+                  <span className="text-xs text-muted-foreground text-center leading-tight">
                     {activity.description}
                   </span>
                   {isOnCooldown && (
@@ -630,7 +630,7 @@ export const PetCareDashboard: React.FC = () => {
                   className={`max-w-[80%] p-3 rounded-lg ${
                     msg.sender === 'user'
                       ? 'bg-blue-500 text-white rounded-br-none'
-                      : 'bg-white border border-purple-200 text-gray-800 rounded-bl-none'
+                      : 'bg-card border border-purple-200 text-foreground rounded-bl-none'
                   }`}
                 >
                   <div className="font-medium text-sm mb-1">
@@ -664,7 +664,7 @@ export const PetCareDashboard: React.FC = () => {
           </div>
 
           {/* Chat Tips */}
-          <div className="text-xs text-gray-600 bg-white/50 p-3 rounded-lg border border-purple-100 flex items-start gap-2">
+          <div className="text-xs text-muted-foreground bg-white/50 p-3 rounded-lg border border-purple-100 flex items-start gap-2">
             <Sparkles className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
             <div>
               <strong>Chat Tips:</strong> Ask {pet.name} how they're feeling, tell them about your day, or just say hi! 
@@ -677,10 +677,10 @@ export const PetCareDashboard: React.FC = () => {
       {/* Game Benefits */}
       <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
         <CardContent className="p-6 text-center">
-          <h3 className="text-lg font-semibold mb-3 text-gray-800">
+          <h3 className="text-lg font-semibold mb-3 text-foreground">
             Therapeutic Benefits of Pet Care
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground">
             <div>
               <strong className="text-green-600">Responsibility:</strong> Learn time management and consistent care routines
             </div>

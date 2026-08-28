@@ -127,8 +127,8 @@ export default function AIBuddyPage() {
 
   // Desktop layout with Instagram-like design
   const DesktopLayout = () => (
-    <div className="flex h-full w-full gap-0 bg-white dark:bg-black overflow-hidden">
-      <div className="w-[350px] flex-shrink-0 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-black flex flex-col z-20">
+    <div className="flex h-full w-full gap-0 bg-card dark:bg-black overflow-hidden">
+      <div className="w-[350px] flex-shrink-0 border-r border-border dark:border-gray-800 bg-card dark:bg-black flex flex-col z-20">
         <AIChatList
           onSelectPersonality={handleSelectPersonality}
           selectedPersonalityId={selectedPersonality?.id}
@@ -137,7 +137,7 @@ export default function AIBuddyPage() {
         />
       </div>
       
-      <div className="flex-1 flex flex-col bg-white dark:bg-black">
+      <div className="flex-1 flex flex-col bg-card dark:bg-black">
         {selectedPersonality ? (
           <AIChat
             personality={selectedPersonality}
@@ -146,14 +146,14 @@ export default function AIBuddyPage() {
             userMoodEmoji={userMoodEmoji}
           />
         ) : (
-          <div className="h-full flex items-center justify-center bg-white dark:bg-black">
+          <div className="h-full flex items-center justify-center bg-card dark:bg-black">
             <div className="text-center space-y-4 p-8">
-              <div className="w-20 h-20 mx-auto bg-gray-100 dark:bg-gray-900 rounded-full flex items-center justify-center shadow-sm">
+              <div className="w-20 h-20 mx-auto bg-muted dark:bg-gray-900 rounded-full flex items-center justify-center shadow-sm">
                 <MessageCircle className="w-10 h-10 text-gray-400" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Your Messages</h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm max-w-[250px] mx-auto">
+                <h3 className="text-xl font-semibold text-foreground dark:text-gray-100">Your Messages</h3>
+                <p className="text-muted-foreground dark:text-gray-400 text-sm max-w-[250px] mx-auto">
                   Select a companion to start chatting.
                 </p>
               </div>
@@ -166,7 +166,7 @@ export default function AIBuddyPage() {
 
   // Mobile layout - full screen immersive
   const MobileLayout = () => (
-    <div className="h-full w-full bg-white dark:bg-black overflow-hidden flex flex-col">
+    <div className="h-full w-full bg-card dark:bg-black overflow-hidden flex flex-col">
       {selectedPersonality ? (
         <AIChat
           personality={selectedPersonality}
@@ -188,7 +188,7 @@ export default function AIBuddyPage() {
 
   return (
     <div 
-      className="w-full h-full flex flex-col animate-in fade-in duration-500 bg-white dark:bg-black" 
+      className="w-full h-full flex flex-col animate-in fade-in duration-500 bg-card dark:bg-black" 
       data-testid="page-ai-buddy"
     >
       <div className="hidden lg:block absolute top-20 left-[300px] z-50">

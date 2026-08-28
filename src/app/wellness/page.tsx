@@ -19,7 +19,7 @@ export default function WellnessPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 relative overflow-hidden" data-testid="page-wellness">
+    <div className="min-h-screen bg-background relative overflow-hidden" data-testid="page-wellness">
       {/* Animated Background - Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Large floating orbs */}
@@ -45,35 +45,35 @@ export default function WellnessPage() {
         {/* Clean Hero Section */}
         <div className="text-center space-y-6">
           <div className="space-y-4">
-            <div className="inline-flex p-4 bg-white rounded-2xl shadow-lg">
+            <div className="inline-flex p-4 bg-card rounded-2xl shadow-lg">
               <Heart className="w-10 h-10 text-pink-500" />
             </div>
-            <h1 className="text-5xl font-light text-gray-800">
+            <h1 className="text-5xl font-light text-foreground">
               Wellness Center
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Your personal sanctuary for mental health and mindfulness
             </p>
           </div>
           
           {/* Floating stats badges */}
           <div className="flex justify-center gap-6">
-            <div className="bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+            <div className="bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-border hover:shadow-xl transition-all duration-300">
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm font-medium text-gray-700">16 Sessions</span>
+                <span className="text-sm font-medium text-muted-foreground">16 Sessions</span>
               </div>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+            <div className="bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-border hover:shadow-xl transition-all duration-300">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-medium text-gray-700">Expert Guides</span>
+                <span className="text-sm font-medium text-muted-foreground">Expert Guides</span>
               </div>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+            <div className="bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-border hover:shadow-xl transition-all duration-300">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-green-500" />
-                <span className="text-sm font-medium text-gray-700">24/7 Support</span>
+                <span className="text-sm font-medium text-muted-foreground">24/7 Support</span>
               </div>
             </div>
           </div>
@@ -81,7 +81,7 @@ export default function WellnessPage() {
 
         {/* Wellness Toolkit - Hub Navigation */}
         <div className="space-y-4">
-          <h2 className="text-2xl font-light text-gray-800 text-center">Your Wellness Toolkit</h2>
+          <h2 className="text-2xl font-light text-foreground text-center">Your Wellness Toolkit</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { title: "Goal Tracker", description: "Track progress & milestones", href: "/goals", icon: Activity, color: "text-amber-600", bgColor: "bg-amber-50" },
@@ -91,13 +91,13 @@ export default function WellnessPage() {
               const ToolIcon = tool.icon;
               return (
                 <Link key={tool.title} href={tool.href}>
-                  <div className={`${tool.bgColor} rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-gray-100 flex items-center gap-4`}>
-                    <div className={`p-3 rounded-xl bg-white shadow-sm ${tool.color}`}>
+                  <div className={`${tool.bgColor} rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-border flex items-center gap-4`}>
+                    <div className={`p-3 rounded-xl bg-card shadow-sm ${tool.color}`}>
                       <ToolIcon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-base font-medium text-gray-800">{tool.title}</h3>
-                      <p className="text-sm text-gray-600">{tool.description}</p>
+                      <h3 className="text-base font-medium text-foreground">{tool.title}</h3>
+                      <p className="text-sm text-muted-foreground">{tool.description}</p>
                     </div>
                   </div>
                 </Link>
@@ -117,8 +117,8 @@ export default function WellnessPage() {
             {/* Audio Sessions */}
             <div className="space-y-6">
               <div className="text-center space-y-2">
-                <h2 className="text-3xl font-light text-gray-800">Audio Sessions</h2>
-                <p className="text-gray-600">Professional wellness sessions by certified instructors</p>
+                <h2 className="text-3xl font-light text-foreground">Audio Sessions</h2>
+                <p className="text-muted-foreground">Professional wellness sessions by certified instructors</p>
               </div>
               
               <div className="grid gap-6 md:grid-cols-2">
@@ -167,16 +167,16 @@ export default function WellnessPage() {
                   const IconComponent = session.icon;
                   return (
                     <div key={index} className="group cursor-pointer">
-                      <div className={`${session.bgColor} rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-gray-100`}>
+                      <div className={`${session.bgColor} rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-border`}>
                         <div className="flex items-center justify-between mb-4">
-                          <div className={`p-3 rounded-xl bg-white shadow-sm ${session.color}`}>
+                          <div className={`p-3 rounded-xl bg-card shadow-sm ${session.color}`}>
                             <IconComponent className="w-6 h-6" />
                           </div>
-                          <span className="text-sm text-gray-500">{session.plays} plays</span>
+                          <span className="text-sm text-muted-foreground">{session.plays} plays</span>
                         </div>
-                        <h3 className="text-lg font-medium text-gray-800 mb-2">{session.title}</h3>
-                        <p className="text-gray-600 text-sm mb-4">{session.description}</p>
-                        <div className="flex items-center justify-between text-sm text-gray-500">
+                        <h3 className="text-lg font-medium text-foreground mb-2">{session.title}</h3>
+                        <p className="text-muted-foreground text-sm mb-4">{session.description}</p>
+                        <div className="flex items-center justify-between text-sm text-muted-foreground">
                           <span>{session.duration}</span>
                           <span>{session.instructor}</span>
                         </div>
@@ -199,8 +199,8 @@ export default function WellnessPage() {
             {/* Quick Actions - Simplified */}
             <div className="space-y-6">
               <div className="text-center space-y-2">
-                <h2 className="text-3xl font-light text-gray-800">Quick Actions</h2>
-                <p className="text-gray-600">Start your wellness journey</p>
+                <h2 className="text-3xl font-light text-foreground">Quick Actions</h2>
+                <p className="text-muted-foreground">Start your wellness journey</p>
               </div>
               
               <div className="grid gap-6 md:grid-cols-3">
@@ -232,14 +232,14 @@ export default function WellnessPage() {
                   const IconComponent = action.icon;
                   return (
                     <div key={index} className="group cursor-pointer" onClick={action.onClick}>
-                      <div className="bg-white rounded-2xl p-8 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-gray-100">
-                        <div className={`inline-flex p-4 rounded-full bg-gray-50 ${action.color} mb-4 group-hover:bg-gray-100 transition-colors`}>
+                      <div className="bg-card rounded-2xl p-8 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-border">
+                        <div className={`inline-flex p-4 rounded-full bg-background ${action.color} mb-4 group-hover:bg-muted transition-colors`}>
                           <IconComponent className="w-8 h-8" />
                         </div>
-                        <h3 className="text-xl font-medium text-gray-800 mb-2">
+                        <h3 className="text-xl font-medium text-foreground mb-2">
                           {action.title}
                         </h3>
-                        <p className="text-gray-600 text-sm">
+                        <p className="text-muted-foreground text-sm">
                           {action.description}
                         </p>
                         {action.testId && (
@@ -255,8 +255,8 @@ export default function WellnessPage() {
             {/* Clean Progress Stats */}
             <div className="space-y-6">
               <div className="text-center space-y-2">
-                <h2 className="text-3xl font-light text-gray-800">This Week's Progress</h2>
-                <p className="text-gray-600">Track your wellness journey</p>
+                <h2 className="text-3xl font-light text-foreground">This Week's Progress</h2>
+                <p className="text-muted-foreground">Track your wellness journey</p>
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -286,10 +286,10 @@ export default function WellnessPage() {
                     color: "from-amber-500 to-orange-500"
                   }
                 ].map((stat, index) => (
-                  <div key={index} className="text-center p-6 bg-white rounded-2xl border border-gray-100 hover:shadow-md transition-all duration-300">
-                    <div className="text-3xl font-light text-gray-800 mb-2">{stat.value}</div>
-                    <div className="text-sm text-gray-600 font-medium mb-3">{stat.label}</div>
-                    <div className="w-full bg-gray-100 rounded-full h-2">
+                  <div key={index} className="text-center p-6 bg-card rounded-2xl border border-border hover:shadow-md transition-all duration-300">
+                    <div className="text-3xl font-light text-foreground mb-2">{stat.value}</div>
+                    <div className="text-sm text-muted-foreground font-medium mb-3">{stat.label}</div>
+                    <div className="w-full bg-muted rounded-full h-2">
                       <div className={`bg-gradient-to-r ${stat.color} h-2 rounded-full transition-all duration-500`} style={{width: `${stat.progress}%`}}></div>
                     </div>
                   </div>

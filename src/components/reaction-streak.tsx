@@ -324,7 +324,7 @@ export function ReactionStreak({ userId, className, compact = false }: ReactionS
                     "p-3 rounded-lg border transition-all duration-300",
                     isEarned
                       ? `bg-gradient-to-br ${badge.color} text-white shadow-lg`
-                      : "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 opacity-60"
+                      : "bg-background dark:bg-gray-800 border-border dark:border-gray-700 opacity-60"
                   )}
                 >
                   <div className="flex items-center gap-2 mb-1">

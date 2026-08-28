@@ -1564,10 +1564,10 @@ export function VirtualPets({ fullPage = false }: { fullPage?: boolean }) {
             <p className="text-xs font-semibold text-indigo-700 mb-0.5 flex items-center gap-1">
               {petName} {isSpeaking && <span className="inline-block w-1 h-1 rounded-full bg-indigo-500 animate-ping" />}
             </p>
-            <p className="text-[11px] text-gray-700 leading-relaxed">{petSpeechText}</p>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">{petSpeechText}</p>
             <button
               onClick={() => setPetSpeechText(null)}
-              className="absolute top-2 right-2 text-gray-300 hover:text-gray-500 text-[10px]"
+              className="absolute top-2 right-2 text-gray-300 hover:text-muted-foreground text-[10px]"
             >
               ✕
             </button>

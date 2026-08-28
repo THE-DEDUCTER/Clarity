@@ -22,10 +22,10 @@ export default function AnonymousChatPage() {
             <UserCheck className="w-3.5 h-3.5" />
             <span>Licensed Psychological Care</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground dark:text-gray-100">
             Counselor Connect
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+          <p className="text-sm sm:text-base text-muted-foreground dark:text-gray-300">
             Connect with verified mental health counselors for professional 1-on-1 guidance, therapy sessions, and confidential support.
           </p>
         </div>

@@ -540,7 +540,7 @@ export function CreativeZone() {
                   <div className="flex items-center gap-4">
                     <span className="text-sm font-medium">Size:</span>
                     <div className="flex items-center gap-2 flex-1">
-                      <span className="text-xs text-gray-500">1</span>
+                      <span className="text-xs text-muted-foreground">1</span>
                       <Slider
                         value={brushSize}
                         onValueChange={setBrushSize}
@@ -549,7 +549,7 @@ export function CreativeZone() {
                         step={1}
                         className="flex-1 max-w-[200px]"
                       />
-                      <span className="text-xs text-gray-500">20</span>
+                      <span className="text-xs text-muted-foreground">20</span>
                       <Badge variant="secondary" className="min-w-[40px] text-center">
                         {brushSize[0]}px
                       </Badge>
@@ -567,7 +567,7 @@ export function CreativeZone() {
                         title={`Select color ${color}`}
                         aria-label={`Select color ${color}`}
                         className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-110 ${
-                          selectedColor === color ? 'border-gray-800 shadow-lg scale-110' : 'border-gray-300'
+                          selectedColor === color ? 'border-gray-800 shadow-lg scale-110' : 'border-border'
                         }`}
                         style={{ backgroundColor: color }}
                         onClick={() => setSelectedColor(color)}
@@ -578,20 +578,20 @@ export function CreativeZone() {
                       type="color"
                       value={selectedColor}
                       onChange={(e) => setSelectedColor(e.target.value)}
-                      className="w-8 h-8 rounded-full border-2 border-gray-300 cursor-pointer"
+                      className="w-8 h-8 rounded-full border-2 border-border cursor-pointer"
                       title="Custom color picker"
                     />
                   </div>
                 </div>
                 
                 {/* Canvas */}
-                <div className="border-2 rounded-lg p-4 bg-white shadow-inner">
+                <div className="border-2 rounded-lg p-4 bg-card shadow-inner">
                   <div className="relative">
                     <canvas
                       ref={canvasRef}
                       width={800}
                       height={600}
-                      className="border border-gray-300 rounded cursor-crosshair max-w-full h-auto block"
+                      className="border border-border rounded cursor-crosshair max-w-full h-auto block"
                       style={{ 
                         touchAction: 'none',
                         imageRendering: 'pixelated'
@@ -624,7 +624,7 @@ export function CreativeZone() {
                       }}
                       data-testid="canvas-drawing"
                     />
-                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded px-2 py-1 text-xs text-gray-600">
+                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded px-2 py-1 text-xs text-muted-foreground">
                       {currentTool === 'pen' ? 'Click and drag to draw' : `Click and drag to draw ${currentTool}`}
                     </div>
                   </div>
@@ -702,7 +702,7 @@ export function CreativeZone() {
                         className={`p-3 rounded-lg border-2 text-left transition-all hover:shadow-md ${
                           selectedChakra === index 
                             ? 'border-violet-400 bg-violet-50 shadow-md' 
-                            : 'border-gray-200 bg-white hover:border-gray-300'
+                            : 'border-border bg-card hover:border-border'
                         }`}
                       >
                         <div className="flex items-center gap-2 mb-1">
@@ -712,7 +712,7 @@ export function CreativeZone() {
                           />
                           <span className="text-xs font-semibold truncate">{chakra.name}</span>
                         </div>
-                        <div className="text-xs text-gray-500 truncate">{chakra.description}</div>
+                        <div className="text-xs text-muted-foreground truncate">{chakra.description}</div>
                       </button>
                     ))}
                   </div>
@@ -726,7 +726,7 @@ export function CreativeZone() {
                       <button
                         key={color}
                         className={`w-6 h-6 rounded border-2 transition-transform hover:scale-110 ${
-                          selectedColor === color ? 'border-violet-400 scale-110' : 'border-gray-300'
+                          selectedColor === color ? 'border-violet-400 scale-110' : 'border-border'
                         }`}
                         style={{ backgroundColor: color }}
                         onClick={() => setSelectedColor(color)}
@@ -738,7 +738,7 @@ export function CreativeZone() {
                     className={`px-2 py-1 text-xs rounded border-2 transition-all hover:scale-105 ${
                       selectedColor === chakras[selectedChakra].traditionalColor 
                         ? 'border-violet-400 bg-violet-50' 
-                        : 'border-gray-300 bg-white'
+                        : 'border-border bg-card'
                     }`}
                     onClick={() => setSelectedColor(chakras[selectedChakra].traditionalColor)}
                   >
@@ -747,7 +747,7 @@ export function CreativeZone() {
                 </div>
                 
                 {/* Chakra Canvas */}
-                <div className="border rounded-lg p-4 bg-white">
+                <div className="border rounded-lg p-4 bg-card">
                   <div className="text-center mb-2">
                     <h4 className="font-medium text-slate-800">{chakras[selectedChakra].name}</h4>
                     <p className="text-sm text-slate-600">{chakras[selectedChakra].description}</p>
@@ -756,7 +756,7 @@ export function CreativeZone() {
                     ref={chakraCanvasRef}
                     width={300}
                     height={300}
-                    className="border border-gray-200 rounded cursor-pointer mx-auto block max-w-full h-auto"
+                    className="border border-border rounded cursor-pointer mx-auto block max-w-full h-auto"
                     onClick={handleChakraClick}
                     data-testid="canvas-chakra"
                   />

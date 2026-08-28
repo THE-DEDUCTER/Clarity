@@ -145,7 +145,7 @@ export function MoodChatMorph({ selectedMood, onClose, onBack, className }: Mood
               variant="ghost"
               size="sm"
               onClick={onBack}
-              className="h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-800 transition-colors"
+              className="h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-card dark:hover:bg-gray-800 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
@@ -155,14 +155,14 @@ export function MoodChatMorph({ selectedMood, onClose, onBack, className }: Mood
             variant="ghost"
             size="sm"
             onClick={handleClose}
-            className="h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-800 transition-colors"
+            className="h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-card dark:hover:bg-gray-800 transition-colors"
           >
             <X className="h-4 w-4" />
           </Button>
         </div>
 
         {/* Header with emoji and mood */}
-        <div className="relative bg-white dark:bg-gray-900 p-6 pb-4">
+        <div className="relative bg-card dark:bg-gray-900 p-6 pb-4">
           <div className="flex items-center gap-4 mb-4">
             <div className={cn(
               "w-16 h-16 rounded-2xl flex items-center justify-center text-4xl",
@@ -176,10 +176,10 @@ export function MoodChatMorph({ selectedMood, onClose, onBack, className }: Mood
               {selectedMood.emoji}
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-bold text-foreground dark:text-white">
                 {selectedMood.label}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground dark:text-gray-400">
                 {selectedMood.description}
               </p>
             </div>
@@ -188,10 +188,10 @@ export function MoodChatMorph({ selectedMood, onClose, onBack, className }: Mood
 
         {/* Quote section */}
         <div className="px-6 pb-4">
-          <div className="relative p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+          <div className="relative p-4 rounded-xl bg-background dark:bg-gray-800/50 border border-border dark:border-gray-700">
             <div className="flex items-start gap-3">
               <Sparkles className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-sm text-muted-foreground dark:text-gray-300 leading-relaxed">
                 {currentQuote}
               </p>
             </div>
@@ -202,7 +202,7 @@ export function MoodChatMorph({ selectedMood, onClose, onBack, className }: Mood
         <div className="px-6 pb-6">
           <div className="space-y-4">
             <div className="text-center">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-sm text-muted-foreground dark:text-gray-400 mb-4">
                 {selectedMood.aiSuggestion}
               </p>
             </div>
@@ -225,7 +225,7 @@ export function MoodChatMorph({ selectedMood, onClose, onBack, className }: Mood
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
 
-            <div className="flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground dark:text-gray-400">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span>AI companion ready to chat</span>
             </div>

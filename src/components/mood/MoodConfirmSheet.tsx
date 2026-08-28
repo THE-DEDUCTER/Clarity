@@ -62,10 +62,10 @@ export function MoodConfirmSheet({ word, onConfirm, isLoading = false }: MoodCon
               disabled={isLoading}
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.94 }}
-              className="px-5 py-3.5 rounded-2xl bg-white text-black font-semibold text-sm flex items-center gap-2 shadow-xl hover:bg-gray-100 active:scale-95 transition-all shrink-0 cursor-pointer"
+              className="px-5 py-3.5 rounded-2xl bg-card text-foreground font-semibold text-sm flex items-center gap-2 shadow-xl hover:bg-muted active:scale-95 transition-all shrink-0 cursor-pointer"
               aria-label="Confirm mood selection"
             >
-              <Check className="w-4 h-4 text-black stroke-[3]" />
+              <Check className="w-4 h-4 text-foreground stroke-[3]" />
               <span>Log Feeling</span>
             </motion.button>
           </div>

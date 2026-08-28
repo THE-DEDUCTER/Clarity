@@ -544,7 +544,7 @@ export function CommunityPage() {
           <div className="space-y-4">
             {posts.map((post, index) => (
               <Card key={post.id} className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.01] overflow-hidden ${
-                post.isPinned ? 'ring-2 ring-green-400 bg-green-50 dark:bg-green-900/20' : 'bg-white dark:bg-gray-800'
+                post.isPinned ? 'ring-2 ring-green-400 bg-green-50 dark:bg-green-900/20' : 'bg-card dark:bg-gray-800'
               }`} style={{ borderRadius: '16px' }}>
                 <CardContent className="p-6">
                   <div className="flex gap-4">
@@ -555,18 +555,18 @@ export function CommunityPage() {
                         size="sm"
                         onClick={() => handleLike(post.id)}
                         className={`p-2 h-auto rounded-full transition-all duration-300 hover:scale-110 ${
-                          post.isLiked ? 'bg-orange-500 text-white shadow-lg' : 'text-gray-500 hover:bg-orange-100 dark:hover:bg-orange-900/20'
+                          post.isLiked ? 'bg-orange-500 text-white shadow-lg' : 'text-muted-foreground hover:bg-orange-100 dark:hover:bg-orange-900/20'
                         }`}
                       >
                         <ThumbsUp className="w-5 h-5" />
                       </Button>
                       <span className={`text-sm font-bold ${
-                        post.isLiked ? 'text-orange-600' : 'text-gray-700'
+                        post.isLiked ? 'text-orange-600' : 'text-muted-foreground'
                       }`}>{formatNumber(post.likes)}</span>
                       <Button 
                         variant="ghost" 
                         size="sm" 
-                        className="p-2 h-auto rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-300 hover:scale-110"
+                        className="p-2 h-auto rounded-full text-gray-400 hover:text-muted-foreground hover:bg-muted transition-all duration-300 hover:scale-110"
                       >
                         <ThumbsUp className="w-5 h-5 rotate-180" />
                       </Button>
@@ -586,7 +586,7 @@ export function CommunityPage() {
                             {post.flairText}
                           </Badge>
                         )}
-                        <span className="text-xs text-gray-500 font-medium">
+                        <span className="text-xs text-muted-foreground font-medium">
                           Posted by u/{post.author} • {formatTimeAgo(post.timestamp)}
                         </span>
                         {post.awards && post.awards.length > 0 && (
@@ -598,11 +598,11 @@ export function CommunityPage() {
                         )}
                       </div>
                       
-                      <h3 className="font-bold text-xl text-gray-900 hover:text-blue-600 cursor-pointer transition-colors duration-300 leading-tight break-words">
+                      <h3 className="font-bold text-xl text-foreground hover:text-blue-600 cursor-pointer transition-colors duration-300 leading-tight break-words">
                         {post.title}
                       </h3>
                       
-                      <p className="text-gray-600 text-sm leading-relaxed break-words">{post.content}</p>
+                      <p className="text-muted-foreground text-sm leading-relaxed break-words">{post.content}</p>
                       
                       <div className="flex items-center gap-4 pt-3">
                         <Button 
@@ -624,7 +624,7 @@ export function CommunityPage() {
                         <Button 
                           variant="ghost" 
                           size="sm" 
-                          className="text-xs hover:bg-gray-100 hover:text-gray-700 transition-all duration-300 rounded-full px-3 py-2"
+                          className="text-xs hover:bg-muted hover:text-muted-foreground transition-all duration-300 rounded-full px-3 py-2"
                         >
                           <MoreHorizontal className="w-4 h-4" />
                         </Button>
@@ -645,17 +645,17 @@ export function CommunityPage() {
               <CardTitle className="text-lg text-white">About Community</CardTitle>
             </div>
             <CardContent className="p-6 space-y-4">
-              <p className="text-sm text-gray-600 leading-relaxed">{community.description}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{community.description}</p>
               
-              <Separator className="bg-gray-200" />
+              <Separator className="bg-secondary" />
               
               <div className="space-y-3">
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-600">Members</span>
+                  <span className="text-muted-foreground">Members</span>
                   <span className="font-bold text-violet-600">{formatNumber(community.memberCount)}</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-600">Online</span>
+                  <span className="text-muted-foreground">Online</span>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                     <span className="font-bold text-green-600">{community.onlineCount}</span>
@@ -677,7 +677,7 @@ export function CommunityPage() {
                     <div className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                       {index + 1}
                     </div>
-                    <span className="text-gray-700 leading-relaxed">{rule}</span>
+                    <span className="text-muted-foreground leading-relaxed">{rule}</span>
                   </div>
                 ))}
               </div>
@@ -697,7 +697,7 @@ export function CommunityPage() {
                       <AvatarFallback className="text-xs bg-pink-500 text-white font-bold">{mod[0]}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
-                      <span className="font-medium text-gray-900">u/{mod}</span>
+                      <span className="font-medium text-foreground">u/{mod}</span>
                     </div>
                     <Badge className="bg-pink-500 text-white border-0 text-xs">
                       MOD

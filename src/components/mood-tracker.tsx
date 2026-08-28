@@ -93,7 +93,7 @@ export function MoodTracker({ variant = 'full', onMoodLogged }: MoodTrackerProps
       
       {/* Header Area */}
       <div className="flex items-center justify-between w-full px-6 py-5 z-20">
-        <span className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-semibold flex items-center gap-2">
+        <span className="text-xs uppercase tracking-widest text-muted-foreground dark:text-gray-400 font-semibold flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-yellow-500 dark:text-yellow-400" />
           Interactive Mood Meter
         </span>
@@ -101,16 +101,16 @@ export function MoodTracker({ variant = 'full', onMoodLogged }: MoodTrackerProps
           <div className="flex items-center gap-2">
             <button 
               onClick={() => { setStep('quadrant'); setActiveQuadrant(null); }}
-              className="text-xs font-semibold text-gray-600 dark:text-white/50 hover:text-black dark:hover:text-white px-3 py-1.5 rounded-full bg-gray-100 dark:bg-white/5"
+              className="text-xs font-semibold text-muted-foreground dark:text-white/50 hover:text-foreground dark:hover:text-white px-3 py-1.5 rounded-full bg-muted dark:bg-white/5"
             >
               Back to Menu
             </button>
             <button 
               onClick={() => setIsFullscreen(true)}
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-muted dark:bg-white/5 hover:bg-secondary dark:hover:bg-white/10 transition-colors"
               title="Expand Map"
             >
-              <Maximize2 className="w-4 h-4 text-gray-600 dark:text-white/70" />
+              <Maximize2 className="w-4 h-4 text-muted-foreground dark:text-white/70" />
             </button>
           </div>
         )}

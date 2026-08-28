@@ -72,10 +72,10 @@ export function MoodGrid({ initialQuadrant = null, selectedId, onSelect, onBack 
         >
           <button
             onClick={onBack}
-            className="shrink-0 w-10 h-10 rounded-full bg-gray-200/50 dark:bg-white/10 backdrop-blur-md border border-gray-300/50 dark:border-white/20 flex items-center justify-center hover:bg-gray-300/50 dark:hover:bg-white/20 active:scale-95 transition-all shadow-xl pointer-events-auto"
+            className="shrink-0 w-10 h-10 rounded-full bg-secondary/50 dark:bg-white/10 backdrop-blur-md border border-border/50 dark:border-white/20 flex items-center justify-center hover:bg-gray-300/50 dark:hover:bg-white/20 active:scale-95 transition-all shadow-xl pointer-events-auto"
             aria-label="Close"
           >
-            <X className="w-5 h-5 text-gray-800 dark:text-white/90" />
+            <X className="w-5 h-5 text-foreground dark:text-white/90" />
           </button>
         </motion.div>
       )}
@@ -83,13 +83,13 @@ export function MoodGrid({ initialQuadrant = null, selectedId, onSelect, onBack 
       {/* Floating Search Bar */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-4 pointer-events-none">
         <div className="relative pointer-events-auto shadow-2xl shadow-gray-200/50 dark:shadow-black/50 rounded-2xl">
-          <Search className="w-4 h-4 text-gray-500 dark:text-white/50 absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-muted-foreground dark:text-white/50 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search moods..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-12 bg-white/80 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-2xl pl-11 pr-4 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50 focus:outline-none focus:border-gray-300 dark:focus:border-white/40 focus:bg-white dark:focus:bg-white/20 transition-all"
+            className="w-full h-12 bg-white/80 dark:bg-white/10 backdrop-blur-xl border border-border dark:border-white/20 rounded-2xl pl-11 pr-4 text-sm text-foreground dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50 focus:outline-none focus:border-border dark:focus:border-white/40 focus:bg-card dark:focus:bg-white/20 transition-all"
           />
         </div>
       </div>

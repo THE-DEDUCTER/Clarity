@@ -92,7 +92,7 @@ export function VisitorChoice({ visitor, onChoice }: VisitorChoiceProps) {
   };
 
   return (
-    <Card className="border-0 shadow-xl bg-white dark:bg-gray-900">
+    <Card className="border-0 shadow-xl bg-card dark:bg-gray-900">
       <CardContent className="p-6">
         {/* Visitor Information */}
         <div className="text-center mb-6">

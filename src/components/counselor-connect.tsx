@@ -242,16 +242,16 @@ export function CounselorConnect() {
               </p>
             </div>
             <div className="p-4 bg-white/90 rounded-lg border border-green-200 text-left space-y-1">
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-muted-foreground">
                 <strong>User ID:</strong> {user?.id}
               </p>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-muted-foreground">
                 <strong>Appointment ID:</strong> {checkoutResult?.appointment?.apptId}
               </p>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-muted-foreground">
                 <strong>Payment ID:</strong> {checkoutResult?.payment?.paymentId}
               </p>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-muted-foreground">
                 <strong>Gateway:</strong> {checkoutResult?.gateway?.name}
               </p>
             </div>
@@ -302,13 +302,13 @@ export function CounselorConnect() {
             <div className="p-4 rounded-lg border space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold">{selectedCounselor.name}</h3>
-                <div className="flex items-center gap-1 text-sm text-gray-600">
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
                   <Star className="w-4 h-4 text-yellow-500 fill-current" />
                   {selectedCounselor.rating.toFixed(1)}
                 </div>
               </div>
-              <p className="text-sm text-gray-600">{selectedCounselor.specialization}</p>
-              <p className="text-sm text-gray-600">License: {selectedCounselor.licenseNo}</p>
+              <p className="text-sm text-muted-foreground">{selectedCounselor.specialization}</p>
+              <p className="text-sm text-muted-foreground">License: {selectedCounselor.licenseNo}</p>
               <p className="font-semibold text-lg flex items-center gap-1 text-blue-700">
                 <IndianRupee className="w-4 h-4" />
                 {selectedCounselor.consultationFee}
@@ -529,13 +529,13 @@ export function CounselorConnect() {
                             Available
                           </Badge>
                         )}
-                        <div className="flex items-center gap-1 text-sm text-gray-600">
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
                           <Star className="w-4 h-4 text-yellow-500 fill-current" />
                           {counselor.rating.toFixed(1)}
                         </div>
                       </div>
 
-                      <div className="text-sm text-gray-600 flex flex-wrap gap-x-5 gap-y-1">
+                      <div className="text-sm text-muted-foreground flex flex-wrap gap-x-5 gap-y-1">
                         <span className="inline-flex items-center gap-1">
                           <Clock className="w-4 h-4" />
                           {counselor.specialization}

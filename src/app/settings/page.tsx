@@ -18,10 +18,10 @@ export default function SettingsPage() {
             <Settings className="w-3.5 h-3.5" />
             <span>Preferences & Accessibility</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground dark:text-gray-100">
             Platform Settings
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+          <p className="text-sm sm:text-base text-muted-foreground dark:text-gray-300">
             Customize your visual comfort, accessibility aids, data privacy, and notification preferences.
           </p>
         </div>
@@ -35,13 +35,13 @@ export default function SettingsPage() {
               <div className="p-2 bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl shadow-md">
                 <Palette className="w-5 h-5 text-white" />
               </div>
-              <span className="text-gray-900 dark:text-gray-100 font-bold">Appearance</span>
+              <span className="text-foreground dark:text-gray-100 font-bold">Appearance</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900 dark:text-gray-100">Theme Mode</p>
+                <p className="font-medium text-foreground dark:text-gray-100">Theme Mode</p>
                 <p className="text-sm text-muted-foreground">
                   Switch between light and dark mode
                 </p>
@@ -58,12 +58,12 @@ export default function SettingsPage() {
               <div className="p-2 bg-gradient-to-br from-violet-400 to-purple-500 rounded-xl shadow-md">
                 <Settings className="w-5 h-5 text-white" />
               </div>
-              <span className="text-gray-900 dark:text-gray-100 font-bold">Privacy & Security</span>
+              <span className="text-foreground dark:text-gray-100 font-bold">Privacy & Security</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <p className="font-medium text-gray-900 dark:text-gray-100">Zero-Trace Data Storage</p>
+              <p className="font-medium text-foreground dark:text-gray-100">Zero-Trace Data Storage</p>
               <p className="text-sm text-muted-foreground">
                 Your personal journal entries and mood logs are strictly encrypted and stored with utmost confidentiality.
               </p>

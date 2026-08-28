@@ -174,13 +174,13 @@ export const GameUI: React.FC<GameUIProps> = ({
       {/* Game Over Overlay */}
       {(gameState.castleHealth <= 0 || gameState.innerPeace <= 0) && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className="bg-white rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
+          <div className="bg-card rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
             <h2 className="text-3xl font-bold mb-4 text-red-600">Game Over</h2>
             <div className="space-y-2 mb-6">
-              <p className="text-gray-700">Final Score: <span className="font-bold">{gameState.score}</span></p>
-              <p className="text-gray-700">Level Reached: <span className="font-bold">{gameState.level}</span></p>
-              <p className="text-gray-700">Visitors Handled: <span className="font-bold">{gameState.totalVisitors}</span></p>
-              <p className="text-gray-700">
+              <p className="text-muted-foreground">Final Score: <span className="font-bold">{gameState.score}</span></p>
+              <p className="text-muted-foreground">Level Reached: <span className="font-bold">{gameState.level}</span></p>
+              <p className="text-muted-foreground">Visitors Handled: <span className="font-bold">{gameState.totalVisitors}</span></p>
+              <p className="text-muted-foreground">
                 Accuracy: <span className="font-bold">
                   {gameState.totalVisitors > 0 
                     ? Math.round((gameState.correctChoices / gameState.totalVisitors) * 100)
@@ -204,18 +204,18 @@ export const GameUI: React.FC<GameUIProps> = ({
       {/* Victory Overlay */}
       {gameState.level > 10 && gameState.castleHealth > 80 && gameState.innerPeace > 80 && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className="bg-white rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
+          <div className="bg-card rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
             <h2 className="text-3xl font-bold mb-4 text-green-600 flex items-center justify-center gap-2">
               <Sparkles className="w-7 h-7 text-amber-500" />
               <span>Victory!</span>
             </h2>
-            <p className="text-gray-700 mb-4">
+            <p className="text-muted-foreground mb-4">
               You've mastered the art of inner gatekeeping!
             </p>
             <div className="space-y-2 mb-6">
-              <p className="text-gray-700">Final Score: <span className="font-bold">{gameState.score}</span></p>
-              <p className="text-gray-700">Level Reached: <span className="font-bold">{gameState.level}</span></p>
-              <p className="text-gray-700">Perfect Balance Achieved!</p>
+              <p className="text-muted-foreground">Final Score: <span className="font-bold">{gameState.score}</span></p>
+              <p className="text-muted-foreground">Level Reached: <span className="font-bold">{gameState.level}</span></p>
+              <p className="text-muted-foreground">Perfect Balance Achieved!</p>
             </div>
             <button
               onClick={onRestart}
@@ -231,9 +231,9 @@ export const GameUI: React.FC<GameUIProps> = ({
       {/* Pause Overlay */}
       {isPaused && gameState.castleHealth > 0 && gameState.innerPeace > 0 && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-40 backdrop-blur-sm">
-          <div className="bg-white rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Game Paused</h2>
-            <p className="text-gray-600 mb-6">Take a moment to breathe...</p>
+          <div className="bg-card rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
+            <h2 className="text-2xl font-bold mb-4 text-foreground">Game Paused</h2>
+            <p className="text-muted-foreground mb-6">Take a moment to breathe...</p>
             <div className="space-y-2">
               <button
                 onClick={onPause}

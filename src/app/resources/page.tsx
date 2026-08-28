@@ -267,7 +267,7 @@ export default function ResourcesPage() {
       case 'beginner': return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300';
       case 'intermediate': return 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300';
       case 'advanced': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300';
+      default: return 'bg-muted text-foreground dark:bg-gray-900/30 dark:text-gray-300';
     }
   };
 
@@ -337,12 +337,12 @@ export default function ResourcesPage() {
                 <div className="max-w-2xl mx-auto relative mt-6">
                   <div className="relative bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-1 shadow-xl border border-white/20">
                     <div className="relative">
-                      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
+                      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                       <Input
                         placeholder="Search resources, topics, or techniques..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-12 pr-4 py-4 border-0 bg-transparent text-lg placeholder:text-gray-500 focus:ring-0 focus:outline-none text-gray-900 dark:text-gray-100"
+                        className="pl-12 pr-4 py-4 border-0 bg-transparent text-lg placeholder:text-muted-foreground focus:ring-0 focus:outline-none text-foreground dark:text-gray-100"
                       />
                     </div>
                   </div>
@@ -373,7 +373,7 @@ export default function ResourcesPage() {
               <div className="p-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500">
                 <Target className="w-5 h-5 text-white" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Browse by Category</h2>
+              <h2 className="text-xl font-semibold text-foreground dark:text-gray-100">Browse by Category</h2>
             </div>
             
             <div className="grid grid-cols-2 xxs:grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-3 xxs:gap-2 sm:gap-4">
@@ -410,8 +410,8 @@ export default function ResourcesPage() {
                   <Star className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Featured Resources</h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Handpicked by our experts</p>
+                  <h2 className="text-2xl font-bold text-foreground dark:text-gray-100">Featured Resources</h2>
+                  <p className="text-sm text-muted-foreground dark:text-gray-400">Handpicked by our experts</p>
                 </div>
               </div>
               
@@ -421,7 +421,7 @@ export default function ResourcesPage() {
                   return (
                     <Card 
                       key={resource.id} 
-                      className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden bg-white dark:bg-gray-800"
+                      className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden bg-card dark:bg-gray-800"
                       style={{
                         borderRadius: '24px',
                         animationDelay: `${index * 100}ms`,
@@ -446,7 +446,7 @@ export default function ResourcesPage() {
                           </CardTitle>
                         </CardHeader>
                         <CardContent className="relative space-y-4">
-                          <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-3">
+                          <p className="text-muted-foreground dark:text-gray-300 text-sm leading-relaxed line-clamp-3">
                             {resource.description}
                           </p>
                           
@@ -459,14 +459,14 @@ export default function ResourcesPage() {
                           </div>
                           
                           {/* Interaction buttons */}
-                          <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+                          <div className="flex items-center justify-between pt-2 border-t border-border dark:border-gray-700">
                             <div className="flex items-center gap-4">
                               <button 
                                 onClick={() => handleLike(resource.id)}
                                 className={`flex items-center gap-1 text-sm transition-colors ${
                                   resource.isLiked 
                                     ? 'text-red-500 hover:text-red-600' 
-                                    : 'text-gray-500 hover:text-red-500'
+                                    : 'text-muted-foreground hover:text-red-500'
                                 }`}
                               >
                                 <Heart className={`w-4 h-4 ${resource.isLiked ? 'fill-current' : ''}`} />
@@ -474,14 +474,14 @@ export default function ResourcesPage() {
                               </button>
                               <button 
                                 onClick={() => handleComment(resource.id)}
-                                className="flex items-center gap-1 text-sm text-gray-500 hover:text-blue-500 transition-colors"
+                                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-blue-500 transition-colors"
                               >
                                 <MessageCircle className="w-4 h-4" />
                                 <span>{resource.comments || 0}</span>
                               </button>
                               <button 
                                 onClick={() => handleShare(resource.id)}
-                                className="flex items-center gap-1 text-sm text-gray-500 hover:text-green-500 transition-colors"
+                                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-green-500 transition-colors"
                               >
                                 <Share2 className="w-4 h-4" />
                                 <span>{resource.shares || 0}</span>
@@ -505,7 +505,7 @@ export default function ResourcesPage() {
                               className={`rounded-xl transition-colors ${
                                 resource.isBookmarked 
                                   ? 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400'
-                                  : 'border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-800'
+                                  : 'border-border hover:bg-background dark:border-gray-600 dark:hover:bg-gray-800'
                               }`}
                             >
                               <Bookmark className={`w-4 h-4 ${resource.isBookmarked ? 'fill-current' : ''}`} />
@@ -528,10 +528,10 @@ export default function ResourcesPage() {
                   <BookOpen className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                  <h2 className="text-2xl font-bold text-foreground dark:text-gray-100">
                     {selectedCategory === 'all' ? 'All Resources' : `${selectedCategory} Resources`}
                   </h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Comprehensive collection for your growth</p>
+                  <p className="text-sm text-muted-foreground dark:text-gray-400">Comprehensive collection for your growth</p>
                 </div>
               </div>
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 px-4 py-2 rounded-xl">
@@ -546,7 +546,7 @@ export default function ResourcesPage() {
                 return (
                   <Card 
                     key={resource.id} 
-                    className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden bg-white dark:bg-gray-800"
+                    className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] overflow-hidden bg-card dark:bg-gray-800"
                     style={{
                       borderRadius: '20px',
                       animationDelay: `${index * 50}ms`,
@@ -560,7 +560,7 @@ export default function ResourcesPage() {
                             <IconComponent className="w-5 h-5 text-white" />
                           </div>
                           <div className="text-right">
-                            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground dark:text-gray-400">
                               <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
                               {resource.rating}
                             </div>
@@ -569,10 +569,10 @@ export default function ResourcesPage() {
                         <CardTitle className="text-base leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                           {resource.title}
                         </CardTitle>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">by {resource.author}</p>
+                        <p className="text-xs text-muted-foreground dark:text-gray-400">by {resource.author}</p>
                       </CardHeader>
                       <CardContent className="relative space-y-3">
-                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-2">
+                        <p className="text-muted-foreground dark:text-gray-300 text-sm leading-relaxed line-clamp-2">
                           {resource.description}
                         </p>
                         
@@ -585,14 +585,14 @@ export default function ResourcesPage() {
                         </div>
                         
                         {/* Interaction Section */}
-                        <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+                        <div className="flex items-center justify-between pt-2 border-t border-border dark:border-gray-700">
                           <div className="flex items-center gap-3">
                             <button 
                               onClick={() => handleLike(resource.id)}
                               className={`flex items-center gap-1 text-xs transition-colors ${
                                 resource.isLiked 
                                   ? 'text-red-500 hover:text-red-600' 
-                                  : 'text-gray-500 hover:text-red-500'
+                                  : 'text-muted-foreground hover:text-red-500'
                               }`}
                             >
                               <Heart className={`w-3 h-3 ${resource.isLiked ? 'fill-current' : ''}`} />
@@ -600,12 +600,12 @@ export default function ResourcesPage() {
                             </button>
                             <button 
                               onClick={() => handleComment(resource.id)}
-                              className="flex items-center gap-1 text-xs text-gray-500 hover:text-blue-500 transition-colors"
+                              className="flex items-center gap-1 text-xs text-muted-foreground hover:text-blue-500 transition-colors"
                             >
                               <MessageCircle className="w-3 h-3" />
                               <span>{resource.comments || 0}</span>
                             </button>
-                            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground dark:text-gray-400">
                               <Clock className="w-3 h-3" />
                               {resource.readTime}
                             </div>
@@ -630,7 +630,7 @@ export default function ResourcesPage() {
                             className={`rounded-xl transition-colors ${
                               resource.isBookmarked 
                                 ? 'bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400'
-                                : 'border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-800'
+                                : 'border-border hover:bg-background dark:border-gray-600 dark:hover:bg-gray-800'
                             }`}
                           >
                             <Bookmark className={`w-3 h-3 ${resource.isBookmarked ? 'fill-current' : ''}`} />
@@ -639,7 +639,7 @@ export default function ResourcesPage() {
                             onClick={() => handleShare(resource.id)}
                             size="sm" 
                             variant="outline" 
-                            className="rounded-xl border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-800"
+                            className="rounded-xl border-border hover:bg-background dark:border-gray-600 dark:hover:bg-gray-800"
                           >
                             <Share2 className="w-3 h-3" />
                           </Button>
@@ -655,8 +655,8 @@ export default function ResourcesPage() {
               <div className="text-center py-16">
                 <div className="relative">
                   <BookOpen className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">No resources found</h3>
-                  <p className="text-gray-500 dark:text-gray-400">
+                  <h3 className="text-xl font-semibold text-muted-foreground dark:text-gray-300 mb-2">No resources found</h3>
+                  <p className="text-muted-foreground dark:text-gray-400">
                     Try adjusting your search terms or browse different categories
                   </p>
                 </div>

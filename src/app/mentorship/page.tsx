@@ -25,10 +25,10 @@ export default function MentorshipPage() {
             <GraduationCap className="w-3.5 h-3.5" />
             <span>Savangadi Mentorship Initiative</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground dark:text-gray-100">
             Peer Mentorship Network
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+          <p className="text-sm sm:text-base text-muted-foreground dark:text-gray-300">
             Connecting students across regions and domains for academic guidance, career prep, and personal growth.
           </p>
         </div>
@@ -44,7 +44,7 @@ export default function MentorshipPage() {
 
         <TabsContent value="overview" className="space-y-4 sm:space-y-6">
           <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
-            <Card className="rounded-[28px] border border-indigo-100 dark:border-indigo-900/40 shadow-lg hover:shadow-xl transition-all duration-300 bg-white dark:bg-gray-900">
+            <Card className="rounded-[28px] border border-indigo-100 dark:border-indigo-900/40 shadow-lg hover:shadow-xl transition-all duration-300 bg-card dark:bg-gray-900">
               <CardHeader className="text-center pb-3 sm:pb-6">
                 <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 rounded-full flex items-center justify-center mb-2 sm:mb-4 shadow-lg">
                   <GraduationCap className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
@@ -78,7 +78,7 @@ export default function MentorshipPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-purple-100 hover:border-purple-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+            <Card className="border-2 border-purple-100 hover:border-purple-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-card">
               <CardHeader className="text-center pb-3 sm:pb-6">
                 <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-purple-600 rounded-full flex items-center justify-center mb-2 sm:mb-4 shadow-lg">
                   <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
