@@ -116,8 +116,10 @@ export function MoodTracker({ variant = 'full', onMoodLogged }: MoodTrackerProps
       <div 
         className="relative w-full h-[550px] sm:h-[650px] lg:h-[750px]"
         style={{
-          WebkitMaskImage: 'radial-gradient(50% 50% at 50% 50%, black 50%, transparent 100%)',
-          maskImage: 'radial-gradient(50% 50% at 50% 50%, black 50%, transparent 100%)'
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)',
+          WebkitMaskComposite: 'source-in',
+          maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)',
+          maskComposite: 'intersect'
         }}
       >
         <AnimatePresence mode="wait">
