@@ -85,10 +85,6 @@ export function MoodTracker({ variant = 'full', onMoodLogged }: MoodTrackerProps
   return (
     <div 
       className="w-full relative flex flex-col overflow-hidden"
-      style={{
-        WebkitMaskImage: 'radial-gradient(50% 50% at 50% 50%, black 60%, transparent 100%)',
-        maskImage: 'radial-gradient(50% 50% at 50% 50%, black 60%, transparent 100%)'
-      }}
     >
       
       {/* Header Area */}
@@ -117,7 +113,13 @@ export function MoodTracker({ variant = 'full', onMoodLogged }: MoodTrackerProps
       </div>
 
       {/* Main View Area */}
-      <div className="relative w-full h-[450px] sm:h-[550px] lg:h-[600px]">
+      <div 
+        className="relative w-full h-[550px] sm:h-[650px] lg:h-[750px]"
+        style={{
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 75%, transparent 100%)',
+          maskImage: 'radial-gradient(ellipse at center, black 75%, transparent 100%)'
+        }}
+      >
         <AnimatePresence mode="wait">
           {step === 'quadrant' && (
             <motion.div

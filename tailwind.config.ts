@@ -21,6 +21,18 @@ export default {
       '2xl': '1536px',
     },
     extend: {
+      fontSize: {
+        'display-lg': ['128px', {
+          lineHeight: '128px',
+          letterSpacing: '-0.05em',
+          fontWeight: '600',
+        }],
+        'body-md': ['14px', {
+          lineHeight: '22.75px',
+          letterSpacing: 'normal',
+          fontWeight: '400',
+        }],
+      },
       borderRadius: {
         lg: ".5625rem", /* 9px */
         md: ".375rem", /* 6px */

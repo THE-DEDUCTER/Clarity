@@ -28,7 +28,7 @@ export function MoodConfirmSheet({ word, onConfirm, isLoading = false }: MoodCon
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: "100%", opacity: 0 }}
           transition={{ type: "spring", stiffness: 320, damping: 26 }}
-          className="fixed bottom-0 left-0 right-0 z-[100] px-4 pb-[max(20px,env(safe-area-inset-bottom))] pt-0 flex justify-center pointer-events-none"
+          className="absolute bottom-0 left-0 right-0 z-[100] px-4 pb-6 pt-0 flex justify-center pointer-events-none"
         >
           <div className="w-full max-w-[540px] bg-[#141416]/95 backdrop-blur-2xl rounded-3xl p-5 sm:p-6 flex items-center justify-between gap-4 pointer-events-auto shadow-[0_-10px_40px_rgba(0,0,0,0.8)] border border-white/10 relative overflow-hidden">
             {/* Subtle radial ambient glow reflecting the emotion color */}
