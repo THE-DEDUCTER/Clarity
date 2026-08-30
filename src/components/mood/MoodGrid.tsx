@@ -125,7 +125,7 @@ export function MoodGrid({ initialQuadrant = null, selectedId, onSelect, onBack 
                   alignY, alignX
                 )}
               >
-                <div className="flex flex-wrap gap-1.5 justify-center max-w-[650px]">
+                <div className="flex flex-wrap gap-2 justify-center items-center content-center max-w-[800px]">
                   {quadMoods.map((word, i) => (
                     <div 
                       key={word.id} 

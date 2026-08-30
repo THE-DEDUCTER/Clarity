@@ -29,18 +29,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
-
 interface NavChild {
   title: string;
   url: string;
@@ -112,7 +100,6 @@ const accountItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { isMobile, setOpenMobile } = useSidebar();
   const [expandedHubs, setExpandedHubs] = useState<Record<string, boolean>>({});
 
   const isActive = (url: string) => {
@@ -126,180 +113,132 @@ export function AppSidebar() {
     return hub.children.some((child) => pathname?.startsWith(child.url));
   };
 
-  const toggleHub = (title: string) => {
+  const toggleHub = (e: React.MouseEvent, title: string) => {
+    e.preventDefault();
     setExpandedHubs((prev) => ({ ...prev, [title]: !prev[title] }));
   };
 
-  const handleNavigation = () => {
-    if (isMobile) {
-      setTimeout(() => setOpenMobile(false), 150);
-    }
-  };
-
-  const itemClass = (active: boolean, extra?: string) =>
+  const itemClass = (active: boolean) =>
     cn(
-      "modern-button group px-3 py-2 rounded-xl transition-all duration-300 hover:bg-accent/50 hover:scale-[1.02] active:scale-[0.98]",
-      active && "bg-primary text-primary-foreground shadow-md",
-      extra
+      "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 w-full text-sm font-medium relative group/link",
+      "hover:bg-gray-100 dark:hover:bg-gray-800/60 active:scale-[0.98]",
+      active ? "bg-primary text-primary-foreground shadow-md" : "text-gray-700 dark:text-gray-200"
+    );
+
+  const iconClass = (active: boolean) =>
+    cn(
+      "w-5 h-5 shrink-0 transition-colors",
+      active ? "text-primary-foreground" : "text-gray-500 dark:text-gray-400 group-hover/link:text-gray-900 dark:group-hover/link:text-white"
     );
 
   return (
-    <Sidebar data-testid="sidebar-main" className="modern-card border-0 shadow-lg">
-      <SidebarContent className="bg-background/50 pt-4 sm:pt-5 md:pt-6 flex flex-col h-full">
-        {/* Primary navigation */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-bold text-muted-foreground px-3 py-2">
-            Navigate
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
-              {/* Home */}
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  data-active={isActive("/dashboard")}
-                  data-testid="nav-home"
-                  className={itemClass(isActive("/dashboard"))}
-                >
-                  <Link href="/dashboard" className="flex items-center gap-3" onClick={handleNavigation}>
-                    <Home className="w-5 h-5 icon-interactive transition-transform duration-200" />
-                    <span className="text-sm font-medium">Home</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+    <aside className="group absolute left-0 top-0 h-full bg-white dark:bg-[#0c0c0c] border-r border-gray-200/50 dark:border-gray-800/50 transition-all duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] w-[72px] hover:w-[260px] overflow-hidden flex flex-col z-40 shadow-sm md:shadow-none hover:shadow-2xl">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin pt-20 pb-6 flex flex-col gap-6">
+        
+        {/* Navigation Section */}
+        <div className="px-3 flex flex-col gap-1.5">
+          {/* Section Header (Hidden when collapsed) */}
+          <div className="px-3 flex items-center overflow-hidden transition-all duration-300 h-0 mb-0 group-hover:h-6 group-hover:mb-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+              Navigate
+            </span>
+          </div>
 
-              {/* Hub items */}
-              {hubItems.map((hub) => {
-                const hubActive = isHubOrChildActive(hub);
-                const isExpanded = expandedHubs[hub.title] ?? hubActive;
+          <Link href="/dashboard" className={itemClass(isActive("/dashboard"))}>
+            <Home className={iconClass(isActive("/dashboard"))} />
+            <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Home</span>
+          </Link>
 
-                return (
-                  <SidebarMenuItem key={hub.title}>
-                    <div className="flex items-center">
-                      <SidebarMenuButton
-                        asChild
-                        data-active={isActive(hub.url)}
-                        data-testid={`nav-${hub.title.toLowerCase().replace(/\s+/g, "-")}`}
-                        className={cn(itemClass(isActive(hub.url)), "flex-1")}
-                      >
-                        <Link href={hub.url} className="flex items-center gap-3" onClick={handleNavigation}>
-                          <hub.icon className="w-5 h-5 icon-interactive transition-transform duration-200" />
-                          <span className="text-sm font-medium">{hub.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                      <button
-                        onClick={() => toggleHub(hub.title)}
-                        className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors mr-1"
-                        aria-label={`${isExpanded ? "Collapse" : "Expand"} ${hub.title}`}
-                      >
-                        <ChevronRight
-                          className={cn(
-                            "w-3.5 h-3.5 text-muted-foreground transition-transform duration-200",
-                            isExpanded && "rotate-90"
-                          )}
-                        />
-                      </button>
-                    </div>
+          {hubItems.map((hub) => {
+            const hubActive = isHubOrChildActive(hub);
+            const isExpanded = expandedHubs[hub.title] ?? hubActive;
 
-                    {isExpanded && (
-                      <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-muted/40 pl-3">
-                        {hub.children.map((child) => (
-                          <SidebarMenuButton
-                            key={child.url + child.title}
-                            asChild
-                            data-active={isActive(child.url)}
-                            className={cn(
-                              "px-2.5 py-1.5 rounded-lg transition-all duration-200 hover:bg-accent/40 text-sm",
-                              isActive(child.url) && "bg-primary/10 text-primary font-semibold"
-                            )}
-                          >
-                            <Link href={child.url} className="flex items-center gap-2.5" onClick={handleNavigation}>
-                              <child.icon className="w-4 h-4 opacity-70" />
-                              <span className="text-sm">{child.title}</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        ))}
-                      </div>
-                    )}
-                  </SidebarMenuItem>
-                );
-              })}
-
-              {/* Explore */}
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  data-active={isActive(exploreItem.url)}
-                  data-testid="nav-explore"
-                  className={itemClass(isActive(exploreItem.url))}
-                >
-                  <Link href={exploreItem.url} className="flex items-center gap-3" onClick={handleNavigation}>
-                    <exploreItem.icon className="w-5 h-5 icon-interactive transition-transform duration-200" />
-                    <span className="text-sm font-medium">{exploreItem.title}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* Safety — visually distinct, never buried */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-bold text-rose-600 dark:text-rose-400 px-3 py-2">
-            Safety
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
-              {safetyItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    data-active={isActive(item.url)}
-                    data-testid={`nav-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
-                    className={itemClass(
-                      isActive(item.url),
-                      item.url === "/crisis" && !isActive(item.url)
-                        ? "text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30"
-                        : undefined
-                    )}
+            return (
+              <div key={hub.title} className="flex flex-col">
+                <Link href={hub.url} className={itemClass(isActive(hub.url))}>
+                  <hub.icon className={iconClass(isActive(hub.url))} />
+                  <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 flex-1">
+                    {hub.title}
+                  </span>
+                  
+                  {/* Chevron only visible when hovered */}
+                  <button
+                    onClick={(e) => toggleHub(e, hub.title)}
+                    className="p-1 rounded-md hover:bg-black/10 dark:hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all absolute right-2"
                   >
-                    <Link href={item.url} className="flex items-center gap-3" onClick={handleNavigation}>
-                      <item.icon className="w-5 h-5 icon-interactive transition-transform duration-200" />
-                      <span className="text-sm font-medium">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                    <ChevronRight className={cn("w-4 h-4 text-gray-400 transition-transform", isExpanded && "rotate-90")} />
+                  </button>
+                </Link>
 
-        {/* Spacer */}
-        <div className="flex-1" />
+                {/* Children Menu (Only shown when expanded AND sidebar is hovered) */}
+                <div className={cn(
+                  "overflow-hidden transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 max-h-0",
+                  isExpanded && "group-hover:max-h-96 group-hover:mt-1"
+                )}>
+                  <div className="ml-[22px] pl-3 border-l-2 border-gray-100 dark:border-gray-800 flex flex-col gap-1">
+                    {hub.children.map((child) => (
+                      <Link 
+                        key={child.url} 
+                        href={child.url} 
+                        className={cn(
+                          "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all whitespace-nowrap group/child",
+                          isActive(child.url) 
+                            ? "bg-primary/10 text-primary font-semibold" 
+                            : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
+                        )}
+                      >
+                        <child.icon className={cn("w-4 h-4 shrink-0 transition-transform group-hover/child:scale-110", isActive(child.url) ? "text-primary" : "opacity-70")} />
+                        <span>{child.title}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
 
-        {/* Account — pinned bottom */}
-        <SidebarGroup className="mt-auto border-t border-muted/30 pt-2">
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
-              {accountItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    data-active={isActive(item.url)}
-                    data-testid={`nav-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
-                    className={itemClass(isActive(item.url))}
-                  >
-                    <Link href={item.url} className="flex items-center gap-3" onClick={handleNavigation}>
-                      <item.icon className="w-5 h-5 icon-interactive transition-transform duration-200" />
-                      <span className="text-sm font-medium">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+          <Link href={exploreItem.url} className={itemClass(isActive(exploreItem.url))}>
+            <exploreItem.icon className={iconClass(isActive(exploreItem.url))} />
+            <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">{exploreItem.title}</span>
+          </Link>
+        </div>
+
+        {/* Safety Section */}
+        <div className="px-3 flex flex-col gap-1.5 mt-2">
+          <div className="px-3 flex items-center overflow-hidden transition-all duration-300 h-0 mb-0 group-hover:h-6 group-hover:mb-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-500/70 dark:text-rose-400/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+              Safety
+            </span>
+          </div>
+          {safetyItems.map((item) => {
+            const isCrisis = item.url === "/crisis";
+            return (
+              <Link 
+                key={item.url} 
+                href={item.url} 
+                className={cn(
+                  itemClass(isActive(item.url)), 
+                  isCrisis && !isActive(item.url) && "text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                )}
+              >
+                <item.icon className={cn(iconClass(isActive(item.url)), isCrisis && "text-rose-500 dark:text-rose-400")} />
+                <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">{item.title}</span>
+              </Link>
+            );
+          })}
+        </div>
+
+      </div>
+
+      {/* Footer / Account */}
+      <div className="p-3 border-t border-gray-100/50 dark:border-gray-800/50 flex flex-col gap-1.5 bg-gray-50/50 dark:bg-[#0c0c0c]">
+        {accountItems.map((item) => (
+          <Link key={item.url} href={item.url} className={itemClass(isActive(item.url))}>
+            <item.icon className={iconClass(isActive(item.url))} />
+            <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">{item.title}</span>
+          </Link>
+        ))}
+      </div>
+    </aside>
   );
 }

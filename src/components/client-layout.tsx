@@ -38,7 +38,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           {/* Desktop sidebar trigger */}
           <SidebarTrigger 
             data-testid="button-sidebar-toggle" 
-            className="flex-shrink-0 icon-interactive modern-button rounded-xl p-2 hover:bg-accent/50 md:flex hidden" 
+            className="hidden" 
           />
           <Link href="/dashboard" className="flex items-center">
             <img 
@@ -55,27 +55,17 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       </header>
       
       {/* Main Layout */}
-      <div className="flex h-screen w-full main-content relative">
-        {/* Transparent hover trigger area on the left edge */}
-        <div 
-          className="hidden md:block absolute left-0 top-0 bottom-0 w-4 z-50"
-          onMouseEnter={() => {
-            if (state === 'collapsed') {
-               setOpen(true);
-            }
-          }}
-        />
-        <div 
-          className="sidebar-overlay hidden md:block absolute left-0 top-0 bottom-0 z-40"
-          onMouseLeave={() => {
-             if (state === 'expanded') {
-                setOpen(false);
-             }
-          }}
-        >
+      <div className="flex h-[calc(100vh-var(--header-height,4rem))] w-full main-content relative">
+        
+        {/* Spacer to push main content - Desktop only */}
+        <div className="hidden md:block w-[72px] shrink-0 h-full bg-white dark:bg-[#0c0c0c] border-r border-gray-200/50 dark:border-gray-800/50" />
+
+        {/* Absolute Custom Sidebar overlay */}
+        <div className="hidden md:block absolute left-0 top-0 bottom-0 z-50">
           <AppSidebar />
         </div>
-        <div className="flex flex-col flex-1 min-w-0">
+        
+        <div className="flex flex-col flex-1 min-w-0 relative">
           <main className={`flex-1 min-w-0 overflow-auto android-scroll ${pathname.startsWith("/ai-buddy") ? "p-0" : "p-2 xxs:p-1 sm:p-3 md:p-4 lg:p-6 pb-24 md:pb-6"}`}>
             {children}
           </main>
