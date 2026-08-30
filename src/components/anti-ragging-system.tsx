@@ -136,7 +136,7 @@ export function AntiRaggingSystem() {
     setAiConsultation(consultation);
 
     // Simulate submission delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Simulate network delay removed
 
     setSubmitted(true);
     setIsSubmitting(false);

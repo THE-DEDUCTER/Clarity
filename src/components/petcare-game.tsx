@@ -358,7 +358,7 @@ export const PetCareDashboard: React.FC = () => {
         } opacity-30`} style={{animationDuration: currentAnimation === 'playing' ? '2s' : '3s'}} />
         
         {/* Main dog graphic */}
-        <div className={`relative z-10 p-8 rounded-full bg-gradient-to-tr from-amber-100 to-orange-100 shadow-xl transition-all duration-500 ${
+        <div className={`relative z-10 p-8 rounded-full bg-gradient-to-tr from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-orange-900/40 shadow-xl transition-all duration-500 ${
           currentAnimation === 'eating' ? 'animate-bounce' :
           currentAnimation === 'drinking' ? 'animate-pulse' :
           currentAnimation === 'playing' ? 'animate-spin' :
@@ -468,7 +468,7 @@ export const PetCareDashboard: React.FC = () => {
 
       {/* Pet Status with Animated Dog (Classic view) */}
       {viewMode === 'classic' && (
-        <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50">
+        <Card className="border-2 border-blue-200 dark:border-blue-900/50 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
           <CardHeader className="text-center pb-4">
             <AnimatedDog />
             <CardTitle className="text-2xl text-foreground">
@@ -611,7 +611,7 @@ export const PetCareDashboard: React.FC = () => {
       )}
 
       {/* Pet Chat */}
-      <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
+      <Card className="border-2 border-purple-200 dark:border-purple-900/50 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MessageCircle className="w-5 h-5 text-purple-600" />
@@ -620,7 +620,7 @@ export const PetCareDashboard: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Chat Messages */}
-          <div className="h-64 overflow-y-auto bg-white/70 rounded-lg p-4 space-y-3 border border-purple-100">
+          <div className="h-64 overflow-y-auto bg-white/70 dark:bg-slate-900/70 rounded-lg p-4 space-y-3 border border-purple-100 dark:border-purple-900/50">
             {chatMessages.map((msg) => (
               <div
                 key={msg.id}
@@ -652,7 +652,7 @@ export const PetCareDashboard: React.FC = () => {
               onChange={(e) => setCurrentMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={`Talk to ${pet.name}...`}
-              className="flex-1 bg-white/70 border-purple-200 focus:border-purple-400"
+              className="flex-1 bg-white/70 dark:bg-slate-900/70 border-purple-200 dark:border-purple-900/50 focus:border-purple-400 dark:focus:border-purple-500"
             />
             <Button
               onClick={sendMessage}
@@ -664,7 +664,7 @@ export const PetCareDashboard: React.FC = () => {
           </div>
 
           {/* Chat Tips */}
-          <div className="text-xs text-muted-foreground bg-white/50 p-3 rounded-lg border border-purple-100 flex items-start gap-2">
+          <div className="text-xs text-muted-foreground bg-white/50 dark:bg-slate-900/50 p-3 rounded-lg border border-purple-100 dark:border-purple-900/50 flex items-start gap-2">
             <Sparkles className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
             <div>
               <strong>Chat Tips:</strong> Ask {pet.name} how they're feeling, tell them about your day, or just say hi! 
@@ -675,7 +675,7 @@ export const PetCareDashboard: React.FC = () => {
       </Card>
 
       {/* Game Benefits */}
-      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+      <Card className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border-green-200 dark:border-green-900/50">
         <CardContent className="p-6 text-center">
           <h3 className="text-lg font-semibold mb-3 text-foreground">
             Therapeutic Benefits of Pet Care

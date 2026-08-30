@@ -190,7 +190,7 @@ export const InnerGatekeeper: React.FC = () => {
   }, [gameStarted, isPaused, currentVisitor, feedback, gameState.castleHealth, gameState.innerPeace, getNextVisitor]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-200 via-purple-200 to-pink-200 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-blue-200 via-purple-200 to-pink-200 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-t from-green-100 to-transparent"></div>
       
@@ -204,7 +204,7 @@ export const InnerGatekeeper: React.FC = () => {
       {!gameStarted ? (
         /* Start Screen */
         <div className="flex items-center justify-center min-h-screen">
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 max-w-2xl mx-4 text-center shadow-2xl border border-white/60">
+          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-3xl p-8 max-w-2xl mx-4 text-center shadow-2xl border border-white/60 dark:border-slate-800">
             <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg text-white">
               <Shield className="w-8 h-8" />
             </div>
@@ -217,21 +217,21 @@ export const InnerGatekeeper: React.FC = () => {
               Choose wisely whether to accept, reject, or challenge them.
             </p>
             <div className="space-y-3 mb-8 text-left">
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-emerald-50/80 border border-emerald-100">
+              <div className="flex items-center space-x-3 p-3 rounded-xl bg-emerald-50/80 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
                 <span className="text-sm text-muted-foreground"><strong>Accept:</strong> Welcome positive thoughts and beneficial experiences</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-rose-50/80 border border-rose-100">
+              <div className="flex items-center space-x-3 p-3 rounded-xl bg-rose-50/80 dark:bg-rose-900/20 border border-rose-100 dark:border-rose-800/50">
                 <XCircle className="w-5 h-5 text-rose-600 flex-shrink-0" />
                 <span className="text-sm text-muted-foreground"><strong>Reject:</strong> Turn away harmful or destructive influences</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-purple-50/80 border border-purple-100">
+              <div className="flex items-center space-x-3 p-3 rounded-xl bg-purple-50/80 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800/50">
                 <Swords className="w-5 h-5 text-purple-600 flex-shrink-0" />
                 <span className="text-sm text-muted-foreground"><strong>Challenge:</strong> Face difficult thoughts with courage and wisdom</span>
               </div>
             </div>
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
-              <p className="text-sm text-amber-800">
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl p-4 mb-6">
+              <p className="text-sm text-amber-800 dark:text-amber-200/80">
                 <strong>Goal:</strong> Maintain your castle's health and inner peace. 
                 Make wise choices to protect your mental wellbeing while growing stronger.
               </p>

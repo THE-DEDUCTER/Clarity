@@ -68,7 +68,7 @@ export default function ProfilePage() {
     
     try {
       // Simulate API call - in real app, this would update the user profile
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Simulate network delay removed
       
       toast({
         title: "Profile Updated!",
@@ -101,7 +101,7 @@ export default function ProfilePage() {
     
     try {
       // Simulate API call - in real app, this would delete the user account
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Simulate network delay removed
       
       toast({
         title: "Account Deleted",

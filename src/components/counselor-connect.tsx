@@ -241,7 +241,7 @@ export function CounselorConnect() {
                 Your session with {selectedCounselor.name} has been booked and payment is complete.
               </p>
             </div>
-            <div className="p-4 bg-white/90 rounded-lg border border-green-200 text-left space-y-1">
+            <div className="p-4 bg-white/90 dark:bg-slate-900/90 rounded-lg border border-green-200 dark:border-green-900/50 text-left space-y-1">
               <p className="text-sm text-muted-foreground">
                 <strong>User ID:</strong> {user?.id}
               </p>
@@ -288,7 +288,7 @@ export function CounselorConnect() {
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-900/50">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs text-blue-700 uppercase tracking-wide">Logged in as</p>
@@ -353,7 +353,7 @@ export function CounselorConnect() {
             </div>
 
             {statusError && (
-              <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
+              <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-md p-3">
                 {statusError}
               </div>
             )}
@@ -381,7 +381,7 @@ export function CounselorConnect() {
             </div>
 
             <div className="p-6 space-y-5">
-              <div className="rounded-lg border bg-slate-50 p-4 space-y-1">
+              <div className="rounded-lg border dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-4 space-y-1">
                 <p className="text-sm text-slate-500">Paying as</p>
                 <p className="font-semibold">{user?.username || user?.email}</p>
                 <p className="text-xs text-slate-600">User ID: {user?.id}</p>
@@ -432,7 +432,7 @@ export function CounselorConnect() {
               </div>
 
               {statusError && (
-                <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
+                <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-md p-3">
                   {statusError}
                 </div>
               )}
@@ -463,7 +463,7 @@ export function CounselorConnect() {
     <div className="space-y-6" data-testid="counselor-connect">
       <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-400/10 to-indigo-400/10">
         <CardContent className="p-6 space-y-4">
-          <div className="p-4 border border-blue-200 bg-blue-50 rounded-lg">
+          <div className="p-4 border border-blue-200 dark:border-blue-900/50 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <Shield className="w-4 h-4 text-blue-600" />
               <span className="font-medium text-blue-800">Book Therapist and Pay Securely</span>
@@ -474,19 +474,19 @@ export function CounselorConnect() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-3 border rounded-lg bg-white/80">
+            <div className="text-center p-3 border dark:border-slate-800 rounded-lg bg-white/80 dark:bg-slate-900/80">
               <div className="text-lg font-semibold text-green-600">{counselors.length}</div>
               <div className="text-xs text-muted-foreground">Available Therapists</div>
             </div>
-            <div className="text-center p-3 border rounded-lg bg-white/80">
+            <div className="text-center p-3 border dark:border-slate-800 rounded-lg bg-white/80 dark:bg-slate-900/80">
               <div className="text-lg font-semibold text-blue-600">Instant</div>
               <div className="text-xs text-muted-foreground">Payment Confirmation</div>
             </div>
-            <div className="text-center p-3 border rounded-lg bg-white/80">
+            <div className="text-center p-3 border dark:border-slate-800 rounded-lg bg-white/80 dark:bg-slate-900/80">
               <div className="text-lg font-semibold text-purple-600">Razorpay</div>
               <div className="text-xs text-muted-foreground">Checkout UI</div>
             </div>
-            <div className="text-center p-3 border rounded-lg bg-white/80">
+            <div className="text-center p-3 border dark:border-slate-800 rounded-lg bg-white/80 dark:bg-slate-900/80">
               <div className="text-lg font-semibold text-orange-600">User ID</div>
               <div className="text-xs text-muted-foreground">Linked Booking</div>
             </div>
@@ -495,7 +495,7 @@ export function CounselorConnect() {
       </Card>
 
       {!isAuthenticated && (
-        <Card className="border-amber-200 bg-amber-50">
+        <Card className="border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-900/20">
           <CardContent className="p-4 flex items-center justify-between gap-3">
             <p className="text-sm text-amber-900">Login is required to book and pay for therapist sessions.</p>
             <Button onClick={() => router.push("/login")}>Go to Login</Button>
@@ -525,7 +525,7 @@ export function CounselorConnect() {
                       <div className="flex flex-wrap items-center gap-2">
                         <h3 className="font-semibold">{counselor.name}</h3>
                         {counselor.isOnline && (
-                          <Badge variant="secondary" className="text-xs bg-green-100 text-green-800">
+                          <Badge variant="secondary" className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
                             Available
                           </Badge>
                         )}

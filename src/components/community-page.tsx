@@ -379,7 +379,7 @@ export function CommunityPage() {
           <Button 
             variant="ghost" 
             onClick={() => router.push("/peer-support")}
-            className="hover:bg-indigo-100 hover:text-indigo-700 transition-all duration-300 rounded-full px-4 py-2"
+            className="hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-300 transition-all duration-300 rounded-full px-4 py-2"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Communities
@@ -608,7 +608,7 @@ export function CommunityPage() {
                         <Button 
                           variant="ghost" 
                           size="sm" 
-                          className="text-xs hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 rounded-full px-3 py-2"
+                          className="text-xs hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/30 dark:hover:text-blue-300 transition-all duration-300 rounded-full px-3 py-2"
                         >
                           <MessageSquare className="w-4 h-4 mr-2" />
                           {post.replies} comments
@@ -616,7 +616,7 @@ export function CommunityPage() {
                         <Button 
                           variant="ghost" 
                           size="sm" 
-                          className="text-xs hover:bg-purple-100 hover:text-purple-700 transition-all duration-300 rounded-full px-3 py-2"
+                          className="text-xs hover:bg-purple-100 hover:text-purple-700 dark:hover:bg-purple-900/30 dark:hover:text-purple-300 transition-all duration-300 rounded-full px-3 py-2"
                         >
                           <Reply className="w-4 h-4 mr-2" />
                           Reply
@@ -692,7 +692,7 @@ export function CommunityPage() {
             <CardContent className="p-6">
               <div className="space-y-3">
                 {community.moderators.map((mod: string) => (
-                  <div key={mod} className="flex items-center gap-3 text-sm p-2 rounded-lg hover:bg-pink-50 transition-colors duration-300">
+                  <div key={mod} className="flex items-center gap-3 text-sm p-2 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-900/20 transition-colors duration-300">
                     <Avatar className="w-8 h-8 border-2 border-pink-200 dark:border-pink-700">
                       <AvatarFallback className="text-xs bg-pink-500 text-white font-bold">{mod[0]}</AvatarFallback>
                     </Avatar>

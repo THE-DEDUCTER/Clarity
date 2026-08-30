@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (username: string, password: string) => {
     // Demo mode - simulate successful login
     // Using a brief timeout to simulate network request
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Demo mode - simulate successful login
     
     const demoUser: User = {
       id: 'demo-user',
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Register function
   const register = async (userData: RegisterData) => {
     // Demo mode - simulate successful registration
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Demo mode - simulate successful registration
 
     const demoUser: User = {
       id: 'demo-user',

@@ -317,10 +317,10 @@ export function AudioSessions() {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case "sleep": return "text-indigo-600 bg-indigo-100 border border-indigo-200";
-      case "meditation": return "text-purple-600 bg-purple-100 border border-purple-200";
-      case "focus": return "text-blue-600 bg-blue-100 border border-blue-200"; 
-      case "breathing": return "text-green-600 bg-green-100 border border-green-200";
+      case "sleep": return "text-indigo-600 bg-indigo-100 border border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800 dark:text-indigo-400";
+      case "meditation": return "text-purple-600 bg-purple-100 border border-purple-200 dark:bg-purple-900/30 dark:border-purple-800 dark:text-purple-400";
+      case "focus": return "text-blue-600 bg-blue-100 border border-blue-200 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400"; 
+      case "breathing": return "text-green-600 bg-green-100 border border-green-200 dark:bg-green-900/30 dark:border-green-800 dark:text-green-400";
       default: return "text-muted-foreground bg-muted border border-border";
     }
   };
@@ -435,13 +435,13 @@ export function AudioSessions() {
         {/* AI Recommendation Result */}
         {aiRecommendation && (
           <div className="max-w-md animate-in fade-in slide-in-from-top-4 duration-500">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-4 shadow-sm">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-900/50 rounded-2xl p-4 shadow-sm">
               <div className="flex items-start gap-3">
-                <div className="p-2 bg-blue-500/10 rounded-lg">
+                <div className="p-2 bg-blue-500/10 dark:bg-blue-500/20 rounded-lg">
                   <Lightbulb className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <div className="text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">AI Pick for You</div>
+                  <div className="text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mb-1">AI Pick for You</div>
                   <h4 className="text-foreground font-semibold text-base">{aiRecommendation.resource.title}</h4>
                   <p className="text-muted-foreground text-sm mt-1 leading-relaxed">
                     "{aiRecommendation.reasoning}"
@@ -464,7 +464,7 @@ export function AudioSessions() {
       </div>
 
       {/* Clean Track List */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 mb-6 shadow-lg border border-border">
+      <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-xl p-4 mb-6 shadow-lg border border-border">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-light text-foreground">Sessions</h2>
           <div className="text-sm text-muted-foreground">
@@ -493,7 +493,7 @@ export function AudioSessions() {
               <div 
                 key={session.id}
                 className={`grid grid-cols-12 gap-2 sm:gap-4 items-center p-3 rounded-lg hover:bg-background transition-all duration-200 cursor-pointer group ${
-                  isCurrentSession ? 'bg-blue-50' : ''
+                  isCurrentSession ? 'bg-blue-50 dark:bg-blue-900/20' : ''
                 }`}
                 onClick={() => handleSessionSelect(session)}
               >
@@ -501,7 +501,7 @@ export function AudioSessions() {
                 <div className="col-span-1 hidden sm:block">
                   <div className="relative">
                     <span className={`text-sm ${
-                      isCurrentSession ? 'text-blue-600' : 'text-muted-foreground group-hover:hidden'
+                      isCurrentSession ? 'text-blue-600 dark:text-blue-400' : 'text-muted-foreground group-hover:hidden'
                     }`}>
                       {isCurrentSession && isPlaying ? <Volume2 className="w-3.5 h-3.5 text-blue-600 animate-pulse" /> : index + 1}
                     </span>
@@ -519,7 +519,7 @@ export function AudioSessions() {
                   </div>
                   <div className="min-w-0">
                     <div className={`font-medium truncate ${
-                      isCurrentSession ? 'text-blue-600' : 'text-foreground'
+                      isCurrentSession ? 'text-blue-600 dark:text-blue-400' : 'text-foreground'
                     }`}>
                       {session.title}
                     </div>
@@ -569,7 +569,7 @@ export function AudioSessions() {
 
       {/* Fixed Bottom Player */}
       {currentSession && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-border p-4 z-[1001] shadow-xl">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-t border-border p-4 z-[1001] shadow-xl">
           <div className="max-w-screen-xl mx-auto">
             <div className="flex items-center justify-between">
               {/* Current Track Info */}

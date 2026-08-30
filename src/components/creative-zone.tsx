@@ -477,7 +477,7 @@ export function CreativeZone() {
           <div className="p-2 bg-gradient-to-br from-violet-400 to-purple-500 rounded-lg shadow-lg">
             <Palette className="w-5 h-5 text-white" />
           </div>
-          <span className="text-slate-800 font-bold">Creative Expression Space</span>
+          <span className="text-slate-800 dark:text-slate-100 font-bold">Creative Expression Space</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -490,7 +490,7 @@ export function CreativeZone() {
           />
           
           <Tabs defaultValue="draw" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
+            <TabsList className="grid w-full grid-cols-3 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-800 shadow-sm">
               <TabsTrigger value="draw" data-testid="tab-draw" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-sky-400 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg">
                 <PenTool className="w-4 h-4 mr-2" />
                 Draw
@@ -654,7 +654,7 @@ export function CreativeZone() {
                     <Button 
                       variant="outline" 
                       onClick={clearCanvas}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20"
                       data-testid="button-clear-canvas"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
@@ -687,8 +687,8 @@ export function CreativeZone() {
             <TabsContent value="chakras" className="space-y-4">
               <div className="space-y-4">
                 <div className="text-center space-y-2">
-                  <h3 className="text-lg font-semibold text-slate-800">Chakra Coloring Book</h3>
-                  <p className="text-sm text-slate-600">Color the chakras to balance your energy and promote mindfulness</p>
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Chakra Coloring Book</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Color the chakras to balance your energy and promote mindfulness</p>
                 </div>
                 
                 {/* Chakra Selection */}
@@ -701,7 +701,7 @@ export function CreativeZone() {
                         onClick={() => selectChakra(index)}
                         className={`p-3 rounded-lg border-2 text-left transition-all hover:shadow-md ${
                           selectedChakra === index 
-                            ? 'border-violet-400 bg-violet-50 shadow-md' 
+                            ? 'border-violet-400 bg-violet-50 dark:bg-violet-900/20 shadow-md' 
                             : 'border-border bg-card hover:border-border'
                         }`}
                       >
@@ -737,7 +737,7 @@ export function CreativeZone() {
                   <button
                     className={`px-2 py-1 text-xs rounded border-2 transition-all hover:scale-105 ${
                       selectedColor === chakras[selectedChakra].traditionalColor 
-                        ? 'border-violet-400 bg-violet-50' 
+                        ? 'border-violet-400 bg-violet-50 dark:bg-violet-900/20' 
                         : 'border-border bg-card'
                     }`}
                     onClick={() => setSelectedColor(chakras[selectedChakra].traditionalColor)}
@@ -749,8 +749,8 @@ export function CreativeZone() {
                 {/* Chakra Canvas */}
                 <div className="border rounded-lg p-4 bg-card">
                   <div className="text-center mb-2">
-                    <h4 className="font-medium text-slate-800">{chakras[selectedChakra].name}</h4>
-                    <p className="text-sm text-slate-600">{chakras[selectedChakra].description}</p>
+                    <h4 className="font-medium text-slate-800 dark:text-slate-100">{chakras[selectedChakra].name}</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">{chakras[selectedChakra].description}</p>
                   </div>
                   <canvas
                     ref={chakraCanvasRef}
@@ -761,7 +761,7 @@ export function CreativeZone() {
                     data-testid="canvas-chakra"
                   />
                   <div className="text-center mt-2">
-                    <p className="text-xs text-slate-500">Click inside the chakra shape to fill with selected color</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Click inside the chakra shape to fill with selected color</p>
                   </div>
                 </div>
                 

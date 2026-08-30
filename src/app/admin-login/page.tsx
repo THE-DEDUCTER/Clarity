@@ -30,7 +30,7 @@ export default function AdminLogin() {
     setError("");
 
     // Simulate authentication delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Simulate network delay removed
 
     if (
       credentials.username === ADMIN_CREDENTIALS.username &&
