@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 import { 
   Sheet, 
   SheetContent, 
@@ -117,6 +118,7 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const pathname = usePathname();
+  const { user } = useAuth();
 
   const filteredCategories = FEATURE_CATEGORIES.map((category) => ({
     ...category,
@@ -147,18 +149,25 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
         className="w-[88vw] sm:max-w-md p-0 flex flex-col bg-slate-50/95 dark:bg-gray-900/95 backdrop-blur-2xl border-r border-border/50 dark:border-gray-800/50 z-[100]"
       >
         <SheetHeader className="p-4 sm:p-6 pb-2 border-b border-border/40 dark:border-gray-800/40 text-left">
-          <div className="flex items-center gap-3">
-            <img 
-              src="/assets/clarity-logo.png" 
-              alt="Clarity" 
-              className="h-8 w-auto rounded-xl drop-shadow-sm" 
-            />
-            <div>
-              <SheetTitle className="text-lg font-bold text-foreground dark:text-gray-100">
-                Clarity
-              </SheetTitle>
-              <p className="text-xs text-muted-foreground">All features at your fingertips</p>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <img 
+                src="/assets/clarity-logo.png" 
+                alt="Clarity" 
+                className="h-8 w-auto rounded-xl drop-shadow-sm flex-shrink-0" 
+              />
+              <div className="min-w-0 flex-1">
+                <SheetTitle className="text-lg font-bold text-foreground dark:text-gray-100 truncate">
+                  Clarity
+                </SheetTitle>
+                <p className="text-xs text-muted-foreground truncate">All features at your fingertips</p>
+              </div>
             </div>
+            {user && (
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800 shrink-0 max-w-[120px] truncate text-right">
+                {user.firstName || user.username}
+              </span>
+            )}
           </div>
 
           {/* Quick Search */}

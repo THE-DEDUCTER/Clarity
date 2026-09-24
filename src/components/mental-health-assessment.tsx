@@ -821,9 +821,13 @@ export default function MentalHealthAssessment() {
                   <Sparkles className="w-4 h-4 text-amber-500" />
                   Key Areas of Focus
                 </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {phqData.focusAreas.map((area, idx) => (
-                    <Badge key={idx} variant="secondary" className="px-3 py-1 rounded-xl text-xs font-medium">
+                    <Badge 
+                      key={idx} 
+                      variant="secondary" 
+                      className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap"
+                    >
                       {area}
                     </Badge>
                   ))}
@@ -891,9 +895,13 @@ export default function MentalHealthAssessment() {
                   <Sparkles className="w-4 h-4 text-amber-500" />
                   Key Areas of Focus
                 </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {gadData.focusAreas.map((area, idx) => (
-                    <Badge key={idx} variant="secondary" className="px-3 py-1 rounded-xl text-xs font-medium">
+                    <Badge 
+                      key={idx} 
+                      variant="secondary" 
+                      className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap"
+                    >
                       {area}
                     </Badge>
                   ))}
@@ -930,7 +938,7 @@ export default function MentalHealthAssessment() {
                   <div className="text-right">
                     <div className="text-3xl font-extrabold text-foreground">{results.ghq28} <span className="text-sm font-normal text-muted-foreground">/ 28</span></div>
                   </div>
-                  <Badge className={`px-3 py-1 text-xs font-semibold rounded-full ${ghqData.colorClass}`}>
+                  <Badge className={`px-3 py-1 text-xs font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${ghqData.colorClass}`}>
                     {ghqData.severity}
                   </Badge>
                 </div>
@@ -960,9 +968,13 @@ export default function MentalHealthAssessment() {
                   <Sparkles className="w-4 h-4 text-amber-500" />
                   Key Areas of Focus
                 </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {ghqData.focusAreas.map((area, idx) => (
-                    <Badge key={idx} variant="secondary" className="px-3 py-1 rounded-xl text-xs font-medium">
+                    <Badge 
+                      key={idx} 
+                      variant="secondary" 
+                      className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap"
+                    >
                       {area}
                     </Badge>
                   ))}
@@ -1002,9 +1014,9 @@ export default function MentalHealthAssessment() {
               {/* 3 Subscale Cards */}
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-muted-foreground">Depression</span>
-                    <Badge className={`text-[10px] ${dassData.depression.badgeColor}`}>
+                    <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${dassData.depression.badgeColor}`}>
                       {dassData.depression.level}
                     </Badge>
                   </div>
@@ -1015,9 +1027,9 @@ export default function MentalHealthAssessment() {
                 </div>
 
                 <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-muted-foreground">Anxiety</span>
-                    <Badge className={`text-[10px] ${dassData.anxiety.badgeColor}`}>
+                    <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${dassData.anxiety.badgeColor}`}>
                       {dassData.anxiety.level}
                     </Badge>
                   </div>
@@ -1028,9 +1040,9 @@ export default function MentalHealthAssessment() {
                 </div>
 
                 <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-muted-foreground">Stress</span>
-                    <Badge className={`text-[10px] ${dassData.stress.badgeColor}`}>
+                    <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${dassData.stress.badgeColor}`}>
                       {dassData.stress.level}
                     </Badge>
                   </div>
@@ -1056,9 +1068,13 @@ export default function MentalHealthAssessment() {
                   <Sparkles className="w-4 h-4 text-amber-500" />
                   Key Areas of Focus
                 </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {dassData.focusAreas.map((area, idx) => (
-                    <Badge key={idx} variant="secondary" className="px-3 py-1 rounded-xl text-xs font-medium">
+                    <Badge 
+                      key={idx} 
+                      variant="secondary" 
+                      className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap"
+                    >
                       {area}
                     </Badge>
                   ))}

@@ -437,12 +437,12 @@ export function OnboardingQuiz() {
               </div>
               <Progress value={phq9Percentage} className="h-2" />
               
-              <div className="pt-2 border-t text-xs text-muted-foreground space-y-1">
+              <div className="pt-2 border-t text-xs text-muted-foreground space-y-1.5">
                 <p className="font-medium text-foreground">Focus Areas:</p>
-                <div className="flex flex-wrap gap-1">
-                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Mood Stability</Badge>
-                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Daily Energy</Badge>
-                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Sleep Patterns</Badge>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="inline-flex items-center h-5 px-2 py-0 text-[10px] font-medium shrink-0 whitespace-nowrap">Mood Stability</Badge>
+                  <Badge variant="outline" className="inline-flex items-center h-5 px-2 py-0 text-[10px] font-medium shrink-0 whitespace-nowrap">Daily Energy</Badge>
+                  <Badge variant="outline" className="inline-flex items-center h-5 px-2 py-0 text-[10px] font-medium shrink-0 whitespace-nowrap">Sleep Patterns</Badge>
                 </div>
               </div>
             </CardContent>
@@ -456,7 +456,7 @@ export function OnboardingQuiz() {
                   <Heart className="w-4 h-4 text-rose-600 dark:text-rose-400" />
                   Anxiety (GAD-7)
                 </CardTitle>
-                <Badge className={getRiskLevelColor(results.gad7Level.toLowerCase())}>
+                <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${getRiskLevelColor(results.gad7Level.toLowerCase())}`}>
                   {results.gad7Level}
                 </Badge>
               </div>
@@ -468,12 +468,12 @@ export function OnboardingQuiz() {
               </div>
               <Progress value={gad7Percentage} className="h-2" />
 
-              <div className="pt-2 border-t text-xs text-muted-foreground space-y-1">
+              <div className="pt-2 border-t text-xs text-muted-foreground space-y-1.5">
                 <p className="font-medium text-foreground">Focus Areas:</p>
-                <div className="flex flex-wrap gap-1">
-                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Worry Control</Badge>
-                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Nervousness</Badge>
-                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Restlessness</Badge>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="inline-flex items-center h-5 px-2 py-0 text-[10px] font-medium shrink-0 whitespace-nowrap">Worry Control</Badge>
+                  <Badge variant="outline" className="inline-flex items-center h-5 px-2 py-0 text-[10px] font-medium shrink-0 whitespace-nowrap">Nervousness</Badge>
+                  <Badge variant="outline" className="inline-flex items-center h-5 px-2 py-0 text-[10px] font-medium shrink-0 whitespace-nowrap">Restlessness</Badge>
                 </div>
               </div>
             </CardContent>
@@ -487,7 +487,7 @@ export function OnboardingQuiz() {
                   <Target className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                   General Health (GHQ)
                 </CardTitle>
-                <Badge className={getRiskLevelColor(results.ghqLevel.toLowerCase())}>
+                <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${getRiskLevelColor(results.ghqLevel.toLowerCase())}`}>
                   {results.ghqLevel}
                 </Badge>
               </div>
@@ -499,12 +499,12 @@ export function OnboardingQuiz() {
               </div>
               <Progress value={ghqPercentage} className="h-2" />
 
-              <div className="pt-2 border-t text-xs text-muted-foreground space-y-1">
+              <div className="pt-2 border-t text-xs text-muted-foreground space-y-1.5">
                 <p className="font-medium text-foreground">Focus Areas:</p>
-                <div className="flex flex-wrap gap-1">
-                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Stress Load</Badge>
-                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Work Strain</Badge>
-                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Somatic Health</Badge>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="inline-flex items-center h-5 px-2 py-0 text-[10px] font-medium shrink-0 whitespace-nowrap">Stress Load</Badge>
+                  <Badge variant="outline" className="inline-flex items-center h-5 px-2 py-0 text-[10px] font-medium shrink-0 whitespace-nowrap">Work Strain</Badge>
+                  <Badge variant="outline" className="inline-flex items-center h-5 px-2 py-0 text-[10px] font-medium shrink-0 whitespace-nowrap">Somatic Health</Badge>
                 </div>
               </div>
             </CardContent>
