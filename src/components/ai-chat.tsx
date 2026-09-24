@@ -253,10 +253,56 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
   };
 
   // Re-send a message that failed to deliver
-  const handleRetry = (failedMessage: Message) => {
-    const retried = { ...failedMessage, failed: false };
-    onMessagesUpdate(messages.map(m => (m.id === failedMessage.id ? retried : m)));
-    handleSend(failedMessage.content);
+  const handleRetry = async (failedMessage: Message) => {
+    const baseMessages = messages.filter(m => m.id !== failedMessage.id);
+    const userMessage: Message = {
+      ...failedMessage,
+      id: Date.now().toString(),
+      failed: false,
+      timestamp: new Date(),
+    };
+    const newMessages = [...baseMessages, userMessage];
+    onMessagesUpdate(newMessages);
+    setIsTyping(true);
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: newMessages.map(m => ({ role: m.sender, content: m.content })),
+          personalityId: personality.id,
+          moodContext: userMoodEmoji || undefined,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to get response');
+
+      const data = await response.json();
+
+      const aiResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        content: data.message,
+        sender: 'ai',
+        timestamp: new Date(),
+        personalityId: personality.id,
+        provider: data.provider
+      };
+
+      onMessagesUpdate([...newMessages, aiResponse]);
+      speakText(data.message);
+
+      if (data.provider) {
+        setActiveProvider(data.provider);
+      }
+    } catch (error) {
+      console.error('Chat error:', error);
+      onMessagesUpdate(
+        newMessages.map(m => (m.id === userMessage.id ? { ...m, failed: true } : m))
+      );
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
