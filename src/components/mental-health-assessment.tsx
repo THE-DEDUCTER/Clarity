@@ -1,11 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, CheckCircle, Brain, Heart, Shield, Save } from "lucide-react";
+import { 
+  AlertCircle, 
+  CheckCircle, 
+  CheckCircle2, 
+  Brain, 
+  Heart, 
+  Shield, 
+  Save, 
+  Sparkles, 
+  Compass, 
+  ArrowRight, 
+  BookOpen, 
+  MessageSquare, 
+  LifeBuoy, 
+  RotateCcw, 
+  FileText, 
+  Target,
+  Info 
+} from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useSubmitAssessment, useAssessmentHistory } from "@/hooks/use-assessment";
 import { useToast } from "@/hooks/use-toast";
@@ -126,6 +145,186 @@ interface AssessmentResults {
   };
 }
 
+function getPHQ9Interpretation(score: number) {
+  if (score <= 4) {
+    return {
+      severity: "Minimal / None",
+      colorClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800",
+      explanation: "Your responses suggest minimal or no reported depressive symptoms over the past two weeks.",
+      focusAreas: ["Wellness Maintenance", "Daily Routine & Rest", "Mindful Balance"],
+      recommendations: [
+        "Continue engaging in regular physical movement and healthy sleep habits.",
+        "Use your Emotional Diary to note daily positive reflections.",
+        "Maintain periodic check-ins to stay aware of subtle mood shifts."
+      ]
+    };
+  } else if (score <= 9) {
+    return {
+      severity: "Mild Depressive Symptoms",
+      colorClass: "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800",
+      explanation: "Your responses reflect mild depressive symptoms over the past two weeks, such as occasional low energy or minor mood dips.",
+      focusAreas: ["Energy & Sleep Quality", "Routine & Habits", "Stress Management"],
+      recommendations: [
+        "Establish a consistent nighttime wind-down routine to support rest.",
+        "Log your thoughts and mood in the Emotional Diary.",
+        "Engage in light outdoor activities or short guided breathing sessions."
+      ]
+    };
+  } else if (score <= 14) {
+    return {
+      severity: "Moderate Depressive Symptoms",
+      colorClass: "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800",
+      explanation: "Your responses indicate moderate depressive symptoms over the past two weeks. Low mood or reduced motivation may be noticeably affecting daily activities.",
+      focusAreas: ["Mood Balance", "Social Connection", "Pacing & Routine"],
+      recommendations: [
+        "Break daily goals into smaller, low-pressure steps.",
+        "Talk with our empathetic AI Buddy for confidential emotional processing.",
+        "Consider consulting a campus counselor or healthcare professional for guidance."
+      ]
+    };
+  } else if (score <= 19) {
+    return {
+      severity: "Moderately Severe Symptoms",
+      colorClass: "bg-orange-100 text-orange-800 dark:bg-orange-950/60 dark:text-orange-300 border-orange-200 dark:border-orange-800",
+      explanation: "Your responses indicate moderately severe depressive symptoms. You may be finding daily responsibilities and motivation quite challenging.",
+      focusAreas: ["Professional Guidance", "Self-Compassion", "Support Network"],
+      recommendations: [
+        "We strongly encourage reaching out to a qualified campus counselor or doctor.",
+        "Connect with supportive peers or mentorship channels.",
+        "Access instant support resources in our Crisis Support section if needed."
+      ]
+    };
+  } else {
+    return {
+      severity: "Severe Depressive Symptoms",
+      colorClass: "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border-rose-200 dark:border-rose-800",
+      explanation: "Your responses indicate severe depressive symptoms over the past two weeks. Daily functioning and emotional wellbeing appear significantly impacted.",
+      focusAreas: ["Immediate Support", "Professional Evaluation", "Safety Care"],
+      recommendations: [
+        "Please connect promptly with a healthcare professional or counseling service.",
+        "Utilize our Crisis Support center for 24/7 emergency contact details.",
+        "Share what you are experiencing with a trusted professional or support person."
+      ]
+    };
+  }
+}
+
+function getGAD7Interpretation(score: number) {
+  if (score <= 4) {
+    return {
+      severity: "Minimal Anxiety",
+      colorClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800",
+      explanation: "Your score indicates minimal anxiety over the past two weeks. Worry levels appear low and manageable.",
+      focusAreas: ["Resilience & Calm", "Mindfulness", "Physical Balance"],
+      recommendations: [
+        "Maintain current stress-relieving practices like exercise and leisure.",
+        "Practice periodic box breathing to support ongoing calm."
+      ]
+    };
+  } else if (score <= 9) {
+    return {
+      severity: "Mild Anxiety",
+      colorClass: "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800",
+      explanation: "Your score indicates mild anxiety symptoms, such as occasional restlessness or mild worry.",
+      focusAreas: ["Worry Regulation", "Breathing & Rest", "Screen Time Balance"],
+      recommendations: [
+        "Try guided relaxation or breathing sessions when feeling tense.",
+        "Limit evening screen exposure and caffeine intake.",
+        "Note recurring worry triggers in your journal."
+      ]
+    };
+  } else if (score <= 14) {
+    return {
+      severity: "Moderate Anxiety",
+      colorClass: "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800",
+      explanation: "Your score indicates moderate anxiety symptoms. Persistent worry or difficulty relaxing may be interfering with daily focus.",
+      focusAreas: ["Anxiety Relief", "Cognitive Grounding", "Counseling Support"],
+      recommendations: [
+        "Use 5-4-3-2-1 grounding exercises during anxious moments.",
+        "Talk through stressful situations with our empathetic AI Buddy.",
+        "Consider scheduling a check-in with a campus counselor."
+      ]
+    };
+  } else {
+    return {
+      severity: "Severe Anxiety",
+      colorClass: "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border-rose-200 dark:border-rose-800",
+      explanation: "Your score indicates severe anxiety symptoms. High levels of worry, restlessness, or panic feelings may be distressing.",
+      focusAreas: ["Professional Consultation", "Immediate Calm", "Crisis Navigation"],
+      recommendations: [
+        "Seek evaluation and guidance from a qualified mental health clinician.",
+        "Use deep belly breathing and grounding tools during intense anxiety spikes.",
+        "Reach out to campus counseling or crisis helplines for immediate support."
+      ]
+    };
+  }
+}
+
+function getGHQ28Interpretation(score: number) {
+  if (score <= 4) {
+    return {
+      severity: "Good Wellbeing / Low Strain",
+      colorClass: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800",
+      explanation: "Your responses reflect healthy psychological wellbeing, solid daily functioning, and minimal somatic strain.",
+      focusAreas: ["Wellbeing Maintenance", "Social Engagement", "Work-Life Balance"],
+      recommendations: [
+        "Continue maintaining your positive daily routines.",
+        "Keep up healthy social connections and balanced activities."
+      ]
+    };
+  } else if (score <= 11) {
+    return {
+      severity: "Moderate Psychological Strain",
+      colorClass: "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800",
+      explanation: "Your responses suggest mild to moderate psychological strain, possibly related to fatigue, workload, or stress.",
+      focusAreas: ["Rest & Fatigue", "Stress Reduction", "Routine Pacing"],
+      recommendations: [
+        "Prioritize restful sleep and set boundaries around heavy workloads.",
+        "Engage in relaxing hobbies or peer support conversations."
+      ]
+    };
+  } else {
+    return {
+      severity: "High Psychological Distress",
+      colorClass: "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border-rose-200 dark:border-rose-800",
+      explanation: "Your responses indicate high psychological distress across physical, emotional, or social areas.",
+      focusAreas: ["Professional Care", "Stress Relief", "Self-Care Recovery"],
+      recommendations: [
+        "Consult a healthcare professional or campus counselor for comprehensive evaluation.",
+        "Allow dedicated time for rest and step back from non-essential pressure."
+      ]
+    };
+  }
+}
+
+function getDASS21Interpretation(dass21: { depression: number; anxiety: number; stress: number }) {
+  const getSubscaleLevel = (score: number, thresholds: number[]) => {
+    if (score <= thresholds[0]) return { level: "Normal", badgeColor: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300" };
+    if (score <= thresholds[1]) return { level: "Mild", badgeColor: "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300" };
+    if (score <= thresholds[2]) return { level: "Moderate", badgeColor: "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300" };
+    if (score <= thresholds[3]) return { level: "Severe", badgeColor: "bg-orange-100 text-orange-800 dark:bg-orange-950/60 dark:text-orange-300" };
+    return { level: "Extremely Severe", badgeColor: "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300" };
+  };
+
+  const depInfo = getSubscaleLevel(dass21.depression, [9, 13, 20, 27]);
+  const anxInfo = getSubscaleLevel(dass21.anxiety, [7, 9, 14, 19]);
+  const strInfo = getSubscaleLevel(dass21.stress, [14, 18, 25, 33]);
+
+  return {
+    depression: { score: dass21.depression, maxScore: 42, ...depInfo },
+    anxiety: { score: dass21.anxiety, maxScore: 42, ...anxInfo },
+    stress: { score: dass21.stress, maxScore: 42, ...strInfo },
+    explanation: `Your DASS-21 response profile measures three distinct emotional dimensions: Depression (${depInfo.level}), Anxiety (${anxInfo.level}), and Stress (${strInfo.level}).`,
+    focusAreas: ["Emotional Domain Analysis", "Grounding Techniques", "Targeted Support"],
+    recommendations: [
+      "Focus attention on the subscale indicating the highest relative elevation.",
+      "Practice deep diaphragmatic breathing to regulate acute stress or anxiety.",
+      "Journal daily reflections in your Emotional Diary to identify environmental triggers.",
+      "Consider consulting a mental health professional for personalized guidance."
+    ]
+  };
+}
+
 interface ScoreLevel {
   level: string;
   color: 'green' | 'yellow' | 'red';
@@ -135,6 +334,7 @@ interface ScoreLevel {
 
 export default function MentalHealthAssessment() {
   const [currentAssessment, setCurrentAssessment] = useState<AssessmentType | null>(null);
+  const [lastCompletedType, setLastCompletedType] = useState<AssessmentType | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [results, setResults] = useState<AssessmentResults>({});
@@ -193,6 +393,7 @@ export default function MentalHealthAssessment() {
     } else {
       // Assessment completed
       const totalScore = newAnswers.reduce((sum, answer) => sum + answer, 0);
+      setLastCompletedType(currentAssessment);
       
       if (currentAssessment === 'DASS21') {
         // Calculate DASS-21 subscales
@@ -239,10 +440,27 @@ export default function MentalHealthAssessment() {
     }
   };
 
+  const retakeSingleAssessment = (type: AssessmentType) => {
+    setResults(prev => {
+      const updated = { ...prev };
+      const key = type.toLowerCase() as keyof AssessmentResults;
+      delete updated[key];
+      
+      // If no remaining completed assessment results, mark non-completed
+      if (Object.keys(updated).length === 0) {
+        setIsCompleted(false);
+      }
+      return updated;
+    });
+
+    startAssessment(type);
+  };
+
   const resetAssessment = () => {
     setResults({});
     setIsCompleted(false);
     setCurrentAssessment(null);
+    setLastCompletedType(null);
   };
 
   // Main menu view
@@ -302,7 +520,7 @@ export default function MentalHealthAssessment() {
             </CardContent>
             <CardFooter>
               <Button 
-                onClick={() => startAssessment('PHQ9')} 
+                onClick={() => results.phq9 !== undefined ? retakeSingleAssessment('PHQ9') : startAssessment('PHQ9')} 
                 className="w-full"
                 variant={results.phq9 !== undefined ? "outline" : "default"}
               >
@@ -337,7 +555,7 @@ export default function MentalHealthAssessment() {
             </CardContent>
             <CardFooter>
               <Button 
-                onClick={() => startAssessment('GAD7')} 
+                onClick={() => results.gad7 !== undefined ? retakeSingleAssessment('GAD7') : startAssessment('GAD7')} 
                 className="w-full"
                 variant={results.gad7 !== undefined ? "outline" : "default"}
               >
@@ -372,7 +590,7 @@ export default function MentalHealthAssessment() {
             </CardContent>
             <CardFooter>
               <Button 
-                onClick={() => startAssessment('GHQ28')} 
+                onClick={() => results.ghq28 !== undefined ? retakeSingleAssessment('GHQ28') : startAssessment('GHQ28')} 
                 className="w-full"
                 variant={results.ghq28 !== undefined ? "outline" : "default"}
               >
@@ -407,7 +625,7 @@ export default function MentalHealthAssessment() {
             </CardContent>
             <CardFooter>
               <Button 
-                onClick={() => startAssessment('DASS21')} 
+                onClick={() => results.dass21 !== undefined ? retakeSingleAssessment('DASS21') : startAssessment('DASS21')} 
                 className="w-full"
                 variant={results.dass21 !== undefined ? "outline" : "default"}
               >
@@ -494,56 +712,441 @@ export default function MentalHealthAssessment() {
 
   // Results view
   if (isCompleted) {
+    const activeTest = lastCompletedType || (results.phq9 !== undefined ? 'PHQ9' : results.gad7 !== undefined ? 'GAD7' : results.ghq28 !== undefined ? 'GHQ28' : 'DASS21');
+    const displayTest = currentAssessment || activeTest;
+
+    let phqData = results.phq9 !== undefined ? getPHQ9Interpretation(results.phq9) : null;
+    let gadData = results.gad7 !== undefined ? getGAD7Interpretation(results.gad7) : null;
+    let ghqData = results.ghq28 !== undefined ? getGHQ28Interpretation(results.ghq28) : null;
+    let dassData = results.dass21 !== undefined ? getDASS21Interpretation(results.dass21) : null;
+
     return (
-      <div className="max-w-2xl mx-auto p-6 space-y-8">
-        <div className="text-center space-y-4">
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <CheckCircle className="h-8 w-8 text-green-600" />
-            <h1 className="text-3xl font-bold">Assessment Complete</h1>
+      <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8 animate-in fade-in duration-300" data-testid="assessment-results">
+        {/* Top Header */}
+        <div className="text-center space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Assessment Complete & Analyzed</span>
           </div>
-          <p className="text-lg text-muted-foreground">
-            Thank you for completing the mental health assessment. Your responses have been securely recorded.
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+            Your Clinical Self-Assessment Insights
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
+            Review your calculated score breakdown, plain-language summary, key areas of focus, and supportive next steps below.
           </p>
         </div>
 
-        <Card className="rounded-[32px] border-border shadow-sm">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Brain className="h-5 w-5" />
-              Assessment Submitted Successfully
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Your assessment data has been saved and will be reviewed by healthcare professionals. 
-              If you need immediate support, please contact campus counseling services.
-            </p>
-          </CardContent>
-        </Card>
+        {/* Assessment Switcher Tabs if multiple taken */}
+        <div className="flex flex-wrap justify-center gap-2">
+          {results.phq9 !== undefined && (
+            <Badge 
+              variant={displayTest === 'PHQ9' ? 'default' : 'outline'}
+              className="cursor-pointer px-4 py-1.5 text-xs font-semibold rounded-full transition-all"
+              onClick={() => setCurrentAssessment('PHQ9')}
+            >
+              PHQ-9 Score ({results.phq9}/27)
+            </Badge>
+          )}
+          {results.gad7 !== undefined && (
+            <Badge 
+              variant={displayTest === 'GAD7' ? 'default' : 'outline'}
+              className="cursor-pointer px-4 py-1.5 text-xs font-semibold rounded-full transition-all"
+              onClick={() => setCurrentAssessment('GAD7')}
+            >
+              GAD-7 Score ({results.gad7}/21)
+            </Badge>
+          )}
+          {results.ghq28 !== undefined && (
+            <Badge 
+              variant={displayTest === 'GHQ28' ? 'default' : 'outline'}
+              className="cursor-pointer px-4 py-1.5 text-xs font-semibold rounded-full transition-all"
+              onClick={() => setCurrentAssessment('GHQ28')}
+            >
+              GHQ-28 Score ({results.ghq28}/28)
+            </Badge>
+          )}
+          {results.dass21 !== undefined && (
+            <Badge 
+              variant={displayTest === 'DASS21' ? 'default' : 'outline'}
+              className="cursor-pointer px-4 py-1.5 text-xs font-semibold rounded-full transition-all"
+              onClick={() => setCurrentAssessment('DASS21')}
+            >
+              DASS-21 Subscales
+            </Badge>
+          )}
+        </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Selected Assessment Result Card */}
+        {displayTest === 'PHQ9' && results.phq9 !== undefined && phqData && (
+          <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
+            <CardHeader className="border-b border-border/50 pb-6 bg-muted/20">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <Badge variant="outline" className="mb-2 text-xs font-medium">PHQ-9 Screening</Badge>
+                  <CardTitle className="text-xl sm:text-2xl font-bold">Depression Score Analysis</CardTitle>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <div className="text-3xl font-extrabold text-foreground">{results.phq9} <span className="text-sm font-normal text-muted-foreground">/ 27</span></div>
+                  </div>
+                  <Badge className={`px-3 py-1 text-xs font-semibold rounded-full ${phqData.colorClass}`}>
+                    {phqData.severity}
+                  </Badge>
+                </div>
+              </div>
+              <div className="mt-4 space-y-1.5">
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Score Intensity</span>
+                  <span>{Math.round((results.phq9 / 27) * 100)}%</span>
+                </div>
+                <Progress value={(results.phq9 / 27) * 100} className="h-2.5 rounded-full" />
+              </div>
+            </CardHeader>
+
+            <CardContent className="p-6 space-y-6">
+              {/* Plain Language Interpretation */}
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  What Your Score Means
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-2xl border border-border/40">
+                  {phqData.explanation}
+                </p>
+              </div>
+
+              {/* Focus Areas */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  Key Areas of Focus
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {phqData.focusAreas.map((area, idx) => (
+                    <Badge key={idx} variant="secondary" className="px-3 py-1 rounded-xl text-xs font-medium">
+                      {area}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Next Steps */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  Suggested Next Steps
+                </h3>
+                <ul className="space-y-2.5">
+                  {phqData.recommendations.map((rec, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span>{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {displayTest === 'GAD7' && results.gad7 !== undefined && gadData && (
+          <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
+            <CardHeader className="border-b border-border/50 pb-6 bg-muted/20">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <Badge variant="outline" className="mb-2 text-xs font-medium">GAD-7 Screening</Badge>
+                  <CardTitle className="text-xl sm:text-2xl font-bold">Anxiety Score Analysis</CardTitle>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <div className="text-3xl font-extrabold text-foreground">{results.gad7} <span className="text-sm font-normal text-muted-foreground">/ 21</span></div>
+                  </div>
+                  <Badge className={`px-3 py-1 text-xs font-semibold rounded-full ${gadData.colorClass}`}>
+                    {gadData.severity}
+                  </Badge>
+                </div>
+              </div>
+              <div className="mt-4 space-y-1.5">
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Anxiety Level Gauge</span>
+                  <span>{Math.round((results.gad7 / 21) * 100)}%</span>
+                </div>
+                <Progress value={(results.gad7 / 21) * 100} className="h-2.5 rounded-full" />
+              </div>
+            </CardHeader>
+
+            <CardContent className="p-6 space-y-6">
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  What Your Score Means
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-2xl border border-border/40">
+                  {gadData.explanation}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  Key Areas of Focus
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {gadData.focusAreas.map((area, idx) => (
+                    <Badge key={idx} variant="secondary" className="px-3 py-1 rounded-xl text-xs font-medium">
+                      {area}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  Suggested Next Steps
+                </h3>
+                <ul className="space-y-2.5">
+                  {gadData.recommendations.map((rec, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span>{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {displayTest === 'GHQ28' && results.ghq28 !== undefined && ghqData && (
+          <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
+            <CardHeader className="border-b border-border/50 pb-6 bg-muted/20">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <Badge variant="outline" className="mb-2 text-xs font-medium">GHQ-28 Questionnaire</Badge>
+                  <CardTitle className="text-xl sm:text-2xl font-bold">General Health & Wellbeing Analysis</CardTitle>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <div className="text-3xl font-extrabold text-foreground">{results.ghq28} <span className="text-sm font-normal text-muted-foreground">/ 28</span></div>
+                  </div>
+                  <Badge className={`px-3 py-1 text-xs font-semibold rounded-full ${ghqData.colorClass}`}>
+                    {ghqData.severity}
+                  </Badge>
+                </div>
+              </div>
+              <div className="mt-4 space-y-1.5">
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>General Distress Indicator</span>
+                  <span>{Math.round((results.ghq28 / 28) * 100)}%</span>
+                </div>
+                <Progress value={(results.ghq28 / 28) * 100} className="h-2.5 rounded-full" />
+              </div>
+            </CardHeader>
+
+            <CardContent className="p-6 space-y-6">
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  What Your Score Means
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-2xl border border-border/40">
+                  {ghqData.explanation}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  Key Areas of Focus
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {ghqData.focusAreas.map((area, idx) => (
+                    <Badge key={idx} variant="secondary" className="px-3 py-1 rounded-xl text-xs font-medium">
+                      {area}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  Suggested Next Steps
+                </h3>
+                <ul className="space-y-2.5">
+                  {ghqData.recommendations.map((rec, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span>{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {displayTest === 'DASS21' && results.dass21 !== undefined && dassData && (
+          <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
+            <CardHeader className="border-b border-border/50 pb-6 bg-muted/20">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <Badge variant="outline" className="mb-2 text-xs font-medium">DASS-21 Multidimensional Scale</Badge>
+                  <CardTitle className="text-xl sm:text-2xl font-bold">Depression, Anxiety & Stress Profile</CardTitle>
+                </div>
+              </div>
+            </CardHeader>
+
+            <CardContent className="p-6 space-y-6">
+              {/* 3 Subscale Cards */}
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-muted-foreground">Depression</span>
+                    <Badge className={`text-[10px] ${dassData.depression.badgeColor}`}>
+                      {dassData.depression.level}
+                    </Badge>
+                  </div>
+                  <div className="text-2xl font-bold text-foreground">
+                    {dassData.depression.score} <span className="text-xs text-muted-foreground font-normal">/ 42</span>
+                  </div>
+                  <Progress value={(dassData.depression.score / 42) * 100} className="h-2" />
+                </div>
+
+                <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-muted-foreground">Anxiety</span>
+                    <Badge className={`text-[10px] ${dassData.anxiety.badgeColor}`}>
+                      {dassData.anxiety.level}
+                    </Badge>
+                  </div>
+                  <div className="text-2xl font-bold text-foreground">
+                    {dassData.anxiety.score} <span className="text-xs text-muted-foreground font-normal">/ 42</span>
+                  </div>
+                  <Progress value={(dassData.anxiety.score / 42) * 100} className="h-2" />
+                </div>
+
+                <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-muted-foreground">Stress</span>
+                    <Badge className={`text-[10px] ${dassData.stress.badgeColor}`}>
+                      {dassData.stress.level}
+                    </Badge>
+                  </div>
+                  <div className="text-2xl font-bold text-foreground">
+                    {dassData.stress.score} <span className="text-xs text-muted-foreground font-normal">/ 42</span>
+                  </div>
+                  <Progress value={(dassData.stress.score / 42) * 100} className="h-2" />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  What Your Score Means
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-2xl border border-border/40">
+                  {dassData.explanation}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  Key Areas of Focus
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {dassData.focusAreas.map((area, idx) => (
+                    <Badge key={idx} variant="secondary" className="px-3 py-1 rounded-xl text-xs font-medium">
+                      {area}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  Suggested Next Steps
+                </h3>
+                <ul className="space-y-2.5">
+                  {dassData.recommendations.map((rec, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span>{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Quick Action Navigation Grid */}
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-foreground px-1">Take Action in Clarity</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Link href="/diary" className="group p-4 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 transition-all flex flex-col justify-between space-y-2">
+              <div className="flex justify-between items-center">
+                <BookOpen className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                <ArrowRight className="w-4 h-4 text-amber-600 dark:text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              <div>
+                <div className="font-semibold text-xs text-foreground">Emotional Diary</div>
+                <div className="text-[11px] text-muted-foreground">Journal your thoughts & triggers</div>
+              </div>
+            </Link>
+
+            <Link href="/ai-buddy" className="group p-4 rounded-2xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 transition-all flex flex-col justify-between space-y-2">
+              <div className="flex justify-between items-center">
+                <MessageSquare className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <ArrowRight className="w-4 h-4 text-purple-600 dark:text-purple-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              <div>
+                <div className="font-semibold text-xs text-foreground">AI Companion</div>
+                <div className="text-[11px] text-muted-foreground">Talk with an empathetic assistant</div>
+              </div>
+            </Link>
+
+            <Link href="/crisis" className="group p-4 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all flex flex-col justify-between space-y-2">
+              <div className="flex justify-between items-center">
+                <LifeBuoy className="w-5 h-5 text-rose-600 dark:text-rose-400" />
+                <ArrowRight className="w-4 h-4 text-rose-600 dark:text-rose-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+              <div>
+                <div className="font-semibold text-xs text-foreground">Counselor & Crisis Support</div>
+                <div className="text-[11px] text-muted-foreground">Access professional resources</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* Action Controls */}
+        <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
           <Button 
             onClick={saveAssessmentResults} 
             size="lg"
             disabled={submitAssessment.isPending}
-            className="gap-2"
+            className="gap-2 rounded-2xl"
           >
             <Save className="h-4 w-4" />
-            {submitAssessment.isPending ? "Saving..." : "Confirm Submission"}
+            {submitAssessment.isPending ? "Saving..." : "Confirm & Save Results"}
           </Button>
-          <Button onClick={resetAssessment} variant="outline" size="lg">
-            Take Assessment Again
+          <Button onClick={() => retakeSingleAssessment(displayTest)} variant="outline" size="lg" className="gap-2 rounded-2xl">
+            <RotateCcw className="h-4 w-4" />
+            Retake Assessment
           </Button>
-          <Button onClick={() => setIsCompleted(false)} size="lg" variant="secondary">
-            Back to Menu
+          <Button onClick={() => setIsCompleted(false)} size="lg" variant="ghost" className="rounded-2xl">
+            Return to Assessments Menu
           </Button>
         </div>
 
-        <Alert>
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Important:</strong> These assessments are screening tools and not diagnostic instruments. 
-            If you're experiencing mental health concerns, please consult with a qualified healthcare professional.
+        {/* Non-Diagnostic Disclaimer */}
+        <Alert className="rounded-2xl border-purple-500/20 bg-purple-500/5">
+          <Shield className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+          <AlertDescription className="text-xs text-muted-foreground leading-relaxed">
+            <strong>Clinical Disclaimer:</strong> These self-assessments (PHQ-9, GAD-7, GHQ-28, DASS-21) are evidence-based screening tools designed to help monitor wellbeing trends. They do not constitute a formal clinical diagnosis. If you are experiencing distress, please consult a qualified medical or mental health professional.
           </AlertDescription>
         </Alert>
       </div>
@@ -552,3 +1155,4 @@ export default function MentalHealthAssessment() {
 
   return null;
 }
+

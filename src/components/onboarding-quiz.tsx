@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -14,9 +15,17 @@ import {
   ChevronLeft, 
   ChevronRight, 
   CheckCircle,
+  CheckCircle2,
   AlertTriangle,
   Info,
-  Shield
+  Shield,
+  Sparkles,
+  Compass,
+  ArrowRight,
+  BookOpen,
+  MessageSquare,
+  LifeBuoy,
+  RotateCcw
 } from "lucide-react";
 import {
   Alert,
@@ -336,115 +345,275 @@ export function OnboardingQuiz() {
   };
 
   const getRiskLevelColor = (level: string) => {
-    switch (level) {
-      case 'low': return 'bg-green-100 text-green-800 border-green-200';
-      case 'moderate': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'high': return 'bg-red-100 text-red-800 border-red-200';
+    switch (level.toLowerCase()) {
+      case 'low': return 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800';
+      case 'moderate': return 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800';
+      case 'high': return 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800';
       default: return 'bg-muted text-foreground border-border';
     }
   };
 
+  const getRiskDescription = (level: 'low' | 'moderate' | 'high') => {
+    switch (level) {
+      case 'low':
+        return 'Your initial screening indicates a low risk profile across emotional wellbeing indicators. Keep building healthy coping routines, regular sleep patterns, and mindfulness habits.';
+      case 'moderate':
+        return 'Your answers indicate mild-to-moderate emotional strain in one or more areas. We recommend engaging with self-care tools like our Emotional Diary and AI Companion, or reaching out to campus support.';
+      case 'high':
+        return 'Your responses indicate noticeable distress or emotional challenge. We strongly encourage taking proactive steps, utilizing campus support services, or talking with a licensed healthcare professional.';
+    }
+  };
+
   if (isCompleted && results) {
+    const phq9Percentage = Math.round((results.phq9Score / 15) * 100);
+    const gad7Percentage = Math.round((results.gad7Score / 15) * 100);
+    const ghqPercentage = Math.round((results.ghqScore / 15) * 100);
+
     return (
       <div className="space-y-6" data-testid="quiz-results">
-        <Card className="border-green-200 bg-green-50">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-800">
-              <CheckCircle className="w-6 h-6" />
-              Assessment Complete
+        {/* Header Hero Card */}
+        <Card className="border-teal-200/60 dark:border-teal-800/40 bg-gradient-to-br from-teal-50/70 via-emerald-50/40 to-cyan-50/50 dark:from-teal-950/30 dark:via-emerald-950/20 dark:to-cyan-950/20 shadow-sm">
+          <CardHeader className="pb-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <Badge variant="outline" className="bg-white/80 dark:bg-slate-900/80 border-teal-300 dark:border-teal-700 text-teal-800 dark:text-teal-300">
+                <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-teal-600 dark:text-teal-400" />
+                Initial Screening Completed
+              </Badge>
+              <span className="text-xs text-muted-foreground font-medium">Non-diagnostic assessment</span>
+            </div>
+            <CardTitle className="text-2xl font-bold text-teal-950 dark:text-teal-100 flex items-center gap-2">
+              <Sparkles className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+              Your Onboarding Results & Baseline
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-green-700">
-              Thank you for completing your mental health assessment. Your responses help us provide personalized support.
+            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              Thank you for completing your initial mental health baseline. Your responses have been evaluated across three standardized screening scales (PHQ-9 for mood, GAD-7 for anxiety, and GHQ for general health).
             </p>
           </CardContent>
         </Card>
 
+        {/* Overall Risk Profile Alert */}
+        <Card className={`border ${getRiskLevelColor(results.riskLevel)}`}>
+          <CardContent className="p-4 flex items-start gap-3">
+            {results.riskLevel === 'high' ? (
+              <AlertTriangle className="w-6 h-6 text-rose-600 shrink-0 mt-0.5" />
+            ) : (
+              <Shield className="w-6 h-6 text-teal-600 shrink-0 mt-0.5" />
+            )}
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h4 className="font-semibold text-base capitalize">Overall Risk Level: {results.riskLevel}</h4>
+                <Badge className={getRiskLevelColor(results.riskLevel)}>
+                  {results.riskLevel.toUpperCase()} RISK
+                </Badge>
+              </div>
+              <p className="text-sm leading-relaxed opacity-90">
+                {getRiskDescription(results.riskLevel)}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Detailed Breakdown Grid */}
         <div className="grid gap-6 md:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-sm">
-                <Brain className="w-4 h-4 text-blue-600" />
-                Depression Screen (PHQ-9)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="text-2xl font-bold">{results.phq9Score}/15</div>
+          {/* PHQ-9 Card */}
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <Brain className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  Depression (PHQ-9)
+                </CardTitle>
                 <Badge className={getRiskLevelColor(results.phq9Level.toLowerCase())}>
                   {results.phq9Level}
                 </Badge>
               </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-sm">
-                <Heart className="w-4 h-4 text-red-600" />
-                Anxiety Screen (GAD-7)
-              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="text-2xl font-bold">{results.gad7Score}/15</div>
-                <Badge className={getRiskLevelColor(results.gad7Level.toLowerCase())}>
-                  {results.gad7Level}
-                </Badge>
+            <CardContent className="space-y-3">
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold">{results.phq9Score}</span>
+                <span className="text-xs text-muted-foreground">out of 15 max</span>
+              </div>
+              <Progress value={phq9Percentage} className="h-2" />
+              
+              <div className="pt-2 border-t text-xs text-muted-foreground space-y-1">
+                <p className="font-medium text-foreground">Focus Areas:</p>
+                <div className="flex flex-wrap gap-1">
+                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Mood Stability</Badge>
+                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Daily Energy</Badge>
+                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Sleep Patterns</Badge>
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-sm">
-                <Target className="w-4 h-4 text-purple-600" />
-                General Health (GHQ)
-              </CardTitle>
+          {/* GAD-7 Card */}
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <Heart className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                  Anxiety (GAD-7)
+                </CardTitle>
+                <Badge className={getRiskLevelColor(results.gad7Level.toLowerCase())}>
+                  {results.gad7Level}
+                </Badge>
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="text-2xl font-bold">{results.ghqScore}/15</div>
+            <CardContent className="space-y-3">
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold">{results.gad7Score}</span>
+                <span className="text-xs text-muted-foreground">out of 15 max</span>
+              </div>
+              <Progress value={gad7Percentage} className="h-2" />
+
+              <div className="pt-2 border-t text-xs text-muted-foreground space-y-1">
+                <p className="font-medium text-foreground">Focus Areas:</p>
+                <div className="flex flex-wrap gap-1">
+                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Worry Control</Badge>
+                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Nervousness</Badge>
+                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Restlessness</Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* GHQ Card */}
+          <Card className="hover:shadow-md transition-shadow">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                  <Target className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  General Health (GHQ)
+                </CardTitle>
                 <Badge className={getRiskLevelColor(results.ghqLevel.toLowerCase())}>
                   {results.ghqLevel}
                 </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold">{results.ghqScore}</span>
+                <span className="text-xs text-muted-foreground">out of 15 max</span>
+              </div>
+              <Progress value={ghqPercentage} className="h-2" />
+
+              <div className="pt-2 border-t text-xs text-muted-foreground space-y-1">
+                <p className="font-medium text-foreground">Focus Areas:</p>
+                <div className="flex flex-wrap gap-1">
+                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Stress Load</Badge>
+                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Work Strain</Badge>
+                  <Badge variant="outline" className="text-[10px] py-0 px-1.5">Somatic Health</Badge>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
+        {/* Personalized Recommendations */}
+        <Card className="border-teal-100 dark:border-teal-900">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Compass className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+              Personalized Next Steps & Recommendations
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {results.recommendations.map((rec, index) => (
+                <li key={index} className="flex items-start gap-2.5 p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-teal-600 dark:text-teal-400 mt-0.5 shrink-0" />
+                  <span className="leading-snug">{rec}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Recommended Tools Grid */}
+            <div className="pt-3 border-t">
+              <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Explore Clarity Tools for You</h5>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <Link href="/dashboard">
+                  <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-purple-600" />
+                      <span className="text-xs font-medium">My Dashboard</span>
+                    </div>
+                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </Link>
+
+                <Link href="/diary">
+                  <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer">
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="w-4 h-4 text-blue-600" />
+                      <span className="text-xs font-medium">Emotional Diary</span>
+                    </div>
+                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </Link>
+
+                <Link href="/ai-buddy">
+                  <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer">
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4 text-teal-600" />
+                      <span className="text-xs font-medium">AI Companion</span>
+                    </div>
+                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Crisis Alert if High Risk */}
         {results.riskLevel === 'high' && (
-          <Alert>
+          <Alert variant="destructive">
             <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Important Notice</AlertTitle>
-            <AlertDescription>
-              Your assessment indicates you may benefit from professional support. Consider reaching out to campus counseling services or using our crisis resources.
+            <AlertTitle>Support Available</AlertTitle>
+            <AlertDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-1">
+              <span>Your responses indicate elevated stress or discomfort. Immediate support and counselor assistance are ready for you.</span>
+              <Link href="/crisis">
+                <Button size="sm" variant="secondary" className="shrink-0 gap-1 mt-2 sm:mt-0">
+                  <LifeBuoy className="w-3.5 h-3.5" />
+                  Crisis Support
+                </Button>
+              </Link>
             </AlertDescription>
           </Alert>
         )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Personalized Recommendations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2">
-              {results.recommendations.map((rec, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">{rec}</span>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
+        {/* Retake and Continue Navigation */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+          <Button 
+            variant="outline" 
+            onClick={() => {
+              setIsCompleted(false);
+              setCurrentStep(0);
+              setAnswers({});
+              setResults(null);
+            }}
+            className="w-full sm:w-auto gap-2"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Retake Screening
+          </Button>
 
-        <Alert>
-          <Shield className="h-4 w-4" />
-          <AlertTitle>Privacy & Confidentiality</AlertTitle>
-          <AlertDescription>
-            Your assessment results are confidential and stored securely. This screening is not a diagnosis - please consult with a healthcare provider for professional evaluation.
+          <Link href="/dashboard" className="w-full sm:w-auto">
+            <Button className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white gap-2">
+              Go to Dashboard
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
+        </div>
+
+        {/* Privacy & Non-diagnostic Banner */}
+        <Alert className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+          <Shield className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+          <AlertTitle className="text-xs font-semibold">Privacy & Non-Diagnostic Disclaimer</AlertTitle>
+          <AlertDescription className="text-xs text-muted-foreground">
+            This screening tool is designed purely for personal awareness and wellness tracking. It does not provide a formal medical or clinical diagnosis. If you are experiencing distress, please consult a qualified mental health professional or counselor.
           </AlertDescription>
         </Alert>
       </div>
