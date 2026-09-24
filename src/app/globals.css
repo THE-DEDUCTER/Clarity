@@ -272,6 +272,70 @@ body {
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+
+  /* ---- Accessibility: global visible focus state ---- */
+  /* Reliable, high-contrast focus ring for every focusable element, in light and dark themes. */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* ---- Accessibility: honor the OS-level reduced motion preference ---- */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Minimum 44x44px touch targets on coarse pointers (WCAG 2.5.5) */
+@media (pointer: coarse) {
+  button:not([class*="min-h-"]),
+  [role="button"]:not([class*="min-h-"]) {
+    min-height: 44px;
+  }
+}
+
+/* Skip link: hidden until focused, then visible in front of everything */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 2000;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 0.625rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform 150ms ease-in-out;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Screen-reader-only text helper */
+.sr-only-focusable:not(:focus-visible):not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /**

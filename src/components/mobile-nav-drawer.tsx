@@ -172,10 +172,12 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
 
           {/* Quick Search */}
           <div className="relative mt-4">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true" />
             <Input 
               type="text"
+              id="mobile-nav-feature-search"
               placeholder="Search features..."
+              aria-label="Search features"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9 bg-white/90 dark:bg-gray-800/90 rounded-2xl h-10 text-sm border-border/60 dark:border-gray-700/60 shadow-sm"
@@ -210,14 +212,15 @@ export function MobileNavDrawer({ trigger }: { trigger?: React.ReactNode }) {
                         href={item.href}
                         onClick={() => setOpen(false)}
                         className={cn(
-                          "flex items-center gap-3.5 p-2.5 rounded-2xl transition-all duration-200 group active:scale-[0.98]",
+                          "flex items-center gap-3.5 p-2.5 rounded-2xl transition-all duration-200 group active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                           isActive
                             ? "bg-card dark:bg-gray-800 shadow-md border border-border/60 dark:border-gray-700"
                             : "hover:bg-white/60 dark:hover:bg-gray-800/60"
                         )}
+                        aria-current={isActive ? "page" : undefined}
                       >
                         <div className={cn("p-2 rounded-xl transition-transform group-hover:scale-110", item.color)}>
-                          <item.icon className="w-5 h-5" />
+                          <item.icon className="w-5 h-5" aria-hidden="true" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">

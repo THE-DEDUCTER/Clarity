@@ -342,7 +342,8 @@ function BookView({ onClose }: { onClose: () => void }) {
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   placeholder="Entry title (optional)..."
-                  className="w-full text-xs font-semibold text-muted-foreground bg-transparent border-0 outline-none mb-2 placeholder:text-gray-300"
+                  aria-label="Entry title (optional)"
+                  className="w-full text-xs font-semibold text-muted-foreground bg-transparent border-0 outline-none mb-2 placeholder:text-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
                 />
                 {/* Lined paper */}
                 <div className="relative">
@@ -357,7 +358,8 @@ function BookView({ onClose }: { onClose: () => void }) {
                     value={content}
                     onChange={e => setContent(e.target.value)}
                     placeholder="Feel free to journal your current thoughts or anything else you'd like..."
-                    className="w-full bg-transparent border-0 outline-none resize-none text-[13px] text-muted-foreground leading-[30px] placeholder:text-gray-300 placeholder:text-xs placeholder:italic relative z-10"
+                    aria-label="Journal entry"
+                    className="w-full bg-transparent border-0 outline-none resize-none text-[13px] text-muted-foreground leading-[30px] placeholder:text-gray-300 placeholder:text-xs placeholder:italic relative z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
                     style={{ minHeight: 220, lineHeight: "30px" }}
                   />
                 </div>
@@ -365,20 +367,24 @@ function BookView({ onClose }: { onClose: () => void }) {
 
               {/* Bottom bar */}
               <div className="px-6 py-3 border-t border-border flex items-center gap-3">
-                <MapPin className="w-3.5 h-3.5 text-gray-300 flex-shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-gray-300 flex-shrink-0" aria-hidden="true" />
                 <input
                   value={location}
                   onChange={e => setLocation(e.target.value)}
                   placeholder="Where are you right now..."
-                  className="flex-1 text-xs bg-transparent outline-none border-0 text-gray-400 placeholder:text-gray-300 placeholder:italic"
+                  aria-label="Current location"
+                  className="flex-1 text-xs bg-transparent outline-none border-0 text-gray-400 placeholder:text-gray-300 placeholder:italic focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
                 />
                 <div className="flex items-center gap-1">
                   {moodOptions.map(m => (
                     <button
                       key={m.value}
+                      type="button"
                       onClick={() => setSelectedMood(m.value)}
+                      aria-pressed={selectedMood === m.value}
+                      aria-label={`Mood: ${m.label}`}
                       className={cn(
-                        "p-1 rounded-full transition-all",
+                        "p-1 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                         selectedMood === m.value ? `${m.bg} ${m.color} scale-110` : "text-gray-200 hover:text-gray-400"
                       )}
                     >
@@ -506,9 +512,10 @@ export default function DiaryPage() {
             </div>
             <div className="flex items-center gap-3">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" aria-hidden="true" />
                 <Input
                   placeholder="Search or type command"
+                  aria-label="Search journal entries"
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   className="pl-9 h-9 w-52 text-sm bg-card dark:bg-gray-900 border-border dark:border-gray-700 rounded-full shadow-sm"
@@ -521,8 +528,8 @@ export default function DiaryPage() {
                 <Plus className="w-4 h-4" />
                 New Entry
               </Button>
-              <button className="p-2 rounded-xl bg-card dark:bg-gray-900 border border-border dark:border-gray-700 text-muted-foreground hover:text-foreground shadow-sm">
-                <Bell className="w-4 h-4" />
+              <button className="p-2 rounded-xl bg-card dark:bg-gray-900 border border-border dark:border-gray-700 text-muted-foreground hover:text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Notifications">
+                <Bell className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           </div>

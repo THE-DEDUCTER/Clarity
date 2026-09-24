@@ -370,40 +370,40 @@ export function OnboardingQuiz() {
     const ghqPercentage = Math.round((results.ghqScore / 15) * 100);
 
     return (
-      <div className="space-y-6" data-testid="quiz-results">
+      <main className="space-y-6" data-testid="quiz-results" aria-live="polite">
         {/* Header Hero Card */}
         <Card className="border-teal-200/60 dark:border-teal-800/40 bg-gradient-to-br from-teal-50/70 via-emerald-50/40 to-cyan-50/50 dark:from-teal-950/30 dark:via-emerald-950/20 dark:to-cyan-950/20 shadow-sm">
           <CardHeader className="pb-3">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <Badge variant="outline" className="bg-white/80 dark:bg-slate-900/80 border-teal-300 dark:border-teal-700 text-teal-800 dark:text-teal-300">
-                <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-teal-600 dark:text-teal-400" />
+                <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-teal-600 dark:text-teal-400" aria-hidden="true" />
                 Initial Screening Completed
               </Badge>
               <span className="text-xs text-muted-foreground font-medium">Non-diagnostic assessment</span>
             </div>
-            <CardTitle className="text-2xl font-bold text-teal-950 dark:text-teal-100 flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            <h2 className="text-xl sm:text-2xl font-bold text-teal-950 dark:text-teal-100 flex items-center gap-2">
+              <Sparkles className="w-6 h-6 text-teal-600 dark:text-teal-400" aria-hidden="true" />
               Your Onboarding Results & Baseline
-            </CardTitle>
+            </h2>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
               Thank you for completing your initial mental health baseline. Your responses have been evaluated across three standardized screening scales (PHQ-9 for mood, GAD-7 for anxiety, and GHQ for general health).
             </p>
           </CardContent>
         </Card>
 
         {/* Overall Risk Profile Alert */}
-        <Card className={`border ${getRiskLevelColor(results.riskLevel)}`}>
+        <Card className={`border ${getRiskLevelColor(results.riskLevel)}`} role="region" aria-label="Overall Risk Profile">
           <CardContent className="p-4 flex items-start gap-3">
             {results.riskLevel === 'high' ? (
-              <AlertTriangle className="w-6 h-6 text-rose-600 shrink-0 mt-0.5" />
+              <AlertTriangle className="w-6 h-6 text-rose-600 shrink-0 mt-0.5" aria-hidden="true" />
             ) : (
-              <Shield className="w-6 h-6 text-teal-600 shrink-0 mt-0.5" />
+              <Shield className="w-6 h-6 text-teal-600 shrink-0 mt-0.5" aria-hidden="true" />
             )}
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <h4 className="font-semibold text-base capitalize">Overall Risk Level: {results.riskLevel}</h4>
+                <h3 className="font-semibold text-base capitalize">Overall Risk Level: {results.riskLevel}</h3>
                 <Badge className={getRiskLevelColor(results.riskLevel)}>
                   {results.riskLevel.toUpperCase()} RISK
                 </Badge>
@@ -416,13 +416,13 @@ export function OnboardingQuiz() {
         </Card>
 
         {/* Detailed Breakdown Grid */}
-        <div className="grid gap-6 md:grid-cols-3">
+        <section aria-label="Detailed Screening Scale Scores" className="grid gap-6 md:grid-cols-3">
           {/* PHQ-9 Card */}
           <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                  <Brain className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <Brain className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                   Depression (PHQ-9)
                 </CardTitle>
                 <Badge className={getRiskLevelColor(results.phq9Level.toLowerCase())}>
@@ -435,7 +435,9 @@ export function OnboardingQuiz() {
                 <span className="text-2xl font-bold">{results.phq9Score}</span>
                 <span className="text-xs text-muted-foreground">out of 15 max</span>
               </div>
-              <Progress value={phq9Percentage} className="h-2" />
+              <div role="progressbar" aria-valuenow={phq9Percentage} aria-valuemin={0} aria-valuemax={100} aria-label="PHQ-9 Score Percentage">
+                <Progress value={phq9Percentage} className="h-2" />
+              </div>
               
               <div className="pt-2 border-t text-xs text-muted-foreground space-y-1.5">
                 <p className="font-medium text-foreground">Focus Areas:</p>
@@ -453,7 +455,7 @@ export function OnboardingQuiz() {
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                  <Heart className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                  <Heart className="w-4 h-4 text-rose-600 dark:text-rose-400" aria-hidden="true" />
                   Anxiety (GAD-7)
                 </CardTitle>
                 <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${getRiskLevelColor(results.gad7Level.toLowerCase())}`}>
@@ -466,7 +468,9 @@ export function OnboardingQuiz() {
                 <span className="text-2xl font-bold">{results.gad7Score}</span>
                 <span className="text-xs text-muted-foreground">out of 15 max</span>
               </div>
-              <Progress value={gad7Percentage} className="h-2" />
+              <div role="progressbar" aria-valuenow={gad7Percentage} aria-valuemin={0} aria-valuemax={100} aria-label="GAD-7 Score Percentage">
+                <Progress value={gad7Percentage} className="h-2" />
+              </div>
 
               <div className="pt-2 border-t text-xs text-muted-foreground space-y-1.5">
                 <p className="font-medium text-foreground">Focus Areas:</p>
@@ -484,7 +488,7 @@ export function OnboardingQuiz() {
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                  <Target className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <Target className="w-4 h-4 text-purple-600 dark:text-purple-400" aria-hidden="true" />
                   General Health (GHQ)
                 </CardTitle>
                 <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${getRiskLevelColor(results.ghqLevel.toLowerCase())}`}>
@@ -497,7 +501,9 @@ export function OnboardingQuiz() {
                 <span className="text-2xl font-bold">{results.ghqScore}</span>
                 <span className="text-xs text-muted-foreground">out of 15 max</span>
               </div>
-              <Progress value={ghqPercentage} className="h-2" />
+              <div role="progressbar" aria-valuenow={ghqPercentage} aria-valuemin={0} aria-valuemax={100} aria-label="GHQ Score Percentage">
+                <Progress value={ghqPercentage} className="h-2" />
+              </div>
 
               <div className="pt-2 border-t text-xs text-muted-foreground space-y-1.5">
                 <p className="font-medium text-foreground">Focus Areas:</p>
@@ -509,21 +515,21 @@ export function OnboardingQuiz() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </section>
 
         {/* Personalized Recommendations */}
         <Card className="border-teal-100 dark:border-teal-900">
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Compass className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+            <h3 className="flex items-center gap-2 text-lg font-bold text-foreground">
+              <Compass className="w-5 h-5 text-teal-600 dark:text-teal-400" aria-hidden="true" />
               Personalized Next Steps & Recommendations
-            </CardTitle>
+            </h3>
           </CardHeader>
           <CardContent className="space-y-4">
             <ul className="grid gap-3 sm:grid-cols-2">
               {results.recommendations.map((rec, index) => (
                 <li key={index} className="flex items-start gap-2.5 p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-sm">
-                  <CheckCircle2 className="w-4 h-4 text-teal-600 dark:text-teal-400 mt-0.5 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-teal-600 dark:text-teal-400 mt-0.5 shrink-0" aria-hidden="true" />
                   <span className="leading-snug">{rec}</span>
                 </li>
               ))}
@@ -531,35 +537,35 @@ export function OnboardingQuiz() {
 
             {/* Recommended Tools Grid */}
             <div className="pt-3 border-t">
-              <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Explore Clarity Tools for You</h5>
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Explore Clarity Tools for You</h3>
               <div className="grid gap-3 sm:grid-cols-3">
-                <Link href="/dashboard">
-                  <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer">
+                <Link href="/dashboard" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 rounded-lg">
+                  <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer min-h-[44px]">
                     <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-purple-600" />
+                      <Sparkles className="w-4 h-4 text-purple-600" aria-hidden="true" />
                       <span className="text-xs font-medium">My Dashboard</span>
                     </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
                   </div>
                 </Link>
 
-                <Link href="/diary">
-                  <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer">
+                <Link href="/diary" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 rounded-lg">
+                  <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer min-h-[44px]">
                     <div className="flex items-center gap-2">
-                      <BookOpen className="w-4 h-4 text-blue-600" />
+                      <BookOpen className="w-4 h-4 text-blue-600" aria-hidden="true" />
                       <span className="text-xs font-medium">Emotional Diary</span>
                     </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
                   </div>
                 </Link>
 
-                <Link href="/ai-buddy">
-                  <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer">
+                <Link href="/ai-buddy" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 rounded-lg">
+                  <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer min-h-[44px]">
                     <div className="flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4 text-teal-600" />
+                      <MessageSquare className="w-4 h-4 text-teal-600" aria-hidden="true" />
                       <span className="text-xs font-medium">AI Companion</span>
                     </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
                   </div>
                 </Link>
               </div>
@@ -569,14 +575,14 @@ export function OnboardingQuiz() {
 
         {/* Crisis Alert if High Risk */}
         {results.riskLevel === 'high' && (
-          <Alert variant="destructive">
-            <AlertTriangle className="h-4 w-4" />
+          <Alert variant="destructive" role="alert">
+            <AlertTriangle className="h-4 w-4" aria-hidden="true" />
             <AlertTitle>Support Available</AlertTitle>
             <AlertDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-1">
               <span>Your responses indicate elevated stress or discomfort. Immediate support and counselor assistance are ready for you.</span>
-              <Link href="/crisis">
-                <Button size="sm" variant="secondary" className="shrink-0 gap-1 mt-2 sm:mt-0">
-                  <LifeBuoy className="w-3.5 h-3.5" />
+              <Link href="/crisis" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
+                <Button type="button" size="sm" variant="secondary" className="shrink-0 gap-1 mt-2 sm:mt-0 min-h-[44px]">
+                  <LifeBuoy className="w-3.5 h-3.5" aria-hidden="true" />
                   Crisis Support
                 </Button>
               </Link>
@@ -587,6 +593,7 @@ export function OnboardingQuiz() {
         {/* Retake and Continue Navigation */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
           <Button 
+            type="button"
             variant="outline" 
             onClick={() => {
               setIsCompleted(false);
@@ -594,42 +601,45 @@ export function OnboardingQuiz() {
               setAnswers({});
               setResults(null);
             }}
-            className="w-full sm:w-auto gap-2"
+            className="w-full sm:w-auto gap-2 min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-4 h-4" aria-hidden="true" />
             Retake Screening
           </Button>
 
-          <Link href="/dashboard" className="w-full sm:w-auto">
-            <Button className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white gap-2">
+          <Link href="/dashboard" className="w-full sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 rounded-xl">
+            <Button type="button" className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white gap-2 min-h-[44px] rounded-xl">
               Go to Dashboard
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Button>
           </Link>
         </div>
 
         {/* Privacy & Non-diagnostic Banner */}
-        <Alert className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <Shield className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+        <Alert role="note" className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+          <Shield className="h-4 w-4 text-teal-600 dark:text-teal-400 shrink-0" aria-hidden="true" />
           <AlertTitle className="text-xs font-semibold">Privacy & Non-Diagnostic Disclaimer</AlertTitle>
-          <AlertDescription className="text-xs text-muted-foreground">
+          <AlertDescription className="text-xs text-muted-foreground leading-relaxed">
             This screening tool is designed purely for personal awareness and wellness tracking. It does not provide a formal medical or clinical diagnosis. If you are experiencing distress, please consult a qualified mental health professional or counselor.
           </AlertDescription>
         </Alert>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="space-y-6" data-testid="onboarding-quiz">
+    <main className="space-y-6" data-testid="onboarding-quiz" aria-live="polite">
       {/* Progress Header */}
       <Card>
-        <CardHeader>
+        <CardHeader className="space-y-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">Mental Health Assessment</CardTitle>
-            <Badge variant="outline">{currentStep}/{totalSteps - 1}</Badge>
+            <h2 className="text-base sm:text-lg font-bold text-foreground">Mental Health Assessment</h2>
+            <Badge variant="outline" className="text-xs font-semibold px-2.5 py-0.5" aria-hidden="true">{currentStep}/{totalSteps - 1}</Badge>
+            <span className="sr-only">Step {currentStep} of {totalSteps - 1}, {Math.round(progress)} percent complete</span>
           </div>
-          <Progress value={progress} className="w-full" />
+          <div role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} aria-valuetext={`Step ${currentStep} of ${totalSteps - 1}, ${Math.round(progress)} percent complete`}>
+            <Progress value={progress} className="w-full h-2 rounded-full" />
+          </div>
         </CardHeader>
       </Card>
 
@@ -637,43 +647,43 @@ export function OnboardingQuiz() {
       {currentStep === 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Info className="w-6 h-6 text-blue-600" />
+            <CardTitle className="flex items-center gap-2 text-lg font-bold text-foreground">
+              <Info className="w-6 h-6 text-blue-600 dark:text-blue-400 shrink-0" aria-hidden="true" />
               Welcome to Your Mental Health Assessment
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-muted-foreground">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               This brief assessment will help us understand your current mental health and provide personalized support. 
               It includes three standardized screening tools:
             </p>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                <Brain className="w-5 h-5 text-blue-600" />
+            <ul className="space-y-3" aria-label="Included Screening Tools">
+              <li className="flex items-center gap-3 p-3 bg-blue-500/10 dark:bg-blue-950/30 rounded-xl border border-blue-500/20">
+                <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" aria-hidden="true" />
                 <div>
-                  <div className="font-medium">PHQ-9 Depression Screen</div>
-                  <div className="text-sm text-muted-foreground">Assesses symptoms of depression</div>
+                  <div className="font-semibold text-xs sm:text-sm text-foreground">PHQ-9 Depression Screen</div>
+                  <div className="text-xs text-muted-foreground">Assesses symptoms of depression</div>
                 </div>
-              </div>
-              <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
-                <Heart className="w-5 h-5 text-red-600" />
+              </li>
+              <li className="flex items-center gap-3 p-3 bg-rose-500/10 dark:bg-rose-950/30 rounded-xl border border-rose-500/20">
+                <Heart className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0" aria-hidden="true" />
                 <div>
-                  <div className="font-medium">GAD-7 Anxiety Screen</div>
-                  <div className="text-sm text-muted-foreground">Evaluates anxiety symptoms</div>
+                  <div className="font-semibold text-xs sm:text-sm text-foreground">GAD-7 Anxiety Screen</div>
+                  <div className="text-xs text-muted-foreground">Evaluates anxiety symptoms</div>
                 </div>
-              </div>
-              <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                <Target className="w-5 h-5 text-purple-600" />
+              </li>
+              <li className="flex items-center gap-3 p-3 bg-purple-500/10 dark:bg-purple-950/30 rounded-xl border border-purple-500/20">
+                <Target className="w-5 h-5 text-purple-600 dark:text-purple-400 shrink-0" aria-hidden="true" />
                 <div>
-                  <div className="font-medium">GHQ General Health</div>
-                  <div className="text-sm text-muted-foreground">Overall mental wellbeing assessment</div>
+                  <div className="font-semibold text-xs sm:text-sm text-foreground">GHQ General Health</div>
+                  <div className="text-xs text-muted-foreground">Overall mental wellbeing assessment</div>
                 </div>
-              </div>
-            </div>
-            <Alert>
-              <Shield className="h-4 w-4" />
-              <AlertTitle>Your Privacy Matters</AlertTitle>
-              <AlertDescription>
+              </li>
+            </ul>
+            <Alert role="note" className="border-teal-500/30 bg-teal-500/10 text-teal-950 dark:text-teal-200">
+              <Shield className="h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400 mt-0.5" aria-hidden="true" />
+              <AlertTitle className="text-xs font-semibold text-foreground">Your Privacy Matters</AlertTitle>
+              <AlertDescription className="text-xs text-muted-foreground leading-relaxed">
                 Your responses are confidential and will only be used to provide personalized recommendations. 
                 This is not a medical diagnosis.
               </AlertDescription>
@@ -684,51 +694,57 @@ export function OnboardingQuiz() {
 
       {/* Question Steps */}
       {currentStep > 0 && currentStep <= allQuestions.length && (
-        <Card className="rounded-[32px] border-border shadow-sm overflow-hidden">
+        <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
           <CardHeader className="pb-4 bg-muted/20 border-b border-border/40">
             <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              {allQuestions[currentStep - 1].category === 'phq9' && <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
-              {allQuestions[currentStep - 1].category === 'gad7' && <Heart className="w-4 h-4 text-rose-600 dark:text-rose-400" />}
-              {allQuestions[currentStep - 1].category === 'ghq' && <Target className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+              {allQuestions[currentStep - 1].category === 'phq9' && <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" aria-hidden="true" />}
+              {allQuestions[currentStep - 1].category === 'gad7' && <Heart className="w-4 h-4 text-rose-600 dark:text-rose-400" aria-hidden="true" />}
+              {allQuestions[currentStep - 1].category === 'ghq' && <Target className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />}
               <span className="uppercase tracking-wider text-[11px] font-bold">{allQuestions[currentStep - 1].category} Assessment</span>
             </div>
-            <CardTitle className="text-base sm:text-lg font-semibold text-foreground leading-snug mt-1">
+            <p className="text-xs sm:text-sm text-muted-foreground font-medium mt-1">
               Over the last 2 weeks, how often have you been bothered by:
-            </CardTitle>
+            </p>
           </CardHeader>
           <CardContent className="p-4 sm:p-6 space-y-6">
-            <h3 className="text-sm sm:text-base font-medium text-foreground bg-muted/30 p-3.5 rounded-2xl border border-border/40">
+            <h2 id={`ob-question-${currentStep}`} className="text-sm sm:text-base font-semibold text-foreground bg-muted/30 p-3.5 rounded-2xl border border-border/40 leading-snug">
               {currentStep}. {allQuestions[currentStep - 1].question}
-            </h3>
+            </h2>
             
             <RadioGroup
               value={answers[allQuestions[currentStep - 1].id]?.toString() ?? ""}
               onValueChange={(value) => handleAnswer(allQuestions[currentStep - 1].id, parseInt(value))}
               className="grid gap-3"
+              aria-labelledby={`ob-question-${currentStep}`}
             >
               {allQuestions[currentStep - 1].options.map((option, idx) => {
                 const isSelected = answers[allQuestions[currentStep - 1].id] === option.value;
                 return (
                   <Label
                     key={option.value}
-                    htmlFor={`option-${option.value}`}
-                    className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
+                    htmlFor={`ob-question-${currentStep}-option-${option.value}`}
+                    className={`flex items-center justify-between p-4 min-h-[48px] rounded-2xl border cursor-pointer transition-all duration-200 focus-within:ring-2 focus-within:ring-teal-600 focus-within:ring-offset-2 dark:focus-within:ring-teal-400 dark:focus-within:ring-offset-slate-950 ${
                       isSelected
-                        ? 'bg-teal-50 dark:bg-teal-950/40 border-teal-500 text-teal-900 dark:text-teal-100 shadow-sm'
-                        : 'border-border/60 hover:bg-muted/50 text-foreground'
+                        ? 'bg-teal-500/15 border-teal-700 ring-2 ring-teal-700/60 text-teal-950 dark:text-teal-100 shadow-sm font-semibold dark:ring-teal-400/60'
+                        : 'border-border/60 hover:bg-muted/50 text-foreground bg-background'
                     }`}
                   >
                     <div className="flex items-center gap-3.5">
                       <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
                         isSelected 
-                          ? 'bg-teal-600 text-white' 
+                          ? 'bg-teal-700 text-white dark:bg-teal-500' 
                           : 'bg-muted text-muted-foreground'
-                      }`}>
+                      }`} aria-hidden="true">
                         {String.fromCharCode(65 + idx)}
                       </span>
                       <span className="text-sm font-medium leading-relaxed">{option.label}</span>
                     </div>
-                    <RadioGroupItem value={option.value.toString()} id={`option-${option.value}`} className="shrink-0" />
+                    <RadioGroupItem 
+                      value={option.value.toString()} 
+                      id={`ob-question-${currentStep}-option-${option.value}`} 
+                      className="shrink-0 focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950" 
+                      aria-label={`Option ${String.fromCharCode(65 + idx)}: ${option.label}${isSelected ? ", selected" : ""}`} 
+                    />
                   </Label>
                 );
               })}
@@ -740,24 +756,27 @@ export function OnboardingQuiz() {
       {/* Navigation */}
       <div className="flex items-center justify-between gap-3 pt-2">
         <Button
+          type="button"
           variant="outline"
           onClick={handlePrevious}
           disabled={currentStep === 0}
-          className="rounded-2xl gap-2 text-xs sm:text-sm"
+          className="rounded-2xl gap-2 text-xs sm:text-sm min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+          aria-label="Previous Step"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-4 h-4" aria-hidden="true" />
           Previous
         </Button>
         
         <Button
+          type="button"
           onClick={handleNext}
           disabled={!canProceed()}
-          className="rounded-2xl gap-2 text-xs sm:text-sm bg-teal-600 hover:bg-teal-700 text-white"
+          className="rounded-2xl gap-2 text-xs sm:text-sm bg-teal-600 hover:bg-teal-700 text-white min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
         >
           {currentStep === allQuestions.length ? 'Complete Assessment' : 'Next'}
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-4 h-4" aria-hidden="true" />
         </Button>
       </div>
-    </div>
+    </main>
   );
 }

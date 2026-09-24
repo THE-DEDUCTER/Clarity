@@ -291,8 +291,8 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
       <div className="flex items-center justify-between px-4 h-[60px] border-b border-border dark:border-gray-800 bg-card dark:bg-black shrink-0 z-10 sticky top-0">
         <div className="flex items-center gap-3 cursor-pointer">
           {onBack && (
-            <button onClick={onBack} className="p-1 -ml-1 text-foreground dark:text-white hover:opacity-70 transition-opacity">
-              <ArrowLeft className="w-6 h-6" />
+            <button onClick={onBack} className="p-1 -ml-1 text-foreground dark:text-white hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md" aria-label="Back">
+              <ArrowLeft className="w-6 h-6" aria-hidden="true" />
             </button>
           )}
           <Avatar className="w-8 h-8">
@@ -313,22 +313,24 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
         <div className="flex items-center gap-5 text-foreground dark:text-white">
           <button 
             onClick={() => setSpeechEnabled(!speechEnabled)} 
-            className="hover:opacity-70 transition-opacity relative"
+            className="hover:opacity-70 transition-opacity relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
             title={speechEnabled ? "Voice Output Active" : "Enable Voice Output"}
+            aria-pressed={speechEnabled}
+            aria-label={speechEnabled ? "Voice output active. Disable voice output" : "Enable voice output"}
           >
-            <Phone className="w-[26px] h-[26px]" strokeWidth={2} />
+            <Phone className="w-[26px] h-[26px]" strokeWidth={2} aria-hidden="true" />
             {speechEnabled && (
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white dark:border-black" />
             )}
           </button>
-          <button className="hover:opacity-70 transition-opacity">
-            <Video className="w-7 h-7" strokeWidth={2} />
+          <button className="hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md" aria-label="Start video call (unavailable)">
+            <Video className="w-7 h-7" strokeWidth={2} aria-hidden="true" />
           </button>
           
           <Dialog open={showInfoDialog} onOpenChange={setShowInfoDialog}>
             <DialogTrigger asChild>
-              <button className="hover:opacity-70 transition-opacity">
-                <Info className="w-7 h-7" strokeWidth={2} />
+              <button className="hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md" aria-label="Conversation details">
+                <Info className="w-7 h-7" strokeWidth={2} aria-hidden="true" />
               </button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] bg-card dark:bg-gray-900 border-border dark:border-gray-800 rounded-2xl">
@@ -372,6 +374,9 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
       <div 
         ref={scrollAreaRef}
         className="flex-1 overflow-y-auto px-4 py-5 space-y-1 scrollbar-none"
+        role="log"
+        aria-label="Chat messages"
+        aria-live="polite"
       >
         {messages.map((message, index) => {
           const isAI = message.sender === 'ai';
@@ -451,8 +456,9 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
             {starters.map((starter, i) => (
               <button
                 key={i}
+                type="button"
                 onClick={() => handleSend(starter)}
-                className="whitespace-nowrap rounded-full bg-[#EFEFEF] dark:bg-[#262626] px-4 py-2.5 text-[14px] text-foreground dark:text-white font-medium active:opacity-70 transition-opacity"
+                className="whitespace-nowrap rounded-full bg-[#EFEFEF] dark:bg-[#262626] px-4 py-2.5 text-[14px] text-foreground dark:text-white font-medium active:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {starter}
               </button>
@@ -466,20 +472,21 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
         <div className="flex items-end gap-2.5">
           
           {/* IG Camera Circle Icon */}
-          <button className="flex items-center justify-center w-10 h-10 rounded-full bg-[#0095F6] text-white flex-shrink-0 active:scale-95 transition-transform shadow-sm mb-0.5">
-            <Camera className="w-5 h-5" strokeWidth={2} />
+          <button className="flex items-center justify-center w-10 h-10 rounded-full bg-[#0095F6] text-white flex-shrink-0 active:scale-95 transition-transform shadow-sm mb-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Send a photo (unavailable)">
+            <Camera className="w-5 h-5" strokeWidth={2} aria-hidden="true" />
           </button>
 
           {/* Input Pill */}
           <div className="flex-1 flex items-end bg-[#F1F1F1] dark:bg-[#262626] rounded-[24px] pl-1 pr-1.5 py-1 min-h-[44px]">
             
-            <button className="p-2.5 flex-shrink-0 text-foreground dark:text-white hover:opacity-70" title="Emoji">
-              <Smile className="w-[22px] h-[22px]" strokeWidth={2} />
+            <button className="p-2.5 flex-shrink-0 text-foreground dark:text-white hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full" title="Emoji" aria-label="Insert emoji (unavailable)">
+              <Smile className="w-[22px] h-[22px]" strokeWidth={2} aria-hidden="true" />
             </button>
             
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              aria-label="Type a message"
               onKeyDown={handleKeyPress}
               placeholder={isListening ? "Listening..." : "Message..."}
               className="flex-1 border-0 bg-transparent text-[15px] focus-visible:ring-0 px-0 py-2.5 max-h-[100px] shadow-none text-foreground dark:text-white placeholder:text-muted-foreground resize-none outline-none scrollbar-none leading-tight"
@@ -493,25 +500,30 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
             
             {input.trim() ? (
               <button 
+                type="button"
                 onClick={() => handleSend()}
                 disabled={isTyping}
-                className="p-2.5 flex-shrink-0 text-[#0095F6] font-semibold text-[15px] hover:text-blue-600 transition-colors"
+                aria-label="Send message"
+                className="p-2.5 flex-shrink-0 text-[#0095F6] font-semibold text-[15px] hover:text-blue-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full"
               >
                 Send
               </button>
             ) : (
               <div className="flex items-center gap-0.5 pr-0.5 text-foreground dark:text-white">
                 <button 
+                  type="button"
                   onClick={toggleListening}
+                  aria-pressed={isListening}
+                  aria-label={isListening ? "Stop voice input" : "Start voice input"}
                   className={cn(
-                    "p-2.5 flex-shrink-0 transition-colors",
+                    "p-2.5 flex-shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full",
                     isListening ? "text-rose-500 animate-pulse" : "hover:opacity-70"
                   )}
                 >
-                  <Mic className="w-[22px] h-[22px]" strokeWidth={2} />
+                  <Mic className="w-[22px] h-[22px]" strokeWidth={2} aria-hidden="true" />
                 </button>
-                <button className="p-2.5 flex-shrink-0 hover:opacity-70">
-                  <ImageIcon className="w-[22px] h-[22px]" strokeWidth={2} />
+                <button type="button" className="p-2.5 flex-shrink-0 hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full" aria-label="Send an image (unavailable)">
+                  <ImageIcon className="w-[22px] h-[22px]" strokeWidth={2} aria-hidden="true" />
                 </button>
               </div>
             )}

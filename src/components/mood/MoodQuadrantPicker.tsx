@@ -51,21 +51,23 @@ export function MoodQuadrantPicker({ onSelect }: MoodQuadrantPickerProps) {
         </span>
       </div>
 
-      <motion.h2 
+      <motion.h1 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
         className="text-xl sm:text-2xl font-semibold mb-12 text-center text-foreground dark:text-white tracking-tight font-serif"
       >
         Tap the color that best describes<br/>how you feel right now
-      </motion.h2>
+      </motion.h1>
 
       {/* Tightly packed 2x2 Grid */}
       <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
         {quadrants.map((quad, index) => (
           <motion.button
             key={quad.id}
+            type="button"
             onClick={() => onSelect(quad.quadrantKey)}
+            aria-label={quad.label.replace("\n", " ")}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
               opacity: 1, 
@@ -81,7 +83,7 @@ export function MoodQuadrantPicker({ onSelect }: MoodQuadrantPickerProps) {
             whileTap={{ scale: 0.95 }}
             className={cn(
               "w-[130px] h-[130px] sm:w-44 sm:h-44 rounded-full flex items-center justify-center text-center p-3 sm:p-4 cursor-pointer",
-              "shadow-[0_0_40px_rgba(0,0,0,0.3)]",
+              "shadow-[0_0_40px_rgba(0,0,0,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/40",
               quad.color, quad.textColor
             )}
           >

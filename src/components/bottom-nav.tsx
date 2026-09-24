@@ -30,8 +30,9 @@ export function BottomNav() {
             <Link 
               key={item.name} 
               href={item.href}
-              className="flex flex-col items-center justify-center p-1.5 group touch-manipulation"
+              className="flex flex-col items-center justify-center p-1.5 group touch-manipulation min-w-[52px] rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               aria-label={item.name}
+              aria-current={isActive ? "page" : undefined}
             >
               <div className={cn(
                 "p-2.5 rounded-2xl transition-all duration-300 flex items-center justify-center",
@@ -39,7 +40,7 @@ export function BottomNav() {
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/25 scale-105" 
                   : "text-muted-foreground dark:text-gray-400 hover:text-foreground dark:hover:text-gray-100 hover:bg-muted/60 dark:hover:bg-gray-800/60"
               )}>
-                <item.icon className="w-5 h-5" />
+                <item.icon className="w-5 h-5" aria-hidden="true" />
               </div>
               <span className={cn(
                 "text-[10px] font-semibold mt-0.5 transition-colors",
@@ -55,11 +56,12 @@ export function BottomNav() {
         <MobileNavDrawer 
           trigger={
             <button 
-              className="flex flex-col items-center justify-center p-1.5 group touch-manipulation cursor-pointer"
+              className="flex flex-col items-center justify-center p-1.5 group touch-manipulation cursor-pointer min-w-[52px] rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               aria-label="Explore all features"
+              aria-haspopup="dialog"
             >
               <div className="p-2.5 rounded-2xl transition-all duration-300 flex items-center justify-center text-muted-foreground dark:text-gray-400 hover:text-foreground dark:hover:text-gray-100 hover:bg-muted/60 dark:hover:bg-gray-800/60 group-hover:scale-105">
-                <LayoutGrid className="w-5 h-5" />
+                <LayoutGrid className="w-5 h-5" aria-hidden="true" />
               </div>
               <span className="text-[10px] font-semibold mt-0.5 text-muted-foreground dark:text-gray-400">
                 Explore

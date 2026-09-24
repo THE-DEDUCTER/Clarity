@@ -73,7 +73,10 @@ export function MoodBlob({
 
   return (
     <motion.button
+      type="button"
       onClick={() => onSelect(word.id)}
+      aria-pressed={isSelected}
+      aria-label={`${word.label}${isSelected ? ", selected" : ""} — ${word.description}`}
       animate={{ 
         opacity: opacityState, 
         scale: isSelected ? 1.05 : 1,
@@ -97,7 +100,7 @@ export function MoodBlob({
         layout: { type: "spring", stiffness: 300, damping: 25 }
       }}
       className={cn(
-        "relative flex flex-col items-center justify-center text-center transition-colors duration-500 ease-out border backdrop-blur-xl select-none cursor-pointer outline-none overflow-hidden",
+        "relative flex flex-col items-center justify-center text-center transition-colors duration-500 ease-out border backdrop-blur-xl select-none cursor-pointer overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black/40 dark:focus-visible:ring-white/70",
         isExtreme ? "w-[150px] h-[130px]" : 
         isModerate ? "w-[130px] h-[110px]" : 
         "w-[110px] h-[95px]",

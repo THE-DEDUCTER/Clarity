@@ -27,6 +27,14 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="responsive-container flex-1 w-full">
+      {/* Skip link: first focusable element on every app page */}
+      <a
+        href="#main-content"
+        className="skip-link focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      >
+        Skip to main content
+      </a>
+
       {/* Fixed Header */}
       <header className="fixed-header">
         <div className="header-left flex items-center gap-2">
@@ -66,7 +74,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         </div>
         
         <div className="flex flex-col flex-1 min-w-0 relative">
-          <main className={`flex-1 min-w-0 overflow-auto android-scroll ${pathname.startsWith("/ai-buddy") ? "p-0" : "p-2 xxs:p-1 sm:p-3 md:p-4 lg:p-6 pb-24 md:pb-6"}`}>
+          <main id="main-content" className={`flex-1 min-w-0 overflow-auto android-scroll ${pathname.startsWith("/ai-buddy") ? "p-0" : "p-2 xxs:p-1 sm:p-3 md:p-4 lg:p-6 pb-24 md:pb-6"}`}>
             {children}
           </main>
         </div>

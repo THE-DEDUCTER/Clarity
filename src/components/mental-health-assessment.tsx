@@ -23,7 +23,8 @@ import {
   RotateCcw, 
   FileText, 
   Target,
-  Info 
+  Info,
+  ChevronLeft
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useSubmitAssessment, useAssessmentHistory } from "@/hooks/use-assessment";
@@ -466,183 +467,213 @@ export default function MentalHealthAssessment() {
   // Main menu view
   if (!currentAssessment && !isCompleted) {
     return (
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
-        <div className="text-center space-y-4">
+      <main className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6" aria-labelledby="mental-health-heading">
+        <header className="text-center space-y-4">
           <div className="flex items-center justify-center gap-2 mb-6">
-            <Brain className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold">Mental Health Assessment</h1>
+            <Brain className="h-8 w-8 text-primary shrink-0" aria-hidden="true" />
+            <h1 id="mental-health-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              Mental Health Assessment
+            </h1>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Complete these validated mental health questionnaires to get insights into your wellbeing. 
             Each assessment takes about 2-5 minutes to complete.
           </p>
           
-          <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <CheckCircle className="h-4 w-4" />
-              Clinically validated
-            </span>
-            <span className="flex items-center gap-1">
-              <Shield className="h-4 w-4" />
-              Confidential
-            </span>
-            <span className="flex items-center gap-1">
-              <Heart className="h-4 w-4" />
-              Professional guidance
-            </span>
-          </div>
-        </div>
+          <ul className="flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm text-muted-foreground" aria-label="Assessment Features">
+            <li className="flex items-center gap-1.5">
+              <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" aria-hidden="true" />
+              <span>Clinically validated</span>
+            </li>
+            <li className="flex items-center gap-1.5">
+              <Shield className="h-4 w-4 text-teal-600 dark:text-teal-400 shrink-0" aria-hidden="true" />
+              <span>Confidential</span>
+            </li>
+            <li className="flex items-center gap-1.5">
+              <Heart className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0" aria-hidden="true" />
+              <span>Professional guidance</span>
+            </li>
+          </ul>
+        </header>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <section aria-label="Available Screenings" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* PHQ-9 Depression Screening */}
-          <Card className={`cursor-pointer transition-all hover:shadow-lg ${results.phq9 !== undefined ? 'border-green-200 bg-green-50' : ''}`}>
-            <CardHeader>
+          <Card className={`transition-all hover:shadow-lg ${results.phq9 !== undefined ? 'border-emerald-500/40 dark:border-emerald-600/50 bg-emerald-500/5' : 'border-border/80'}`}>
+            <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">PHQ-9</CardTitle>
-                {results.phq9 !== undefined && <CheckCircle className="h-5 w-5 text-green-600" />}
+                <CardTitle className="text-lg font-bold text-foreground" id="phq9-card-title">PHQ-9</CardTitle>
+                {results.phq9 !== undefined && (
+                  <Badge variant="outline" className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30 gap-1 px-2 py-0.5">
+                    <CheckCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+                    <span>Done</span>
+                  </Badge>
+                )}
               </div>
-              <CardDescription>Depression Screening</CardDescription>
+              <CardDescription className="text-xs text-muted-foreground font-medium">Depression Screening</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-4 leading-relaxed">
                 Assesses depression symptoms over the past 2 weeks.
               </p>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Questions:</span>
-                  <span className="font-medium">9</span>
+              <dl className="space-y-1.5 text-xs">
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Questions:</dt>
+                  <dd className="font-semibold text-foreground">9</dd>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span>Duration:</span>
-                  <span className="font-medium">2-3 min</span>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Duration:</dt>
+                  <dd className="font-semibold text-foreground">2-3 min</dd>
                 </div>
-              </div>
+              </dl>
             </CardContent>
             <CardFooter>
               <Button 
+                type="button"
                 onClick={() => results.phq9 !== undefined ? retakeSingleAssessment('PHQ9') : startAssessment('PHQ9')} 
-                className="w-full"
+                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
                 variant={results.phq9 !== undefined ? "outline" : "default"}
+                aria-labelledby="phq9-card-title"
               >
-                {results.phq9 !== undefined ? "Retake" : "Start PHQ-9"}
+                {results.phq9 !== undefined ? "Retake PHQ-9" : "Start PHQ-9"}
               </Button>
             </CardFooter>
           </Card>
 
           {/* GAD-7 Anxiety Screening */}
-          <Card className={`cursor-pointer transition-all hover:shadow-lg ${results.gad7 !== undefined ? 'border-green-200 bg-green-50' : ''}`}>
-            <CardHeader>
+          <Card className={`transition-all hover:shadow-lg ${results.gad7 !== undefined ? 'border-emerald-500/40 dark:border-emerald-600/50 bg-emerald-500/5' : 'border-border/80'}`}>
+            <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">GAD-7</CardTitle>
-                {results.gad7 !== undefined && <CheckCircle className="h-5 w-5 text-green-600" />}
+                <CardTitle className="text-lg font-bold text-foreground" id="gad7-card-title">GAD-7</CardTitle>
+                {results.gad7 !== undefined && (
+                  <Badge variant="outline" className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30 gap-1 px-2 py-0.5">
+                    <CheckCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+                    <span>Done</span>
+                  </Badge>
+                )}
               </div>
-              <CardDescription>Anxiety Screening</CardDescription>
+              <CardDescription className="text-xs text-muted-foreground font-medium">Anxiety Screening</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-4 leading-relaxed">
                 Measures anxiety symptoms and worry patterns.
               </p>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Questions:</span>
-                  <span className="font-medium">7</span>
+              <dl className="space-y-1.5 text-xs">
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Questions:</dt>
+                  <dd className="font-semibold text-foreground">7</dd>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span>Duration:</span>
-                  <span className="font-medium">2-3 min</span>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Duration:</dt>
+                  <dd className="font-semibold text-foreground">2-3 min</dd>
                 </div>
-              </div>
+              </dl>
             </CardContent>
             <CardFooter>
               <Button 
+                type="button"
                 onClick={() => results.gad7 !== undefined ? retakeSingleAssessment('GAD7') : startAssessment('GAD7')} 
-                className="w-full"
+                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
                 variant={results.gad7 !== undefined ? "outline" : "default"}
+                aria-labelledby="gad7-card-title"
               >
-                {results.gad7 !== undefined ? "Retake" : "Start GAD-7"}
+                {results.gad7 !== undefined ? "Retake GAD-7" : "Start GAD-7"}
               </Button>
             </CardFooter>
           </Card>
 
           {/* GHQ-28 General Mental Health */}
-          <Card className={`cursor-pointer transition-all hover:shadow-lg ${results.ghq28 !== undefined ? 'border-green-200 bg-green-50' : ''}`}>
-            <CardHeader>
+          <Card className={`transition-all hover:shadow-lg ${results.ghq28 !== undefined ? 'border-emerald-500/40 dark:border-emerald-600/50 bg-emerald-500/5' : 'border-border/80'}`}>
+            <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">GHQ-28</CardTitle>
-                {results.ghq28 !== undefined && <CheckCircle className="h-5 w-5 text-green-600" />}
+                <CardTitle className="text-lg font-bold text-foreground" id="ghq28-card-title">GHQ-28</CardTitle>
+                {results.ghq28 !== undefined && (
+                  <Badge variant="outline" className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30 gap-1 px-2 py-0.5">
+                    <CheckCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+                    <span>Done</span>
+                  </Badge>
+                )}
               </div>
-              <CardDescription>General Health Questionnaire</CardDescription>
+              <CardDescription className="text-xs text-muted-foreground font-medium">General Health Questionnaire</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-4 leading-relaxed">
                 Comprehensive assessment of psychological wellbeing.
               </p>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Questions:</span>
-                  <span className="font-medium">28</span>
+              <dl className="space-y-1.5 text-xs">
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Questions:</dt>
+                  <dd className="font-semibold text-foreground">28</dd>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span>Duration:</span>
-                  <span className="font-medium">5-7 min</span>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Duration:</dt>
+                  <dd className="font-semibold text-foreground">5-7 min</dd>
                 </div>
-              </div>
+              </dl>
             </CardContent>
             <CardFooter>
               <Button 
+                type="button"
                 onClick={() => results.ghq28 !== undefined ? retakeSingleAssessment('GHQ28') : startAssessment('GHQ28')} 
-                className="w-full"
+                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
                 variant={results.ghq28 !== undefined ? "outline" : "default"}
+                aria-labelledby="ghq28-card-title"
               >
-                {results.ghq28 !== undefined ? "Retake" : "Start GHQ-28"}
+                {results.ghq28 !== undefined ? "Retake GHQ-28" : "Start GHQ-28"}
               </Button>
             </CardFooter>
           </Card>
 
           {/* DASS-21 */}
-          <Card className={`cursor-pointer transition-all hover:shadow-lg ${results.dass21 !== undefined ? 'border-green-200 bg-green-50' : ''}`}>
-            <CardHeader>
+          <Card className={`transition-all hover:shadow-lg ${results.dass21 !== undefined ? 'border-emerald-500/40 dark:border-emerald-600/50 bg-emerald-500/5' : 'border-border/80'}`}>
+            <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">DASS-21</CardTitle>
-                {results.dass21 !== undefined && <CheckCircle className="h-5 w-5 text-green-600" />}
+                <CardTitle className="text-lg font-bold text-foreground" id="dass21-card-title">DASS-21</CardTitle>
+                {results.dass21 !== undefined && (
+                  <Badge variant="outline" className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30 gap-1 px-2 py-0.5">
+                    <CheckCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+                    <span>Done</span>
+                  </Badge>
+                )}
               </div>
-              <CardDescription>Depression, Anxiety & Stress</CardDescription>
+              <CardDescription className="text-xs text-muted-foreground font-medium">Depression, Anxiety & Stress</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-4 leading-relaxed">
                 Measures depression, anxiety, and stress levels.
               </p>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Questions:</span>
-                  <span className="font-medium">21</span>
+              <dl className="space-y-1.5 text-xs">
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Questions:</dt>
+                  <dd className="font-semibold text-foreground">21</dd>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span>Duration:</span>
-                  <span className="font-medium">3-5 min</span>
+                <div className="flex justify-between">
+                  <dt className="text-muted-foreground">Duration:</dt>
+                  <dd className="font-semibold text-foreground">3-5 min</dd>
                 </div>
-              </div>
+              </dl>
             </CardContent>
             <CardFooter>
               <Button 
+                type="button"
                 onClick={() => results.dass21 !== undefined ? retakeSingleAssessment('DASS21') : startAssessment('DASS21')} 
-                className="w-full"
+                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
                 variant={results.dass21 !== undefined ? "outline" : "default"}
+                aria-labelledby="dass21-card-title"
               >
-                {results.dass21 !== undefined ? "Retake" : "Start DASS-21"}
+                {results.dass21 !== undefined ? "Retake DASS-21" : "Start DASS-21"}
               </Button>
             </CardFooter>
           </Card>
-        </div>
+        </section>
 
-        <Alert>
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Important:</strong> These assessments are screening tools and not diagnostic instruments. 
-            If you're experiencing mental health concerns, please consult with a qualified healthcare professional.
+        <Alert role="note" className="border-amber-500/30 bg-amber-500/10 text-amber-950 dark:text-amber-200">
+          <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" aria-hidden="true" />
+          <AlertDescription className="text-xs sm:text-sm leading-relaxed">
+            <strong className="font-semibold text-foreground">Important Notice:</strong> These assessments are evidence-based screening tools and not diagnostic instruments. 
+            If you are experiencing mental health concerns, please consult with a qualified healthcare professional.
           </AlertDescription>
         </Alert>
-      </div>
+      </main>
     );
   }
 
@@ -650,7 +681,7 @@ export default function MentalHealthAssessment() {
   if (currentAssessment) {
     const questions = getQuestions(currentAssessment);
     const answerOptions = getAnswerOptions(currentAssessment);
-    const progress = ((currentQuestion + 1) / questions.length) * 100;
+    const progress = Math.round(((currentQuestion + 1) / questions.length) * 100);
     const selectedAnswer = answers[currentQuestion];
 
     const handleSelectAnswer = (value: number) => {
@@ -698,22 +729,37 @@ export default function MentalHealthAssessment() {
       }
     };
 
+    const handleRadioKeyDown = (e: React.KeyboardEvent, index: number) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const nextIndex = (index + 1) % answerOptions.length;
+        handleSelectAnswer(answerOptions[nextIndex].value);
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prevIndex = (index - 1 + answerOptions.length) % answerOptions.length;
+        handleSelectAnswer(answerOptions[prevIndex].value);
+      }
+    };
+
     return (
-      <div className="max-w-2xl mx-auto p-4 sm:p-6 space-y-6 animate-in fade-in duration-300">
+      <main className="max-w-2xl mx-auto p-4 sm:p-6 space-y-6 animate-in fade-in duration-300" aria-labelledby="mh-screen-heading">
         {/* Header & Progress */}
         <div className="space-y-4 text-center">
+          <h1 id="mh-screen-heading" className="sr-only">{currentAssessment} Screening</h1>
           <div className="flex items-center justify-between gap-2">
-            <Badge variant="outline" className="text-xs font-semibold px-3 py-1 rounded-full border-teal-500/30 text-teal-700 dark:text-teal-300 bg-teal-500/5">
+            <Badge variant="outline" className="text-xs font-semibold px-3 py-1 rounded-full border-teal-500/30 text-teal-800 dark:text-teal-200 bg-teal-500/10" aria-hidden="true">
               {currentAssessment} Screening
             </Badge>
-            <span className="text-xs font-medium text-muted-foreground">
-              Question {currentQuestion + 1} of {questions.length} ({Math.round(progress)}%)
-            </span>
+            <p role="status" className="text-xs font-medium text-muted-foreground">
+              Question {currentQuestion + 1} of {questions.length} ({progress}%)<span className="sr-only"> — {progress} percent complete</span>
+            </p>
           </div>
           
-          <Progress value={progress} className="h-2 rounded-full w-full" />
+          <div role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} aria-valuetext={`Question ${currentQuestion + 1} of ${questions.length}, ${progress} percent complete`}>
+            <Progress value={progress} className="h-2 rounded-full w-full" />
+          </div>
           
-          <p className="text-xs sm:text-sm text-muted-foreground italic bg-muted/30 p-3 rounded-2xl border border-border/40 max-w-xl mx-auto">
+          <p className="text-xs sm:text-sm text-muted-foreground italic bg-muted/40 p-3.5 rounded-2xl border border-border/50 max-w-xl mx-auto leading-relaxed">
             {getInstruction(currentAssessment)}
           </p>
         </div>
@@ -721,22 +767,28 @@ export default function MentalHealthAssessment() {
         {/* Question Card */}
         <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
           <CardHeader className="pb-4 bg-muted/20 border-b border-border/40">
-            <CardTitle className="text-base sm:text-lg font-semibold text-foreground leading-snug">
+            <h2 id="mh-question-title" className="text-base sm:text-lg font-semibold text-foreground leading-snug">
               {currentQuestion + 1}. {questions[currentQuestion]}
-            </CardTitle>
+            </h2>
           </CardHeader>
           <CardContent className="p-4 sm:p-6">
-            <div className="grid gap-3">
+            <div className="grid gap-3" role="radiogroup" aria-labelledby="mh-question-title">
               {answerOptions.map((option, index) => {
                 const isSelected = selectedAnswer === option.value;
                 return (
                   <Button
                     key={index}
+                    type="button"
+                    role="radio"
+                    aria-checked={isSelected}
+                    aria-label={`Option ${String.fromCharCode(65 + index)}: ${option.label}${isSelected ? ", selected" : ""}`}
                     variant={isSelected ? "default" : "outline"}
-                    className={`justify-start h-auto p-4 text-left rounded-2xl transition-all duration-200 border ${
+                    tabIndex={isSelected || (selectedAnswer === undefined && index === 0) ? 0 : -1}
+                    onKeyDown={(e) => handleRadioKeyDown(e, index)}
+                    className={`justify-start h-auto min-h-[48px] p-4 text-left rounded-2xl transition-all duration-200 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 ${
                       isSelected 
-                        ? 'bg-teal-600 hover:bg-teal-700 text-white border-teal-600 shadow-md scale-[1.01]' 
-                        : 'hover:bg-muted/60 border-border/60'
+                        ? 'bg-teal-700 hover:bg-teal-800 text-white font-semibold border-teal-700 shadow-md scale-[1.01] ring-2 ring-teal-700/60 dark:bg-teal-600 dark:hover:bg-teal-500 dark:ring-teal-400/60' 
+                        : 'hover:bg-muted/60 border-border/60 text-foreground bg-background'
                     }`}
                     onClick={() => handleSelectAnswer(option.value)}
                   >
@@ -745,10 +797,13 @@ export default function MentalHealthAssessment() {
                         isSelected 
                           ? 'bg-white/20 text-white' 
                           : 'bg-muted text-muted-foreground'
-                      }`}>
+                      }`} aria-hidden="true">
                         {String.fromCharCode(65 + index)}
                       </span>
                       <span className="text-sm font-medium leading-relaxed flex-1">{option.label}</span>
+                      {isSelected && (
+                        <CheckCircle2 className="w-5 h-5 text-white shrink-0 ml-auto" aria-hidden="true" />
+                      )}
                     </div>
                   </Button>
                 );
@@ -760,24 +815,28 @@ export default function MentalHealthAssessment() {
         {/* Navigation Actions */}
         <div className="flex items-center justify-between gap-3 pt-2">
           <Button 
+            type="button"
             variant="outline" 
             onClick={handlePreviousQuestion}
             disabled={currentQuestion === 0}
-            className="rounded-2xl gap-2 text-xs sm:text-sm"
+            className="rounded-2xl gap-2 text-xs sm:text-sm min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+            aria-label="Previous Question"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4" aria-hidden="true" />
             Previous
           </Button>
 
           <Button 
+            type="button"
             variant="ghost" 
             onClick={() => setCurrentAssessment(null)}
-            className="rounded-2xl text-xs sm:text-sm text-muted-foreground hover:text-foreground"
+            className="rounded-2xl text-xs sm:text-sm text-muted-foreground hover:text-foreground min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+            aria-label="Back to Assessment Selection Menu"
           >
             Back to Menu
           </Button>
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -792,93 +851,126 @@ export default function MentalHealthAssessment() {
     let dassData = results.dass21 !== undefined ? getDASS21Interpretation(results.dass21) : null;
 
     return (
-      <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8 animate-in fade-in duration-300" data-testid="assessment-results">
+      <main className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8 animate-in fade-in duration-300" data-testid="assessment-results" aria-labelledby="results-heading">
         {/* Top Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Assessment Complete & Analyzed</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20" role="status" aria-live="polite">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+            <span>Assessment Complete &amp; Analyzed</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+          <h1 id="results-heading" className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Your Clinical Self-Assessment Insights
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
             Review your calculated score breakdown, plain-language summary, key areas of focus, and supportive next steps below.
           </p>
         </div>
 
         {/* Assessment Switcher Tabs if multiple taken */}
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className="flex flex-wrap justify-center gap-2" role="tablist" aria-label="Assessment result views">
           {results.phq9 !== undefined && (
-            <Badge 
-              variant={displayTest === 'PHQ9' ? 'default' : 'outline'}
-              className="cursor-pointer px-4 py-1.5 text-xs font-semibold rounded-full transition-all"
+            <button
+              type="button"
+              role="tab"
+              id="results-tab-PHQ9"
+              aria-selected={displayTest === 'PHQ9'}
+              aria-controls="assessment-result-panel"
+              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 ${
+                displayTest === 'PHQ9'
+                  ? 'bg-teal-700 text-white shadow-sm'
+                  : 'bg-muted/80 text-foreground hover:bg-muted border border-border/60'
+              }`}
               onClick={() => setCurrentAssessment('PHQ9')}
             >
               PHQ-9 Score ({results.phq9}/27)
-            </Badge>
+            </button>
           )}
           {results.gad7 !== undefined && (
-            <Badge 
-              variant={displayTest === 'GAD7' ? 'default' : 'outline'}
-              className="cursor-pointer px-4 py-1.5 text-xs font-semibold rounded-full transition-all"
+            <button
+              type="button"
+              role="tab"
+              id="results-tab-GAD7"
+              aria-selected={displayTest === 'GAD7'}
+              aria-controls="assessment-result-panel"
+              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 ${
+                displayTest === 'GAD7'
+                  ? 'bg-teal-700 text-white shadow-sm'
+                  : 'bg-muted/80 text-foreground hover:bg-muted border border-border/60'
+              }`}
               onClick={() => setCurrentAssessment('GAD7')}
             >
               GAD-7 Score ({results.gad7}/21)
-            </Badge>
+            </button>
           )}
           {results.ghq28 !== undefined && (
-            <Badge 
-              variant={displayTest === 'GHQ28' ? 'default' : 'outline'}
-              className="cursor-pointer px-4 py-1.5 text-xs font-semibold rounded-full transition-all"
+            <button
+              type="button"
+              role="tab"
+              id="results-tab-GHQ28"
+              aria-selected={displayTest === 'GHQ28'}
+              aria-controls="assessment-result-panel"
+              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 ${
+                displayTest === 'GHQ28'
+                  ? 'bg-teal-700 text-white shadow-sm'
+                  : 'bg-muted/80 text-foreground hover:bg-muted border border-border/60'
+              }`}
               onClick={() => setCurrentAssessment('GHQ28')}
             >
               GHQ-28 Score ({results.ghq28}/28)
-            </Badge>
+            </button>
           )}
           {results.dass21 !== undefined && (
-            <Badge 
-              variant={displayTest === 'DASS21' ? 'default' : 'outline'}
-              className="cursor-pointer px-4 py-1.5 text-xs font-semibold rounded-full transition-all"
+            <button
+              type="button"
+              role="tab"
+              id="results-tab-DASS21"
+              aria-selected={displayTest === 'DASS21'}
+              aria-controls="assessment-result-panel"
+              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 ${
+                displayTest === 'DASS21'
+                  ? 'bg-teal-700 text-white shadow-sm'
+                  : 'bg-muted/80 text-foreground hover:bg-muted border border-border/60'
+              }`}
               onClick={() => setCurrentAssessment('DASS21')}
             >
               DASS-21 Subscales
-            </Badge>
+            </button>
           )}
         </div>
 
         {/* Selected Assessment Result Card */}
         {displayTest === 'PHQ9' && results.phq9 !== undefined && phqData && (
-          <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
+          <Card id="assessment-result-panel" role="tabpanel" aria-labelledby="results-tab-PHQ9" tabIndex={0} className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
             <CardHeader className="border-b border-border/50 pb-6 bg-muted/20">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <Badge variant="outline" className="mb-2 text-xs font-medium">PHQ-9 Screening</Badge>
-                  <CardTitle className="text-xl sm:text-2xl font-bold">Depression Score Analysis</CardTitle>
+                  <CardTitle id="phq9-result-title" className="text-xl sm:text-2xl font-bold text-foreground">Depression Score Analysis</CardTitle>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="text-3xl font-extrabold text-foreground">{results.phq9} <span className="text-sm font-normal text-muted-foreground">/ 27</span></div>
+                    <div className="text-3xl font-extrabold text-foreground" aria-label={`PHQ-9 score: ${results.phq9} out of 27`}>{results.phq9} <span className="text-sm font-normal text-muted-foreground" aria-hidden="true">/ 27</span></div>
                   </div>
                   <Badge className={`px-3 py-1 text-xs font-semibold rounded-full ${phqData.colorClass}`}>
-                    {phqData.severity}
+                    <span className="sr-only">Severity: </span>{phqData.severity}
                   </Badge>
                 </div>
               </div>
               <div className="mt-4 space-y-1.5">
-                <div className="flex justify-between text-xs text-muted-foreground">
+                <div className="flex justify-between text-xs text-muted-foreground" aria-hidden="true">
                   <span>Score Intensity</span>
                   <span>{Math.round((results.phq9 / 27) * 100)}%</span>
                 </div>
-                <Progress value={(results.phq9 / 27) * 100} className="h-2.5 rounded-full" />
+                <div role="progressbar" aria-valuenow={Math.round((results.phq9 / 27) * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={`PHQ-9 score intensity: ${Math.round((results.phq9 / 27) * 100)} percent`}>
+                  <Progress value={(results.phq9 / 27) * 100} className="h-2.5 rounded-full" />
+                </div>
               </div>
             </CardHeader>
 
             <CardContent className="p-6 space-y-6">
-              {/* Plain Language Interpretation */}
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" aria-hidden="true" />
                   What Your Score Means
                 </h3>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-2xl border border-border/40">
@@ -886,35 +978,34 @@ export default function MentalHealthAssessment() {
                 </p>
               </div>
 
-              {/* Focus Areas */}
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <Sparkles className="w-4 h-4 text-amber-500" aria-hidden="true" />
                   Key Areas of Focus
                 </h3>
-                <div className="flex flex-wrap items-center gap-2">
+                <ul className="flex flex-wrap items-center gap-2" aria-label="Key focus areas">
                   {phqData.focusAreas.map((area, idx) => (
-                    <Badge 
-                      key={idx} 
-                      variant="secondary" 
-                      className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap"
-                    >
-                      {area}
-                    </Badge>
+                    <li key={idx}>
+                      <Badge 
+                        variant="secondary" 
+                        className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap"
+                      >
+                        {area}
+                      </Badge>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
-              {/* Next Steps */}
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                   Suggested Next Steps
                 </h3>
                 <ul className="space-y-2.5">
                   {phqData.recommendations.map((rec, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" aria-hidden="true" />
                       <span>{rec}</span>
                     </li>
                   ))}
@@ -925,35 +1016,37 @@ export default function MentalHealthAssessment() {
         )}
 
         {displayTest === 'GAD7' && results.gad7 !== undefined && gadData && (
-          <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
+          <Card id="assessment-result-panel" role="tabpanel" aria-labelledby="results-tab-GAD7" tabIndex={0} className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
             <CardHeader className="border-b border-border/50 pb-6 bg-muted/20">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <Badge variant="outline" className="mb-2 text-xs font-medium">GAD-7 Screening</Badge>
-                  <CardTitle className="text-xl sm:text-2xl font-bold">Anxiety Score Analysis</CardTitle>
+                  <CardTitle id="gad7-result-title" className="text-xl sm:text-2xl font-bold text-foreground">Anxiety Score Analysis</CardTitle>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="text-3xl font-extrabold text-foreground">{results.gad7} <span className="text-sm font-normal text-muted-foreground">/ 21</span></div>
+                    <div className="text-3xl font-extrabold text-foreground" aria-label={`GAD-7 score: ${results.gad7} out of 21`}>{results.gad7} <span className="text-sm font-normal text-muted-foreground" aria-hidden="true">/ 21</span></div>
                   </div>
                   <Badge className={`px-3 py-1 text-xs font-semibold rounded-full ${gadData.colorClass}`}>
-                    {gadData.severity}
+                    <span className="sr-only">Severity: </span>{gadData.severity}
                   </Badge>
                 </div>
               </div>
               <div className="mt-4 space-y-1.5">
-                <div className="flex justify-between text-xs text-muted-foreground">
+                <div className="flex justify-between text-xs text-muted-foreground" aria-hidden="true">
                   <span>Anxiety Level Gauge</span>
                   <span>{Math.round((results.gad7 / 21) * 100)}%</span>
                 </div>
-                <Progress value={(results.gad7 / 21) * 100} className="h-2.5 rounded-full" />
+                <div role="progressbar" aria-valuenow={Math.round((results.gad7 / 21) * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={`GAD-7 anxiety level: ${Math.round((results.gad7 / 21) * 100)} percent`}>
+                  <Progress value={(results.gad7 / 21) * 100} className="h-2.5 rounded-full" />
+                </div>
               </div>
             </CardHeader>
 
             <CardContent className="p-6 space-y-6">
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" aria-hidden="true" />
                   What Your Score Means
                 </h3>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-2xl border border-border/40">
@@ -963,31 +1056,29 @@ export default function MentalHealthAssessment() {
 
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <Sparkles className="w-4 h-4 text-amber-500" aria-hidden="true" />
                   Key Areas of Focus
                 </h3>
-                <div className="flex flex-wrap items-center gap-2">
+                <ul className="flex flex-wrap items-center gap-2" aria-label="Key focus areas">
                   {gadData.focusAreas.map((area, idx) => (
-                    <Badge 
-                      key={idx} 
-                      variant="secondary" 
-                      className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap"
-                    >
-                      {area}
-                    </Badge>
+                    <li key={idx}>
+                      <Badge variant="secondary" className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap">
+                        {area}
+                      </Badge>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                   Suggested Next Steps
                 </h3>
                 <ul className="space-y-2.5">
                   {gadData.recommendations.map((rec, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" aria-hidden="true" />
                       <span>{rec}</span>
                     </li>
                   ))}
@@ -998,35 +1089,37 @@ export default function MentalHealthAssessment() {
         )}
 
         {displayTest === 'GHQ28' && results.ghq28 !== undefined && ghqData && (
-          <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
+          <Card id="assessment-result-panel" role="tabpanel" aria-labelledby="results-tab-GHQ28" tabIndex={0} className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
             <CardHeader className="border-b border-border/50 pb-6 bg-muted/20">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <Badge variant="outline" className="mb-2 text-xs font-medium">GHQ-28 Questionnaire</Badge>
-                  <CardTitle className="text-xl sm:text-2xl font-bold">General Health & Wellbeing Analysis</CardTitle>
+                  <CardTitle id="ghq28-result-title" className="text-xl sm:text-2xl font-bold text-foreground">General Health &amp; Wellbeing Analysis</CardTitle>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className="text-3xl font-extrabold text-foreground">{results.ghq28} <span className="text-sm font-normal text-muted-foreground">/ 28</span></div>
+                    <div className="text-3xl font-extrabold text-foreground" aria-label={`GHQ-28 score: ${results.ghq28} out of 28`}>{results.ghq28} <span className="text-sm font-normal text-muted-foreground" aria-hidden="true">/ 28</span></div>
                   </div>
                   <Badge className={`px-3 py-1 text-xs font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${ghqData.colorClass}`}>
-                    {ghqData.severity}
+                    <span className="sr-only">Severity: </span>{ghqData.severity}
                   </Badge>
                 </div>
               </div>
               <div className="mt-4 space-y-1.5">
-                <div className="flex justify-between text-xs text-muted-foreground">
+                <div className="flex justify-between text-xs text-muted-foreground" aria-hidden="true">
                   <span>General Distress Indicator</span>
                   <span>{Math.round((results.ghq28 / 28) * 100)}%</span>
                 </div>
-                <Progress value={(results.ghq28 / 28) * 100} className="h-2.5 rounded-full" />
+                <div role="progressbar" aria-valuenow={Math.round((results.ghq28 / 28) * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={`GHQ-28 distress level: ${Math.round((results.ghq28 / 28) * 100)} percent`}>
+                  <Progress value={(results.ghq28 / 28) * 100} className="h-2.5 rounded-full" />
+                </div>
               </div>
             </CardHeader>
 
             <CardContent className="p-6 space-y-6">
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" aria-hidden="true" />
                   What Your Score Means
                 </h3>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-2xl border border-border/40">
@@ -1036,31 +1129,29 @@ export default function MentalHealthAssessment() {
 
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <Sparkles className="w-4 h-4 text-amber-500" aria-hidden="true" />
                   Key Areas of Focus
                 </h3>
-                <div className="flex flex-wrap items-center gap-2">
+                <ul className="flex flex-wrap items-center gap-2" aria-label="Key focus areas">
                   {ghqData.focusAreas.map((area, idx) => (
-                    <Badge 
-                      key={idx} 
-                      variant="secondary" 
-                      className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap"
-                    >
-                      {area}
-                    </Badge>
+                    <li key={idx}>
+                      <Badge variant="secondary" className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap">
+                        {area}
+                      </Badge>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                   Suggested Next Steps
                 </h3>
                 <ul className="space-y-2.5">
                   {ghqData.recommendations.map((rec, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" aria-hidden="true" />
                       <span>{rec}</span>
                     </li>
                   ))}
@@ -1071,62 +1162,68 @@ export default function MentalHealthAssessment() {
         )}
 
         {displayTest === 'DASS21' && results.dass21 !== undefined && dassData && (
-          <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
+          <Card id="assessment-result-panel" role="tabpanel" aria-labelledby="results-tab-DASS21" tabIndex={0} className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
             <CardHeader className="border-b border-border/50 pb-6 bg-muted/20">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <Badge variant="outline" className="mb-2 text-xs font-medium">DASS-21 Multidimensional Scale</Badge>
-                  <CardTitle className="text-xl sm:text-2xl font-bold">Depression, Anxiety & Stress Profile</CardTitle>
+                  <CardTitle id="dass21-result-title" className="text-xl sm:text-2xl font-bold text-foreground">Depression, Anxiety &amp; Stress Profile</CardTitle>
                 </div>
               </div>
             </CardHeader>
 
             <CardContent className="p-6 space-y-6">
               {/* 3 Subscale Cards */}
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3">
+              <div className="grid gap-4 sm:grid-cols-3" role="list" aria-label="DASS-21 Subscale Scores">
+                <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3" role="listitem">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-semibold text-muted-foreground">Depression</span>
+                    <span className="text-xs font-semibold text-foreground">Depression</span>
                     <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${dassData.depression.badgeColor}`}>
-                      {dassData.depression.level}
+                      <span className="sr-only">Level: </span>{dassData.depression.level}
                     </Badge>
                   </div>
-                  <div className="text-2xl font-bold text-foreground">
-                    {dassData.depression.score} <span className="text-xs text-muted-foreground font-normal">/ 42</span>
+                  <div className="text-2xl font-bold text-foreground" aria-label={`Depression score: ${dassData.depression.score} out of 42`}>
+                    {dassData.depression.score} <span className="text-xs text-muted-foreground font-normal" aria-hidden="true">/ 42</span>
                   </div>
-                  <Progress value={(dassData.depression.score / 42) * 100} className="h-2" />
+                  <div role="progressbar" aria-valuenow={Math.round((dassData.depression.score / 42) * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={`Depression score: ${Math.round((dassData.depression.score / 42) * 100)} percent`}>
+                    <Progress value={(dassData.depression.score / 42) * 100} className="h-2" />
+                  </div>
                 </div>
 
-                <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3">
+                <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3" role="listitem">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-semibold text-muted-foreground">Anxiety</span>
+                    <span className="text-xs font-semibold text-foreground">Anxiety</span>
                     <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${dassData.anxiety.badgeColor}`}>
-                      {dassData.anxiety.level}
+                      <span className="sr-only">Level: </span>{dassData.anxiety.level}
                     </Badge>
                   </div>
-                  <div className="text-2xl font-bold text-foreground">
-                    {dassData.anxiety.score} <span className="text-xs text-muted-foreground font-normal">/ 42</span>
+                  <div className="text-2xl font-bold text-foreground" aria-label={`Anxiety score: ${dassData.anxiety.score} out of 42`}>
+                    {dassData.anxiety.score} <span className="text-xs text-muted-foreground font-normal" aria-hidden="true">/ 42</span>
                   </div>
-                  <Progress value={(dassData.anxiety.score / 42) * 100} className="h-2" />
+                  <div role="progressbar" aria-valuenow={Math.round((dassData.anxiety.score / 42) * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={`Anxiety score: ${Math.round((dassData.anxiety.score / 42) * 100)} percent`}>
+                    <Progress value={(dassData.anxiety.score / 42) * 100} className="h-2" />
+                  </div>
                 </div>
 
-                <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3">
+                <div className="p-4 rounded-2xl border border-border/60 bg-muted/20 space-y-3" role="listitem">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-semibold text-muted-foreground">Stress</span>
+                    <span className="text-xs font-semibold text-foreground">Stress</span>
                     <Badge className={`inline-flex items-center h-5 px-2 py-0 text-[10px] font-semibold rounded-full border border-current/20 shrink-0 whitespace-nowrap ${dassData.stress.badgeColor}`}>
-                      {dassData.stress.level}
+                      <span className="sr-only">Level: </span>{dassData.stress.level}
                     </Badge>
                   </div>
-                  <div className="text-2xl font-bold text-foreground">
-                    {dassData.stress.score} <span className="text-xs text-muted-foreground font-normal">/ 42</span>
+                  <div className="text-2xl font-bold text-foreground" aria-label={`Stress score: ${dassData.stress.score} out of 42`}>
+                    {dassData.stress.score} <span className="text-xs text-muted-foreground font-normal" aria-hidden="true">/ 42</span>
                   </div>
-                  <Progress value={(dassData.stress.score / 42) * 100} className="h-2" />
+                  <div role="progressbar" aria-valuenow={Math.round((dassData.stress.score / 42) * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={`Stress score: ${Math.round((dassData.stress.score / 42) * 100)} percent`}>
+                    <Progress value={(dassData.stress.score / 42) * 100} className="h-2" />
+                  </div>
                 </div>
               </div>
 
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" aria-hidden="true" />
                   What Your Score Means
                 </h3>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed bg-muted/30 p-4 rounded-2xl border border-border/40">
@@ -1136,31 +1233,29 @@ export default function MentalHealthAssessment() {
 
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <Sparkles className="w-4 h-4 text-amber-500" aria-hidden="true" />
                   Key Areas of Focus
                 </h3>
-                <div className="flex flex-wrap items-center gap-2">
+                <ul className="flex flex-wrap items-center gap-2" aria-label="Key focus areas">
                   {dassData.focusAreas.map((area, idx) => (
-                    <Badge 
-                      key={idx} 
-                      variant="secondary" 
-                      className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap"
-                    >
-                      {area}
-                    </Badge>
+                    <li key={idx}>
+                      <Badge variant="secondary" className="inline-flex items-center h-6 px-2.5 py-0.5 rounded-full text-xs font-medium border border-border/40 shrink-0 whitespace-nowrap">
+                        {area}
+                      </Badge>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
-                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                   Suggested Next Steps
                 </h3>
                 <ul className="space-y-2.5">
                   {dassData.recommendations.map((rec, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" aria-hidden="true" />
                       <span>{rec}</span>
                     </li>
                   ))}
@@ -1171,24 +1266,32 @@ export default function MentalHealthAssessment() {
         )}
 
         {/* Quick Action Navigation Grid */}
-        <div className="space-y-3">
+        <nav aria-label="Take Action in Clarity" className="space-y-3">
           <h3 className="text-sm font-semibold text-foreground px-1">Take Action in Clarity</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Link href="/diary" className="group p-4 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 transition-all flex flex-col justify-between space-y-2">
+            <Link
+              href="/diary"
+              className="group p-4 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 transition-all flex flex-col justify-between space-y-2 min-h-[72px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950"
+              aria-label="Go to Emotional Diary — Journal your thoughts and triggers"
+            >
               <div className="flex justify-between items-center">
-                <BookOpen className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                <ArrowRight className="w-4 h-4 text-amber-600 dark:text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+                <BookOpen className="w-5 h-5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+                <ArrowRight className="w-4 h-4 text-amber-600 dark:text-amber-400 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
               </div>
               <div>
                 <div className="font-semibold text-xs text-foreground">Emotional Diary</div>
-                <div className="text-[11px] text-muted-foreground">Journal your thoughts & triggers</div>
+                <div className="text-[11px] text-muted-foreground">Journal your thoughts &amp; triggers</div>
               </div>
             </Link>
 
-            <Link href="/ai-buddy" className="group p-4 rounded-2xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 transition-all flex flex-col justify-between space-y-2">
+            <Link
+              href="/ai-buddy"
+              className="group p-4 rounded-2xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 transition-all flex flex-col justify-between space-y-2 min-h-[72px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950"
+              aria-label="Go to AI Companion — Talk with an empathetic assistant"
+            >
               <div className="flex justify-between items-center">
-                <MessageSquare className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                <ArrowRight className="w-4 h-4 text-purple-600 dark:text-purple-400 group-hover:translate-x-0.5 transition-transform" />
+                <MessageSquare className="w-5 h-5 text-purple-600 dark:text-purple-400" aria-hidden="true" />
+                <ArrowRight className="w-4 h-4 text-purple-600 dark:text-purple-400 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
               </div>
               <div>
                 <div className="font-semibold text-xs text-foreground">AI Companion</div>
@@ -1196,47 +1299,68 @@ export default function MentalHealthAssessment() {
               </div>
             </Link>
 
-            <Link href="/crisis" className="group p-4 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all flex flex-col justify-between space-y-2">
+            <Link
+              href="/crisis"
+              className="group p-4 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all flex flex-col justify-between space-y-2 min-h-[72px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950"
+              aria-label="Go to Counselor and Crisis Support — Access professional resources"
+            >
               <div className="flex justify-between items-center">
-                <LifeBuoy className="w-5 h-5 text-rose-600 dark:text-rose-400" />
-                <ArrowRight className="w-4 h-4 text-rose-600 dark:text-rose-400 group-hover:translate-x-0.5 transition-transform" />
+                <LifeBuoy className="w-5 h-5 text-rose-600 dark:text-rose-400" aria-hidden="true" />
+                <ArrowRight className="w-4 h-4 text-rose-600 dark:text-rose-400 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
               </div>
               <div>
-                <div className="font-semibold text-xs text-foreground">Counselor & Crisis Support</div>
+                <div className="font-semibold text-xs text-foreground">Counselor &amp; Crisis Support</div>
                 <div className="text-[11px] text-muted-foreground">Access professional resources</div>
               </div>
             </Link>
           </div>
-        </div>
+        </nav>
 
         {/* Action Controls */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
           <Button 
+            type="button"
             onClick={saveAssessmentResults} 
             size="lg"
             disabled={submitAssessment.isPending}
-            className="gap-2 rounded-2xl"
+            aria-busy={submitAssessment.isPending}
+            aria-label={submitAssessment.isPending ? "Saving results, please wait" : "Confirm and save assessment results"}
+            className="gap-2 rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
           >
-            <Save className="h-4 w-4" />
+            <Save className="h-4 w-4" aria-hidden="true" />
             {submitAssessment.isPending ? "Saving..." : "Confirm & Save Results"}
           </Button>
-          <Button onClick={() => retakeSingleAssessment(displayTest)} variant="outline" size="lg" className="gap-2 rounded-2xl">
-            <RotateCcw className="h-4 w-4" />
+          <Button 
+            type="button"
+            onClick={() => retakeSingleAssessment(displayTest)} 
+            variant="outline" 
+            size="lg" 
+            aria-label={`Retake the ${displayTest} assessment`}
+            className="gap-2 rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+          >
+            <RotateCcw className="h-4 w-4" aria-hidden="true" />
             Retake Assessment
           </Button>
-          <Button onClick={() => setIsCompleted(false)} size="lg" variant="ghost" className="rounded-2xl">
+          <Button 
+            type="button"
+            onClick={() => setIsCompleted(false)} 
+            size="lg" 
+            variant="ghost" 
+            aria-label="Return to Assessments Menu"
+            className="rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+          >
             Return to Assessments Menu
           </Button>
         </div>
 
         {/* Non-Diagnostic Disclaimer */}
-        <Alert className="rounded-2xl border-purple-500/20 bg-purple-500/5">
-          <Shield className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+        <Alert role="note" className="rounded-2xl border-purple-500/20 bg-purple-500/10 text-purple-950 dark:text-purple-200">
+          <Shield className="h-4 w-4 text-purple-600 dark:text-purple-400 shrink-0" aria-hidden="true" />
           <AlertDescription className="text-xs text-muted-foreground leading-relaxed">
-            <strong>Clinical Disclaimer:</strong> These self-assessments (PHQ-9, GAD-7, GHQ-28, DASS-21) are evidence-based screening tools designed to help monitor wellbeing trends. They do not constitute a formal clinical diagnosis. If you are experiencing distress, please consult a qualified medical or mental health professional.
+            <strong className="font-semibold text-foreground">Clinical Disclaimer:</strong> These self-assessments (PHQ-9, GAD-7, GHQ-28, DASS-21) are evidence-based screening tools designed to help monitor wellbeing trends. They do not constitute a formal clinical diagnosis. If you are experiencing distress, please consult a qualified medical or mental health professional.
           </AlertDescription>
         </Alert>
-      </div>
+      </main>
     );
   }
 

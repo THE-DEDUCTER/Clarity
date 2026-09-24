@@ -120,7 +120,7 @@ export function AppSidebar() {
 
   const itemClass = (active: boolean) =>
     cn(
-      "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 w-full text-sm font-medium relative group/link",
+      "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 w-full text-sm font-medium relative group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       "hover:bg-gray-100 dark:hover:bg-gray-800/60 active:scale-[0.98]",
       active ? "bg-primary text-primary-foreground shadow-md" : "text-gray-700 dark:text-gray-200"
     );
@@ -132,7 +132,7 @@ export function AppSidebar() {
     );
 
   return (
-    <aside className="group absolute left-0 top-0 h-full bg-white dark:bg-[#0c0c0c] border-r border-gray-200/50 dark:border-gray-800/50 transition-all duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] w-[72px] hover:w-[260px] overflow-hidden flex flex-col z-40 shadow-sm md:shadow-none hover:shadow-2xl">
+    <nav aria-label="Main navigation" className="group absolute left-0 top-0 h-full bg-white dark:bg-[#0c0c0c] border-r border-gray-200/50 dark:border-gray-800/50 transition-all duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] w-[72px] hover:w-[260px] overflow-hidden flex flex-col z-40 shadow-sm md:shadow-none hover:shadow-2xl">
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin pt-20 pb-6 flex flex-col gap-6">
         
         {/* Navigation Section */}
@@ -144,7 +144,7 @@ export function AppSidebar() {
             </span>
           </div>
 
-          <Link href="/dashboard" className={itemClass(isActive("/dashboard"))}>
+          <Link href="/dashboard" className={itemClass(isActive("/dashboard"))} aria-current={isActive("/dashboard") ? "page" : undefined}>
             <Home className={iconClass(isActive("/dashboard"))} />
             <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Home</span>
           </Link>
@@ -155,7 +155,7 @@ export function AppSidebar() {
 
             return (
               <div key={hub.title} className="flex flex-col">
-                <Link href={hub.url} className={itemClass(isActive(hub.url))}>
+                <Link href={hub.url} className={itemClass(isActive(hub.url))} aria-current={isActive(hub.url) ? "page" : undefined}>
                   <hub.icon className={iconClass(isActive(hub.url))} />
                   <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 flex-1">
                     {hub.title}
@@ -164,9 +164,11 @@ export function AppSidebar() {
                   {/* Chevron only visible when hovered */}
                   <button
                     onClick={(e) => toggleHub(e, hub.title)}
-                    className="p-1 rounded-md hover:bg-black/10 dark:hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all absolute right-2"
+                    className="p-1 rounded-md hover:bg-black/10 dark:hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all absolute right-2 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    aria-label={`${isExpanded ? "Collapse" : "Expand"} ${hub.title} menu`}
+                    aria-expanded={isExpanded}
                   >
-                    <ChevronRight className={cn("w-4 h-4 text-gray-400 transition-transform", isExpanded && "rotate-90")} />
+                    <ChevronRight className={cn("w-4 h-4 text-gray-400 transition-transform", isExpanded && "rotate-90")} aria-hidden="true" />
                   </button>
                 </Link>
 
@@ -180,14 +182,15 @@ export function AppSidebar() {
                       <Link 
                         key={child.url} 
                         href={child.url} 
+                        aria-current={isActive(child.url) ? "page" : undefined}
                         className={cn(
-                          "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all whitespace-nowrap group/child",
+                          "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all whitespace-nowrap group/child focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                           isActive(child.url) 
                             ? "bg-primary/10 text-primary font-semibold" 
                             : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
                         )}
                       >
-                        <child.icon className={cn("w-4 h-4 shrink-0 transition-transform group-hover/child:scale-110", isActive(child.url) ? "text-primary" : "opacity-70")} />
+                        <child.icon className={cn("w-4 h-4 shrink-0 transition-transform group-hover/child:scale-110", isActive(child.url) ? "text-primary" : "opacity-70")} aria-hidden="true" />
                         <span>{child.title}</span>
                       </Link>
                     ))}
@@ -197,7 +200,7 @@ export function AppSidebar() {
             );
           })}
 
-          <Link href={exploreItem.url} className={itemClass(isActive(exploreItem.url))}>
+          <Link href={exploreItem.url} className={itemClass(isActive(exploreItem.url))} aria-current={isActive(exploreItem.url) ? "page" : undefined}>
             <exploreItem.icon className={iconClass(isActive(exploreItem.url))} />
             <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">{exploreItem.title}</span>
           </Link>
@@ -216,6 +219,7 @@ export function AppSidebar() {
               <Link 
                 key={item.url} 
                 href={item.url} 
+                aria-current={isActive(item.url) ? "page" : undefined}
                 className={cn(
                   itemClass(isActive(item.url)), 
                   isCrisis && !isActive(item.url) && "text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30"
@@ -233,12 +237,12 @@ export function AppSidebar() {
       {/* Footer / Account */}
       <div className="p-3 border-t border-gray-100/50 dark:border-gray-800/50 flex flex-col gap-1.5 bg-gray-50/50 dark:bg-[#0c0c0c]">
         {accountItems.map((item) => (
-          <Link key={item.url} href={item.url} className={itemClass(isActive(item.url))}>
-            <item.icon className={iconClass(isActive(item.url))} />
+          <Link key={item.url} href={item.url} aria-current={isActive(item.url) ? "page" : undefined} className={itemClass(isActive(item.url))}>
+            <item.icon className={iconClass(isActive(item.url))} aria-hidden="true" />
             <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">{item.title}</span>
           </Link>
         ))}
       </div>
-    </aside>
+    </nav>
   );
 }

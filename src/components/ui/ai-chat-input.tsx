@@ -270,11 +270,11 @@ function AttachmentGalleryModal({
         onClick={(e) => e.stopPropagation()}
       >
         <img ref={imgRef} src={attachment.url} alt={attachment.name} className="size-full object-cover" draggable={false} />
-      </div>
-
-      <button
-        type="button" onClick={handleClose}
-        style={{ opacity: isOpen ? 1 : 0, transform: isOpen ? "scale(1)" : "scale(0.7)" }}
+      </div>          <button
+            type="button"
+            onClick={handleClose}
+            aria-label="Close image preview"
+            style={{ opacity: isOpen ? 1 : 0, transform: isOpen ? "scale(1)" : "scale(0.7)" }}
         className={cn(
           "fixed right-4 top-4 flex size-9 items-center justify-center rounded-full bg-card/90 text-foreground/70 shadow-md backdrop-blur-sm",
           "transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] hover:bg-card hover:text-foreground",
@@ -892,6 +892,9 @@ export const PromptInput = React.forwardRef<HTMLDivElement, PromptInputProps>(
                       <button
                         key={model}
                         type="button"
+                        role="option"
+                        aria-selected={model === selectedModel}
+                        aria-label={`Use model ${model}`}
                         onMouseDown={(e) => e.preventDefault()}
                         onMouseEnter={() => {
                           setHoverStyle((prev) => ({
@@ -914,7 +917,8 @@ export const PromptInput = React.forwardRef<HTMLDivElement, PromptInputProps>(
 
               <button
                 type="button" onMouseDown={(e) => e.preventDefault()} onClick={cycleEffort}
-                className="group flex items-center gap-1 rounded-full px-2 py-1 text-foreground/50 transition-all duration-200 hover:bg-accent/60 hover:text-foreground outline-none cursor-default"
+                aria-label={`AI effort level: ${efforts[effortIndex]}. Activate to change`}
+                className="group flex items-center gap-1 rounded-full px-2 py-1 text-foreground/50 transition-all duration-200 hover:bg-accent/60 hover:text-foreground outline-none cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <DynamicBarsIcon level={efforts[effortIndex]} />
                 <span className="text-xs font-semibold select-none transition-colors"><MorphingText text={efforts[effortIndex]} /></span>
@@ -922,7 +926,8 @@ export const PromptInput = React.forwardRef<HTMLDivElement, PromptInputProps>(
 
               <button
                 type="button" onMouseDown={(e) => e.preventDefault()} onClick={openFileChooser} disabled={attachments.length >= maxAttachments}
-                className="ml-auto flex size-7 items-center justify-center rounded-full text-foreground/50 transition-all duration-200 hover:bg-accent/60 hover:text-foreground outline-none cursor-default disabled:opacity-40 disabled:pointer-events-none"
+                aria-label="Attach image"
+                className="ml-auto flex size-7 items-center justify-center rounded-full text-foreground/50 transition-all duration-200 hover:bg-accent/60 hover:text-foreground outline-none cursor-default disabled:opacity-40 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <PlusIcon />
               </button>

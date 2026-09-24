@@ -65,10 +65,12 @@ export function SOSButton({ variant = "default" }: SOSButtonProps) {
       <AlertDialogTrigger asChild>
         {variant === "compact" ? (
           <button
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/40 border border-rose-200/60 dark:border-rose-800/40 hover:bg-rose-100 dark:hover:bg-rose-950/60 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/40 border border-rose-200/60 dark:border-rose-800/40 hover:bg-rose-100 dark:hover:bg-rose-950/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             data-testid="button-sos"
+            aria-label="Emergency mental health support (SOS)"
+            aria-haspopup="dialog"
           >
-            <Phone className="w-3.5 h-3.5" />
+            <Phone className="w-3.5 h-3.5" aria-hidden="true" />
             <span>SOS</span>
           </button>
         ) : (

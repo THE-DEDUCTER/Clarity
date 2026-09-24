@@ -29,6 +29,9 @@ export function MoodConfirmSheet({ word, onConfirm, isLoading = false }: MoodCon
           exit={{ y: "100%", opacity: 0 }}
           transition={{ type: "spring", stiffness: 320, damping: 26 }}
           className="absolute bottom-0 left-0 right-0 z-[100] px-4 pb-6 pt-0 flex justify-center pointer-events-none"
+          role="dialog"
+          aria-modal="false"
+          aria-label="Confirm selected mood"
         >
           <div className="w-full max-w-[540px] bg-[#141416]/95 backdrop-blur-2xl rounded-3xl p-5 sm:p-6 flex items-center justify-between gap-4 pointer-events-auto shadow-[0_-10px_40px_rgba(0,0,0,0.8)] border border-white/10 relative overflow-hidden">
             {/* Subtle radial ambient glow reflecting the emotion color */}
@@ -58,14 +61,16 @@ export function MoodConfirmSheet({ word, onConfirm, isLoading = false }: MoodCon
 
             {/* Confirm Log Action Button */}
             <motion.button
+              type="button"
               onClick={onConfirm}
               disabled={isLoading}
+              aria-busy={isLoading}
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.94 }}
-              className="px-5 py-3.5 rounded-2xl bg-card text-foreground font-semibold text-sm flex items-center gap-2 shadow-xl hover:bg-muted active:scale-95 transition-all shrink-0 cursor-pointer"
-              aria-label="Confirm mood selection"
+              className="px-5 py-3.5 rounded-2xl bg-card text-foreground font-semibold text-sm flex items-center gap-2 shadow-xl hover:bg-muted active:scale-95 transition-all shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#141416]"
+              aria-label={isLoading ? "Logging mood, please wait" : "Confirm mood selection"}
             >
-              <Check className="w-4 h-4 text-foreground stroke-[3]" />
+              <Check className="w-4 h-4 text-foreground stroke-[3]" aria-hidden="true" />
               <span>Log Feeling</span>
             </motion.button>
           </div>
