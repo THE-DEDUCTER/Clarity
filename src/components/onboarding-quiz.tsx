@@ -684,49 +684,66 @@ export function OnboardingQuiz() {
 
       {/* Question Steps */}
       {currentStep > 0 && currentStep <= allQuestions.length && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              {allQuestions[currentStep - 1].category === 'phq9' && <Brain className="w-4 h-4" />}
-              {allQuestions[currentStep - 1].category === 'gad7' && <Heart className="w-4 h-4" />}
-              {allQuestions[currentStep - 1].category === 'ghq' && <Target className="w-4 h-4" />}
-              <span className="capitalize">{allQuestions[currentStep - 1].category} Assessment</span>
+        <Card className="rounded-[32px] border-border shadow-sm overflow-hidden">
+          <CardHeader className="pb-4 bg-muted/20 border-b border-border/40">
+            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+              {allQuestions[currentStep - 1].category === 'phq9' && <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
+              {allQuestions[currentStep - 1].category === 'gad7' && <Heart className="w-4 h-4 text-rose-600 dark:text-rose-400" />}
+              {allQuestions[currentStep - 1].category === 'ghq' && <Target className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+              <span className="uppercase tracking-wider text-[11px] font-bold">{allQuestions[currentStep - 1].category} Assessment</span>
             </div>
-            <CardTitle className="text-lg">
-              Over the last 2 weeks, how often have you been bothered by...
+            <CardTitle className="text-base sm:text-lg font-semibold text-foreground leading-snug mt-1">
+              Over the last 2 weeks, how often have you been bothered by:
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              <h3 className="text-base font-medium">
-                {allQuestions[currentStep - 1].question}
-              </h3>
-              
-              <RadioGroup
-                value={answers[allQuestions[currentStep - 1].id]?.toString() || ""}
-                onValueChange={(value) => handleAnswer(allQuestions[currentStep - 1].id, parseInt(value))}
-              >
-                {allQuestions[currentStep - 1].options.map((option) => (
-                  <div key={option.value} className="flex items-center space-x-2">
-                    <RadioGroupItem value={option.value.toString()} id={`option-${option.value}`} />
-                    <Label htmlFor={`option-${option.value}`} className="flex-1 cursor-pointer">
-                      {option.label}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
+          <CardContent className="p-4 sm:p-6 space-y-6">
+            <h3 className="text-sm sm:text-base font-medium text-foreground bg-muted/30 p-3.5 rounded-2xl border border-border/40">
+              {currentStep}. {allQuestions[currentStep - 1].question}
+            </h3>
+            
+            <RadioGroup
+              value={answers[allQuestions[currentStep - 1].id]?.toString() ?? ""}
+              onValueChange={(value) => handleAnswer(allQuestions[currentStep - 1].id, parseInt(value))}
+              className="grid gap-3"
+            >
+              {allQuestions[currentStep - 1].options.map((option, idx) => {
+                const isSelected = answers[allQuestions[currentStep - 1].id] === option.value;
+                return (
+                  <Label
+                    key={option.value}
+                    htmlFor={`option-${option.value}`}
+                    className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
+                      isSelected
+                        ? 'bg-teal-50 dark:bg-teal-950/40 border-teal-500 text-teal-900 dark:text-teal-100 shadow-sm'
+                        : 'border-border/60 hover:bg-muted/50 text-foreground'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
+                        isSelected 
+                          ? 'bg-teal-600 text-white' 
+                          : 'bg-muted text-muted-foreground'
+                      }`}>
+                        {String.fromCharCode(65 + idx)}
+                      </span>
+                      <span className="text-sm font-medium leading-relaxed">{option.label}</span>
+                    </div>
+                    <RadioGroupItem value={option.value.toString()} id={`option-${option.value}`} className="shrink-0" />
+                  </Label>
+                );
+              })}
+            </RadioGroup>
           </CardContent>
         </Card>
       )}
 
       {/* Navigation */}
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between gap-3 pt-2">
         <Button
           variant="outline"
           onClick={handlePrevious}
           disabled={currentStep === 0}
-          className="flex items-center gap-2"
+          className="rounded-2xl gap-2 text-xs sm:text-sm"
         >
           <ChevronLeft className="w-4 h-4" />
           Previous
@@ -735,7 +752,7 @@ export function OnboardingQuiz() {
         <Button
           onClick={handleNext}
           disabled={!canProceed()}
-          className="flex items-center gap-2"
+          className="rounded-2xl gap-2 text-xs sm:text-sm bg-teal-600 hover:bg-teal-700 text-white"
         >
           {currentStep === allQuestions.length ? 'Complete Assessment' : 'Next'}
           <ChevronRight className="w-4 h-4" />

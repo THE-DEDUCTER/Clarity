@@ -651,60 +651,131 @@ export default function MentalHealthAssessment() {
     const questions = getQuestions(currentAssessment);
     const answerOptions = getAnswerOptions(currentAssessment);
     const progress = ((currentQuestion + 1) / questions.length) * 100;
+    const selectedAnswer = answers[currentQuestion];
+
+    const handleSelectAnswer = (value: number) => {
+      const updatedAnswers = [...answers];
+      updatedAnswers[currentQuestion] = value;
+      setAnswers(updatedAnswers);
+
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+      } else {
+        // Assessment completed
+        const totalScore = updatedAnswers.reduce((sum, answer) => sum + answer, 0);
+        setLastCompletedType(currentAssessment);
+        
+        if (currentAssessment === 'DASS21') {
+          const depressionItems = [2, 4, 9, 12, 15, 16, 20];
+          const anxietyItems = [1, 3, 6, 8, 14, 18, 19];
+          const stressItems = [0, 5, 7, 10, 11, 13, 17];
+          
+          const depression = depressionItems.reduce((sum, idx) => sum + updatedAnswers[idx], 0) * 2;
+          const anxiety = anxietyItems.reduce((sum, idx) => sum + updatedAnswers[idx], 0) * 2;
+          const stress = stressItems.reduce((sum, idx) => sum + updatedAnswers[idx], 0) * 2;
+          
+          setResults(prev => ({
+            ...prev,
+            dass21: { depression, anxiety, stress }
+          }));
+        } else {
+          setResults(prev => ({
+            ...prev,
+            [currentAssessment!.toLowerCase()]: totalScore
+          }));
+        }
+        
+        setIsCompleted(true);
+        setCurrentAssessment(null);
+        setCurrentQuestion(0);
+        setAnswers([]);
+      }
+    };
+
+    const handlePreviousQuestion = () => {
+      if (currentQuestion > 0) {
+        setCurrentQuestion(currentQuestion - 1);
+      }
+    };
 
     return (
-      <div className="max-w-2xl mx-auto p-6">
-        <div className="space-y-6">
-          {/* Header */}
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl font-bold">
-              {currentAssessment} Assessment
-            </h2>
-            <p className="text-muted-foreground">
-              {getInstruction(currentAssessment)}
-            </p>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Question {currentQuestion + 1} of {questions.length}</span>
-                <span>{Math.round(progress)}% complete</span>
-              </div>
-              <Progress value={progress} className="w-full" />
-            </div>
+      <div className="max-w-2xl mx-auto p-4 sm:p-6 space-y-6 animate-in fade-in duration-300">
+        {/* Header & Progress */}
+        <div className="space-y-4 text-center">
+          <div className="flex items-center justify-between gap-2">
+            <Badge variant="outline" className="text-xs font-semibold px-3 py-1 rounded-full border-teal-500/30 text-teal-700 dark:text-teal-300 bg-teal-500/5">
+              {currentAssessment} Screening
+            </Badge>
+            <span className="text-xs font-medium text-muted-foreground">
+              Question {currentQuestion + 1} of {questions.length} ({Math.round(progress)}%)
+            </span>
           </div>
+          
+          <Progress value={progress} className="h-2 rounded-full w-full" />
+          
+          <p className="text-xs sm:text-sm text-muted-foreground italic bg-muted/30 p-3 rounded-2xl border border-border/40 max-w-xl mx-auto">
+            {getInstruction(currentAssessment)}
+          </p>
+        </div>
 
-          {/* Question Card */}
-          <Card className="rounded-[32px] border-border shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-lg">
-                {questions[currentQuestion]}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-3">
-                {answerOptions.map((option, index) => (
+        {/* Question Card */}
+        <Card className="rounded-[32px] border-border shadow-sm overflow-hidden bg-card">
+          <CardHeader className="pb-4 bg-muted/20 border-b border-border/40">
+            <CardTitle className="text-base sm:text-lg font-semibold text-foreground leading-snug">
+              {currentQuestion + 1}. {questions[currentQuestion]}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 sm:p-6">
+            <div className="grid gap-3">
+              {answerOptions.map((option, index) => {
+                const isSelected = selectedAnswer === option.value;
+                return (
                   <Button
                     key={index}
-                    variant="outline"
-                    className="justify-start h-auto p-4 text-left"
-                    onClick={() => handleAnswer(option.value)}
+                    variant={isSelected ? "default" : "outline"}
+                    className={`justify-start h-auto p-4 text-left rounded-2xl transition-all duration-200 border ${
+                      isSelected 
+                        ? 'bg-teal-600 hover:bg-teal-700 text-white border-teal-600 shadow-md scale-[1.01]' 
+                        : 'hover:bg-muted/60 border-border/60'
+                    }`}
+                    onClick={() => handleSelectAnswer(option.value)}
                   >
-                    <div className="flex items-start gap-3">
-                      <span className="font-mono text-sm text-muted-foreground mt-0.5">
-                        {String.fromCharCode(65 + index)}.
+                    <div className="flex items-center gap-3.5 w-full">
+                      <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
+                        isSelected 
+                          ? 'bg-white/20 text-white' 
+                          : 'bg-muted text-muted-foreground'
+                      }`}>
+                        {String.fromCharCode(65 + index)}
                       </span>
-                      <span>{option.label}</span>
+                      <span className="text-sm font-medium leading-relaxed flex-1">{option.label}</span>
                     </div>
                   </Button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
 
-          <div className="text-center">
-            <Button variant="ghost" onClick={() => setCurrentAssessment(null)}>
-              Back to Menu
-            </Button>
-          </div>
+        {/* Navigation Actions */}
+        <div className="flex items-center justify-between gap-3 pt-2">
+          <Button 
+            variant="outline" 
+            onClick={handlePreviousQuestion}
+            disabled={currentQuestion === 0}
+            className="rounded-2xl gap-2 text-xs sm:text-sm"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Previous
+          </Button>
+
+          <Button 
+            variant="ghost" 
+            onClick={() => setCurrentAssessment(null)}
+            className="rounded-2xl text-xs sm:text-sm text-muted-foreground hover:text-foreground"
+          >
+            Back to Menu
+          </Button>
         </div>
       </div>
     );
