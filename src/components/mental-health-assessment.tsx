@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -340,10 +340,28 @@ export default function MentalHealthAssessment() {
   const [answers, setAnswers] = useState<number[]>([]);
   const [results, setResults] = useState<AssessmentResults>({});
   const [isCompleted, setIsCompleted] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  // Snapshot of an interrupted attempt so the user can resume or discard it
+  const [inProgressType, setInProgressType] = useState<AssessmentType | null>(null);
+  const [inProgressAnswers, setInProgressAnswers] = useState<number[]>([]);
+  const [inProgressQuestion, setInProgressQuestion] = useState(0);
   
   const { toast } = useToast();
   const submitAssessment = useSubmitAssessment();
   const { data: history } = useAssessmentHistory();
+
+  const hasAnyResult = results.phq9 !== undefined || results.gad7 !== undefined || results.ghq28 !== undefined || results.dass21 !== undefined;
+
+  // Warn before leaving with an unfinished assessment in progress
+  useEffect(() => {
+    if (!currentAssessment || answers.length === 0) return;
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = ""; // Required for Chrome
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [currentAssessment, answers.length]);
 
   const getQuestions = (type: AssessmentType) => {
     switch (type) {
@@ -381,6 +399,38 @@ export default function MentalHealthAssessment() {
     setCurrentAssessment(type);
     setCurrentQuestion(0);
     setAnswers([]);
+    // Starting fresh on this type discards any saved-up progress for it
+    if (inProgressType === type) {
+      setInProgressType(null);
+      setInProgressAnswers([]);
+      setInProgressQuestion(0);
+    }
+  };
+
+  // Leave mid-assessment, keeping progress so it can be resumed from the menu
+  const exitToMenu = () => {
+    if (currentAssessment && answers.length > 0) {
+      setInProgressType(currentAssessment);
+      setInProgressAnswers(answers);
+      setInProgressQuestion(currentQuestion);
+    }
+    setCurrentAssessment(null);
+  };
+
+  const resumeAssessment = () => {
+    if (!inProgressType) return;
+    setCurrentAssessment(inProgressType);
+    setAnswers(inProgressAnswers);
+    setCurrentQuestion(inProgressQuestion);
+    setInProgressType(null);
+    setInProgressAnswers([]);
+    setInProgressQuestion(0);
+  };
+
+  const discardInProgress = () => {
+    setInProgressType(null);
+    setInProgressAnswers([]);
+    setInProgressQuestion(0);
   };
 
   const handleAnswer = (value: number) => {
@@ -425,6 +475,7 @@ export default function MentalHealthAssessment() {
   };
 
   const saveAssessmentResults = async () => {
+    setSaveError(false);
     try {
       await submitAssessment.mutateAsync(results);
       
@@ -433,9 +484,10 @@ export default function MentalHealthAssessment() {
         description: "Your assessment results have been saved successfully.",
       });
     } catch (error) {
+      setSaveError(true);
       toast({
-        title: "Error",
-        description: "Failed to save assessment results. Please try again.",
+        title: "Couldn't save results",
+        description: "Your scores are still shown below. Check your connection and try again.",
         variant: "destructive",
       });
     }
@@ -462,10 +514,12 @@ export default function MentalHealthAssessment() {
     setIsCompleted(false);
     setCurrentAssessment(null);
     setLastCompletedType(null);
+    setSaveError(false);
   };
 
-  // Main menu view
-  if (!currentAssessment && !isCompleted) {
+  // Main menu view — also shown as a safety net if completion state ever has no scores
+  const showMenu = !currentAssessment && (!isCompleted || !hasAnyResult);
+  if (showMenu) {
     return (
       <main className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6" aria-labelledby="mental-health-heading">
         <header className="text-center space-y-4">
@@ -495,6 +549,44 @@ export default function MentalHealthAssessment() {
             </li>
           </ul>
         </header>
+
+        {/* Resume banner for an interrupted attempt */}
+        {inProgressType && inProgressAnswers.length > 0 && (
+          <Card className="border-amber-500/40 bg-amber-500/5" role="status">
+            <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+              <div className="flex items-start gap-3 flex-1">
+                <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" aria-hidden="true" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Unfinished {inProgressType} assessment</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    You answered {inProgressAnswers.filter(a => a !== undefined).length} of {getQuestions(inProgressType).length} questions. Pick up where you left off, or start over.
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2 shrink-0">
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={resumeAssessment}
+                  className="min-h-[44px]"
+                  aria-label={`Resume ${inProgressType} assessment at question ${inProgressQuestion + 1}`}
+                >
+                  Resume
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={discardInProgress}
+                  className="min-h-[44px]"
+                  aria-label={`Discard unfinished ${inProgressType} answers`}
+                >
+                  Discard
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <section aria-label="Available Screenings" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* PHQ-9 Depression Screening */}
@@ -829,9 +921,9 @@ export default function MentalHealthAssessment() {
           <Button 
             type="button"
             variant="ghost" 
-            onClick={() => setCurrentAssessment(null)}
+            onClick={exitToMenu}
             className="rounded-2xl text-xs sm:text-sm text-muted-foreground hover:text-foreground min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
-            aria-label="Back to Assessment Selection Menu"
+            aria-label="Save progress and return to Assessment Selection Menu"
           >
             Back to Menu
           </Button>
@@ -865,6 +957,29 @@ export default function MentalHealthAssessment() {
             Review your calculated score breakdown, plain-language summary, key areas of focus, and supportive next steps below.
           </p>
         </div>
+
+        {/* Save-failure recovery banner */}
+        {saveError && (
+          <div
+            className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-2xl border border-rose-500/30 bg-rose-500/10"
+            role="alert"
+          >
+            <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0" aria-hidden="true" />
+            <p className="text-sm text-foreground flex-1">
+              Your results couldn&apos;t be saved. They remain visible below — nothing is lost.
+            </p>
+            <Button
+              type="button"
+              size="sm"
+              onClick={saveAssessmentResults}
+              disabled={submitAssessment.isPending}
+              className="shrink-0 min-h-[44px]"
+              aria-label="Retry saving your assessment results"
+            >
+              {submitAssessment.isPending ? "Retrying..." : "Retry Save"}
+            </Button>
+          </div>
+        )}
 
         {/* Assessment Switcher Tabs if multiple taken */}
         <div className="flex flex-wrap justify-center gap-2" role="tablist" aria-label="Assessment result views">
@@ -1325,6 +1440,7 @@ export default function MentalHealthAssessment() {
             disabled={submitAssessment.isPending}
             aria-busy={submitAssessment.isPending}
             aria-label={submitAssessment.isPending ? "Saving results, please wait" : "Confirm and save assessment results"}
+            data-testid="button-save-assessment"
             className="gap-2 rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
           >
             <Save className="h-4 w-4" aria-hidden="true" />

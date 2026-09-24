@@ -47,7 +47,7 @@ export default function ProfilePage() {
 
   // Redirect if not authenticated
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       router.push("/login");
       return;
     }
@@ -61,7 +61,7 @@ export default function ProfilePage() {
         username: user.username || ""
       });
     }
-  }, [isAuthenticated, user, router]);
+  }, [isAuthenticated, isLoading, user, router]);
 
   const handleSaveProfile = async () => {
     setIsLoading(true);
@@ -132,12 +132,29 @@ export default function ProfilePage() {
     router.push("/");
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]" role="status">
+        <div className="text-center space-y-4">
+          <Loader2 className="w-8 h-8 mx-auto animate-spin text-emerald-600" aria-hidden="true" />
+          <p className="text-muted-foreground">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Auth resolved but no session — give the user an actionable path instead of an
+  // endless spinner (the useEffect above is already redirecting to /login)
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center space-y-4">
-          <Loader2 className="w-8 h-8 mx-auto animate-spin text-emerald-600" />
-          <p className="text-muted-foreground">Loading profile...</p>
+        <div className="text-center space-y-4 max-w-sm px-4">
+          <p className="text-sm text-muted-foreground">
+            You need to be signed in to view your profile. Taking you to the sign-in page...
+          </p>
+          <Button onClick={() => router.push("/login")} className="min-h-[44px]">
+            Go to Sign In
+          </Button>
         </div>
       </div>
     );

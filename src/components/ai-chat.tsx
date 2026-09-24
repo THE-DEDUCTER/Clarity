@@ -10,6 +10,7 @@ import {
   Mic, 
   Image as ImageIcon, 
   Camera,
+  AlertTriangle,
   HeartHandshake, 
   Sparkles, 
   Brain, 
@@ -80,6 +81,7 @@ interface Message {
   timestamp: Date;
   personalityId?: string;
   provider?: string;
+  failed?: boolean;
 }
 
 interface AIChatProps {
@@ -241,17 +243,20 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
       }
     } catch (error) {
       console.error('Chat error:', error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: "I'm having trouble connecting right now. Please try again in a moment.",
-        sender: 'ai',
-        timestamp: new Date(),
-        personalityId: personality.id
-      };
-      onMessagesUpdate([...newMessages, errorMessage]);
+      // Mark the user's message as failed so the UI can offer a retry
+      onMessagesUpdate(
+        newMessages.map(m => (m.id === userMessage.id ? { ...m, failed: true } : m))
+      );
     } finally {
       setIsTyping(false);
     }
+  };
+
+  // Re-send a message that failed to deliver
+  const handleRetry = (failedMessage: Message) => {
+    const retried = { ...failedMessage, failed: false };
+    onMessagesUpdate(messages.map(m => (m.id === failedMessage.id ? retried : m)));
+    handleSend(failedMessage.content);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -409,7 +414,9 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
                   "max-w-[72%] px-4 py-2.5 text-[15px] leading-[1.35rem]",
                   isAI 
                     ? "bg-[#EFEFEF] dark:bg-[#262626] text-foreground dark:text-white" 
-                    : "bg-[#0095F6] text-white",
+                    : message.failed
+                      ? "bg-rose-100 text-rose-900 dark:bg-rose-950/60 dark:text-rose-100 border border-rose-300 dark:border-rose-800"
+                      : "bg-[#0095F6] text-white",
                   // Instagram rounded corners logic
                   isAI && isFirstInGroup && isLastInGroup ? "rounded-[22px]" :
                   isAI && isFirstInGroup ? "rounded-tl-[22px] rounded-tr-[22px] rounded-br-[22px] rounded-bl-md" :
@@ -423,6 +430,20 @@ export function AIChat({ personality, onBack, messages, onMessagesUpdate, userMo
                 )}
               >
                 <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                {message.failed && (
+                  <div className="flex items-center gap-2 mt-2">
+                    <AlertTriangle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 shrink-0" aria-hidden="true" />
+                    <span className="text-xs text-rose-700 dark:text-rose-300">Not delivered</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRetry(message)}
+                      className="text-xs font-semibold text-rose-700 dark:text-rose-300 underline underline-offset-2 hover:text-rose-800 dark:hover:text-rose-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+                      aria-label={`Retry sending: ${message.content.slice(0, 50)}`}
+                    >
+                      Retry
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           );

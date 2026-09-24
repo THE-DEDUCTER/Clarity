@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Target, Plus, Check, X, Calendar, Trophy, Zap, TrendingUp, Award, Trash2, Play, Star, Clock, BarChart3, CheckCircle2, Circle, AlertTriangle } from "lucide-react";
+import { Target, Plus, Check, X, Calendar, Trophy, Zap, TrendingUp, Award, Trash2, Play, Star, Clock, BarChart3, CheckCircle2, Circle, AlertTriangle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -96,12 +96,27 @@ export function GoalTracker() {
       setNewGoal({ title: "", description: "", category: "personal", priority: "medium", targetDate: "" });
       setShowAddForm(false);
       toast({ title: "Goal created!", description: "Your new goal has been added." });
+    },
+    onError: () => {
+      // Keep the form open and its contents so the user can retry without retyping
+      toast({
+        title: "Couldn't create goal",
+        description: "Please try again — your draft is still here.",
+        variant: "destructive",
+      });
     }
   });
 
   const toggleGoalMutation = useMutation({
     mutationFn: async ({ goalId }: { goalId: string }) => ({ success: true }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['/api/goals'] })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['/api/goals'] }),
+    onError: () => {
+      toast({
+        title: "Couldn't update goal",
+        description: "The goal was not marked complete. Please try again.",
+        variant: "destructive",
+      });
+    }
   });
 
   const deleteGoalMutation = useMutation({
@@ -109,6 +124,13 @@ export function GoalTracker() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/goals'] });
       toast({ title: "Goal deleted", description: "Goal removed successfully." });
+    },
+    onError: () => {
+      toast({
+        title: "Couldn't delete goal",
+        description: "The goal was not removed. Please try again.",
+        variant: "destructive",
+      });
     }
   });
 
@@ -307,10 +329,16 @@ export function GoalTracker() {
             </div>
             
             <div className="flex gap-3">
-              <Button onClick={handleAddGoal} className="bg-blue-600 hover:bg-blue-700" data-testid="button-submit-goal">
-                <Check className="w-4 h-4 mr-2" />Create Goal
+              <Button
+                onClick={handleAddGoal}
+                disabled={createGoalMutation.isPending}
+                className="bg-blue-600 hover:bg-blue-700"
+                data-testid="button-submit-goal"
+              >
+                <Check className="w-4 h-4 mr-2" />
+                {createGoalMutation.isPending ? "Creating..." : "Create Goal"}
               </Button>
-              <Button variant="outline" onClick={() => setShowAddForm(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setShowAddForm(false)} disabled={createGoalMutation.isPending}>Cancel</Button>
             </div>
           </CardContent>
         </Card>
@@ -351,9 +379,11 @@ export function GoalTracker() {
                         variant="ghost"
                         size="sm"
                         onClick={() => deleteGoalMutation.mutate(goal.id)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-600 hover:bg-red-50"
+                        disabled={deleteGoalMutation.isPending}
+                        aria-label={`Delete goal: ${goal.title}`}
+                        className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity text-red-500 hover:text-red-600 hover:bg-red-50"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4" aria-hidden="true" />
                       </Button>
                     </div>
                     
@@ -387,8 +417,10 @@ export function GoalTracker() {
                       variant="outline"
                       className="w-full mt-4 hover:bg-green-500 hover:text-white hover:border-green-500 transition-all"
                       onClick={() => toggleGoalMutation.mutate({ goalId: goal.id })}
+                      disabled={toggleGoalMutation.isPending}
                     >
-                      <CheckCircle2 className="w-4 h-4 mr-2" />Mark Complete
+                      <CheckCircle2 className="w-4 h-4 mr-2" aria-hidden="true" />
+                      {toggleGoalMutation.isPending ? "Updating..." : "Mark Complete"}
                     </Button>
                   </div>
                 );
@@ -444,7 +476,7 @@ export function GoalTracker() {
       {activeGoals.length === 0 && completedGoals.length === 0 && (
         <Card className="text-center p-12 border-2 border-dashed border-border">
           <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-            <Target className="w-8 h-8 text-gray-400" />
+            <Target className="w-8 h-8 text-gray-400" aria-hidden="true" />
           </div>
           <h3 className="text-xl font-semibold text-muted-foreground mb-2">No Goals Yet</h3>
           <p className="text-muted-foreground mb-6 max-w-md mx-auto">
@@ -455,6 +487,25 @@ export function GoalTracker() {
             className="bg-blue-600 hover:bg-blue-700"
           >
             <Plus className="w-4 h-4 mr-2" />Create Your First Goal
+          </Button>
+        </Card>
+      )}
+
+      {/* Filtered-empty state: goals exist but none match the selected category */}
+      {goals.length > 0 && filteredGoals.length === 0 && (
+        <Card className="text-center p-10 border-2 border-dashed border-border">
+          <div className="w-14 h-14 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="w-7 h-7 text-gray-400" aria-hidden="true" />
+          </div>
+          <h3 className="text-lg font-semibold text-muted-foreground mb-2">No goals in this category</h3>
+          <p className="text-muted-foreground mb-5 max-w-md mx-auto text-sm">
+            You have {goals.length} {goals.length === 1 ? "goal" : "goals"}, but none are categorized here.
+          </p>
+          <Button
+            variant="outline"
+            onClick={() => setFilterCategory('all')}
+          >
+            Show all categories
           </Button>
         </Card>
       )}

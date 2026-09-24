@@ -69,9 +69,10 @@ export function AIChatList({
         
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" aria-hidden="true" />
           <Input
             placeholder="Search buddies..."
+            aria-label="Search AI buddies"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 bg-background dark:bg-gray-800 border-border dark:border-gray-700 focus:bg-card dark:focus:bg-black transition-colors rounded-xl"
@@ -88,10 +89,13 @@ export function AIChatList({
             const lastMessage = getLastMessage(personality.id);
             
             return (
-              <div
+              <button
                 key={personality.id}
+                type="button"
                 onClick={() => onSelectPersonality(personality)}
-                className={`flex items-center gap-3.5 p-3.5 cursor-pointer transition-all duration-200 rounded-2xl hover:bg-background dark:hover:bg-gray-800/60 active:scale-[0.98] ${
+                aria-pressed={isSelected}
+                aria-label={`Chat with ${personality.name}${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
+                className={`w-full text-left flex items-center gap-3.5 p-3.5 cursor-pointer transition-all duration-200 rounded-2xl hover:bg-background dark:hover:bg-gray-800/60 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                   isSelected 
                     ? 'bg-indigo-50/80 dark:bg-indigo-950/40 shadow-sm border border-indigo-200 dark:border-indigo-800/60' 
                     : 'border border-transparent'
@@ -154,7 +158,7 @@ export function AIChatList({
                     ))}
                   </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
@@ -163,10 +167,19 @@ export function AIChatList({
         {filteredPersonalities.length === 0 && (
           <div className="text-center py-12 px-6">
             <div className="w-14 h-14 mx-auto mb-3 bg-muted dark:bg-gray-800 rounded-full flex items-center justify-center">
-              <MessageCircle className="w-6 h-6 text-gray-400" />
+              <MessageCircle className="w-6 h-6 text-gray-400" aria-hidden="true" />
             </div>
             <h3 className="font-semibold text-sm text-muted-foreground dark:text-gray-300 mb-1">No buddies found</h3>
-            <p className="text-xs text-muted-foreground dark:text-gray-400">Try adjusting your search terms</p>
+            <p className="text-xs text-muted-foreground dark:text-gray-400 mb-3">Try adjusting your search terms</p>
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 underline underline-offset-2 hover:text-indigo-700 dark:hover:text-indigo-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         )}
       </div>

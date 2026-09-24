@@ -239,6 +239,18 @@ export function OnboardingQuiz() {
   const totalSteps = allQuestions.length + 1; // +1 for introduction
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
+  // Warn before leaving with unanswered progress in the questionnaire
+  useEffect(() => {
+    const answeredCount = Object.keys(answers).length;
+    if (isCompleted || currentStep === 0 || answeredCount === 0) return;
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = ""; // Required for Chrome
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [answers, currentStep, isCompleted]);
+
   const handleAnswer = (questionId: string, value: number) => {
     setAnswers(prev => ({
       ...prev,
@@ -324,8 +336,13 @@ export function OnboardingQuiz() {
       setIsCompleted(true);
       
       // Save results to localStorage (in real app, would save to backend)
-      localStorage.setItem('onboardingResults', JSON.stringify(calculatedResults));
-      localStorage.setItem('onboardingCompleted', 'true');
+      // localStorage can throw in private-browsing/quota scenarios — never block completion on it
+      try {
+        localStorage.setItem('onboardingResults', JSON.stringify(calculatedResults));
+        localStorage.setItem('onboardingCompleted', 'true');
+      } catch (storageError) {
+        console.warn('Could not persist onboarding results locally:', storageError);
+      }
     }
   };
 
@@ -370,7 +387,7 @@ export function OnboardingQuiz() {
     const ghqPercentage = Math.round((results.ghqScore / 15) * 100);
 
     return (
-      <main className="space-y-6" data-testid="quiz-results" aria-live="polite">
+      <main className="space-y-6" data-testid="quiz-results">
         {/* Header Hero Card */}
         <Card className="border-teal-200/60 dark:border-teal-800/40 bg-gradient-to-br from-teal-50/70 via-emerald-50/40 to-cyan-50/50 dark:from-teal-950/30 dark:via-emerald-950/20 dark:to-cyan-950/20 shadow-sm">
           <CardHeader className="pb-3">
@@ -625,10 +642,32 @@ export function OnboardingQuiz() {
         </Alert>
       </main>
     );
+  }  // Safety net: never render a blank screen if completion/results fall out of sync
+  if (isCompleted && !results) {
+    return (
+      <Card className="text-center p-10 border-dashed">
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Something went wrong loading your results.
+          </p>
+          <Button
+            type="button"
+            onClick={() => {
+              setIsCompleted(false);
+              setCurrentStep(allQuestions.length);
+            }}
+            className="min-h-[44px]"
+          >
+            <RotateCcw className="w-4 h-4 mr-2" aria-hidden="true" />
+            Back to Last Question
+          </Button>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
-    <main className="space-y-6" data-testid="onboarding-quiz" aria-live="polite">
+    <main className="space-y-6" data-testid="onboarding-quiz">
       {/* Progress Header */}
       <Card>
         <CardHeader className="space-y-3">

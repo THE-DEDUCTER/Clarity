@@ -50,14 +50,13 @@ export function MoodTracker({ variant = 'full', onMoodLogged }: MoodTrackerProps
       if (onMoodLogged) onMoodLogged({ value: selectedWord?.intensity, name: selectedWord?.label });
     },
     onError: () => {
+      // Keep the selection and stay on the current step so the user can retry.
       toast({
-        title: "Saved locally",
-        description: "Mood check-in recorded.",
+        title: "Couldn't save your mood",
+        description: "Please check your connection and tap Log Feeling again. Your selection is still here.",
+        variant: "destructive",
+        duration: 6000,
       });
-      setSelectedWordId(null);
-      setStep('quadrant');
-      setActiveQuadrant(null);
-      setIsFullscreen(false);
     },
   });
 

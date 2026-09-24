@@ -642,9 +642,16 @@ export default function DiaryPage() {
           </div>
 
           {filteredEntries.length === 0 && searchTerm && (
-            <div className="text-center py-16 text-gray-400">
-              <Search className="w-8 h-8 mx-auto mb-3 opacity-30" />
-              <p className="text-sm">No entries match "{searchTerm}"</p>
+            <div className="text-center py-16">
+              <Search className="w-8 h-8 mx-auto mb-3 opacity-30 text-gray-400" aria-hidden="true" />
+              <p className="text-sm text-gray-400">No entries match "{searchTerm}"</p>
+              <button
+                type="button"
+                onClick={() => setSearchTerm("")}
+                className="mt-3 text-sm font-semibold text-sky-500 hover:text-sky-600 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+              >
+                Clear search
+              </button>
             </div>
           )}
         </main>
