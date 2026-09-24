@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface BackButtonProps {
@@ -37,9 +38,9 @@ export const BackButton: React.FC<BackButtonProps> = ({
       variant={variant}
       size={size}
       onClick={handleBack}
-      className={`flex items-center gap-2 mb-4 ${className}`}
+      className={`flex items-center gap-2 mb-4 min-h-[44px] ${className}`}
     >
-      <i className="fi fi-rr-arrow-small-left text-lg" />
+      <ArrowLeft className="w-4 h-4" aria-hidden="true" />
       <span>Back</span>
     </Button>
   );

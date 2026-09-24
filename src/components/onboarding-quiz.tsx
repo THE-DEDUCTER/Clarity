@@ -389,16 +389,16 @@ export function OnboardingQuiz() {
     return (
       <main className="space-y-6" data-testid="quiz-results">
         {/* Header Hero Card */}
-        <Card className="border-teal-200/60 dark:border-teal-800/40 bg-gradient-to-br from-teal-50/70 via-emerald-50/40 to-cyan-50/50 dark:from-teal-950/30 dark:via-emerald-950/20 dark:to-cyan-950/20 shadow-sm">
+        <Card className="border-teal-200/60 dark:border-teal-800/40 bg-card shadow-sm">
           <CardHeader className="pb-3">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <Badge variant="outline" className="bg-white/80 dark:bg-slate-900/80 border-teal-300 dark:border-teal-700 text-teal-800 dark:text-teal-300">
+              <Badge variant="outline" className="bg-background border-border text-foreground">
                 <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-teal-600 dark:text-teal-400" aria-hidden="true" />
                 Initial Screening Completed
               </Badge>
               <span className="text-xs text-muted-foreground font-medium">Non-diagnostic assessment</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-teal-950 dark:text-teal-100 flex items-center gap-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2">
               <Sparkles className="w-6 h-6 text-teal-600 dark:text-teal-400" aria-hidden="true" />
               Your Onboarding Results & Baseline
             </h2>
@@ -535,7 +535,7 @@ export function OnboardingQuiz() {
         </section>
 
         {/* Personalized Recommendations */}
-        <Card className="border-teal-100 dark:border-teal-900">
+        <Card className="border-border">
           <CardHeader className="pb-3">
             <h3 className="flex items-center gap-2 text-lg font-bold text-foreground">
               <Compass className="w-5 h-5 text-teal-600 dark:text-teal-400" aria-hidden="true" />
@@ -556,7 +556,7 @@ export function OnboardingQuiz() {
             <div className="pt-3 border-t">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Explore Clarity Tools for You</h3>
               <div className="grid gap-3 sm:grid-cols-3">
-                <Link href="/dashboard" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 rounded-lg">
+                <Link href="/dashboard" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
                   <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer min-h-[44px]">
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-purple-600" aria-hidden="true" />
@@ -566,7 +566,7 @@ export function OnboardingQuiz() {
                   </div>
                 </Link>
 
-                <Link href="/diary" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 rounded-lg">
+                <Link href="/diary" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
                   <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer min-h-[44px]">
                     <div className="flex items-center gap-2">
                       <BookOpen className="w-4 h-4 text-blue-600" aria-hidden="true" />
@@ -576,7 +576,7 @@ export function OnboardingQuiz() {
                   </div>
                 </Link>
 
-                <Link href="/ai-buddy" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 rounded-lg">
+                <Link href="/ai-buddy" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg">
                   <div className="p-3 rounded-lg border bg-card hover:bg-accent transition-colors flex items-center justify-between group cursor-pointer min-h-[44px]">
                     <div className="flex items-center gap-2">
                       <MessageSquare className="w-4 h-4 text-teal-600" aria-hidden="true" />
@@ -618,14 +618,14 @@ export function OnboardingQuiz() {
               setAnswers({});
               setResults(null);
             }}
-            className="w-full sm:w-auto gap-2 min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
+            className="w-full sm:w-auto gap-2 min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <RotateCcw className="w-4 h-4" aria-hidden="true" />
             Retake Screening
           </Button>
 
-          <Link href="/dashboard" className="w-full sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 rounded-xl">
-            <Button type="button" className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white gap-2 min-h-[44px] rounded-xl">
+          <Link href="/dashboard" className="w-full sm:w-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl">
+            <Button type="button" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground gap-2 min-h-[44px] rounded-xl">
               Go to Dashboard
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Button>
@@ -762,16 +762,16 @@ export function OnboardingQuiz() {
                   <Label
                     key={option.value}
                     htmlFor={`ob-question-${currentStep}-option-${option.value}`}
-                    className={`flex items-center justify-between p-4 min-h-[48px] rounded-2xl border cursor-pointer transition-all duration-200 focus-within:ring-2 focus-within:ring-teal-600 focus-within:ring-offset-2 dark:focus-within:ring-teal-400 dark:focus-within:ring-offset-slate-950 ${
+                    className={`flex items-center justify-between p-4 min-h-[48px] rounded-2xl border cursor-pointer transition-all duration-200 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background ${
                       isSelected
-                        ? 'bg-teal-500/15 border-teal-700 ring-2 ring-teal-700/60 text-teal-950 dark:text-teal-100 shadow-sm font-semibold dark:ring-teal-400/60'
+                        ? 'bg-primary/10 border-primary ring-2 ring-ring/40 text-foreground shadow-sm font-semibold dark:ring-ring/40'
                         : 'border-border/60 hover:bg-muted/50 text-foreground bg-background'
                     }`}
                   >
                     <div className="flex items-center gap-3.5">
                       <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
                         isSelected 
-                          ? 'bg-teal-700 text-white dark:bg-teal-500' 
+                          ? 'bg-primary text-primary-foreground dark:bg-primary' 
                           : 'bg-muted text-muted-foreground'
                       }`} aria-hidden="true">
                         {String.fromCharCode(65 + idx)}
@@ -781,7 +781,7 @@ export function OnboardingQuiz() {
                     <RadioGroupItem 
                       value={option.value.toString()} 
                       id={`ob-question-${currentStep}-option-${option.value}`} 
-                      className="shrink-0 focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950" 
+                      className="shrink-0 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" 
                       aria-label={`Option ${String.fromCharCode(65 + idx)}: ${option.label}${isSelected ? ", selected" : ""}`} 
                     />
                   </Label>
@@ -799,7 +799,7 @@ export function OnboardingQuiz() {
           variant="outline"
           onClick={handlePrevious}
           disabled={currentStep === 0}
-          className="rounded-2xl gap-2 text-xs sm:text-sm min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+          className="rounded-2xl gap-2 text-xs sm:text-sm min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
           aria-label="Previous Step"
         >
           <ChevronLeft className="w-4 h-4" aria-hidden="true" />
@@ -810,7 +810,7 @@ export function OnboardingQuiz() {
           type="button"
           onClick={handleNext}
           disabled={!canProceed()}
-          className="rounded-2xl gap-2 text-xs sm:text-sm bg-teal-600 hover:bg-teal-700 text-white min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+          className="rounded-2xl gap-2 text-xs sm:text-sm bg-primary hover:bg-primary/90 text-primary-foreground min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
         >
           {currentStep === allQuestions.length ? 'Complete Assessment' : 'Next'}
           <ChevronRight className="w-4 h-4" aria-hidden="true" />

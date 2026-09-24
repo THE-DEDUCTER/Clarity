@@ -622,7 +622,7 @@ export default function MentalHealthAssessment() {
               <Button 
                 type="button"
                 onClick={() => results.phq9 !== undefined ? retakeSingleAssessment('PHQ9') : startAssessment('PHQ9')} 
-                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
                 variant={results.phq9 !== undefined ? "outline" : "default"}
                 aria-labelledby="phq9-card-title"
               >
@@ -664,7 +664,7 @@ export default function MentalHealthAssessment() {
               <Button 
                 type="button"
                 onClick={() => results.gad7 !== undefined ? retakeSingleAssessment('GAD7') : startAssessment('GAD7')} 
-                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
                 variant={results.gad7 !== undefined ? "outline" : "default"}
                 aria-labelledby="gad7-card-title"
               >
@@ -706,7 +706,7 @@ export default function MentalHealthAssessment() {
               <Button 
                 type="button"
                 onClick={() => results.ghq28 !== undefined ? retakeSingleAssessment('GHQ28') : startAssessment('GHQ28')} 
-                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
                 variant={results.ghq28 !== undefined ? "outline" : "default"}
                 aria-labelledby="ghq28-card-title"
               >
@@ -748,7 +748,7 @@ export default function MentalHealthAssessment() {
               <Button 
                 type="button"
                 onClick={() => results.dass21 !== undefined ? retakeSingleAssessment('DASS21') : startAssessment('DASS21')} 
-                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+                className="w-full min-h-[44px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
                 variant={results.dass21 !== undefined ? "outline" : "default"}
                 aria-labelledby="dass21-card-title"
               >
@@ -877,9 +877,9 @@ export default function MentalHealthAssessment() {
                     variant={isSelected ? "default" : "outline"}
                     tabIndex={isSelected || (selectedAnswer === undefined && index === 0) ? 0 : -1}
                     onKeyDown={(e) => handleRadioKeyDown(e, index)}
-                    className={`justify-start h-auto min-h-[48px] p-4 text-left rounded-2xl transition-all duration-200 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 ${
+                    className={`justify-start h-auto min-h-[48px] p-4 text-left rounded-2xl transition-all duration-200 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                       isSelected 
-                        ? 'bg-teal-700 hover:bg-teal-800 text-white font-semibold border-teal-700 shadow-md scale-[1.01] ring-2 ring-teal-700/60 dark:bg-teal-600 dark:hover:bg-teal-500 dark:ring-teal-400/60' 
+                        ? 'bg-primary hover:bg-primary/90 text-primary-foreground font-semibold border-primary shadow-md scale-[1.01] ring-2 ring-ring/40 dark:bg-primary dark:hover:bg-primary/90 dark:ring-ring/40' 
                         : 'hover:bg-muted/60 border-border/60 text-foreground bg-background'
                     }`}
                     onClick={() => handleSelectAnswer(option.value)}
@@ -911,7 +911,7 @@ export default function MentalHealthAssessment() {
             variant="outline" 
             onClick={handlePreviousQuestion}
             disabled={currentQuestion === 0}
-            className="rounded-2xl gap-2 text-xs sm:text-sm min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+            className="rounded-2xl gap-2 text-xs sm:text-sm min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
             aria-label="Previous Question"
           >
             <ChevronLeft className="w-4 h-4" aria-hidden="true" />
@@ -922,7 +922,7 @@ export default function MentalHealthAssessment() {
             type="button"
             variant="ghost" 
             onClick={exitToMenu}
-            className="rounded-2xl text-xs sm:text-sm text-muted-foreground hover:text-foreground min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+            className="rounded-2xl text-xs sm:text-sm text-muted-foreground hover:text-foreground min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
             aria-label="Save progress and return to Assessment Selection Menu"
           >
             Back to Menu
@@ -990,9 +990,9 @@ export default function MentalHealthAssessment() {
               id="results-tab-PHQ9"
               aria-selected={displayTest === 'PHQ9'}
               aria-controls="assessment-result-panel"
-              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 ${
+              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                 displayTest === 'PHQ9'
-                  ? 'bg-teal-700 text-white shadow-sm'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-muted/80 text-foreground hover:bg-muted border border-border/60'
               }`}
               onClick={() => setCurrentAssessment('PHQ9')}
@@ -1007,9 +1007,9 @@ export default function MentalHealthAssessment() {
               id="results-tab-GAD7"
               aria-selected={displayTest === 'GAD7'}
               aria-controls="assessment-result-panel"
-              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 ${
+              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                 displayTest === 'GAD7'
-                  ? 'bg-teal-700 text-white shadow-sm'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-muted/80 text-foreground hover:bg-muted border border-border/60'
               }`}
               onClick={() => setCurrentAssessment('GAD7')}
@@ -1024,9 +1024,9 @@ export default function MentalHealthAssessment() {
               id="results-tab-GHQ28"
               aria-selected={displayTest === 'GHQ28'}
               aria-controls="assessment-result-panel"
-              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 ${
+              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                 displayTest === 'GHQ28'
-                  ? 'bg-teal-700 text-white shadow-sm'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-muted/80 text-foreground hover:bg-muted border border-border/60'
               }`}
               onClick={() => setCurrentAssessment('GHQ28')}
@@ -1041,9 +1041,9 @@ export default function MentalHealthAssessment() {
               id="results-tab-DASS21"
               aria-selected={displayTest === 'DASS21'}
               aria-controls="assessment-result-panel"
-              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 ${
+              className={`min-h-[44px] sm:min-h-[38px] px-4 py-1.5 text-xs font-semibold rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                 displayTest === 'DASS21'
-                  ? 'bg-teal-700 text-white shadow-sm'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
                   : 'bg-muted/80 text-foreground hover:bg-muted border border-border/60'
               }`}
               onClick={() => setCurrentAssessment('DASS21')}
@@ -1386,7 +1386,7 @@ export default function MentalHealthAssessment() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Link
               href="/diary"
-              className="group p-4 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 transition-all flex flex-col justify-between space-y-2 min-h-[72px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950"
+              className="group p-4 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 transition-all flex flex-col justify-between space-y-2 min-h-[72px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               aria-label="Go to Emotional Diary — Journal your thoughts and triggers"
             >
               <div className="flex justify-between items-center">
@@ -1401,7 +1401,7 @@ export default function MentalHealthAssessment() {
 
             <Link
               href="/ai-buddy"
-              className="group p-4 rounded-2xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 transition-all flex flex-col justify-between space-y-2 min-h-[72px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950"
+              className="group p-4 rounded-2xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 transition-all flex flex-col justify-between space-y-2 min-h-[72px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               aria-label="Go to AI Companion — Talk with an empathetic assistant"
             >
               <div className="flex justify-between items-center">
@@ -1416,7 +1416,7 @@ export default function MentalHealthAssessment() {
 
             <Link
               href="/crisis"
-              className="group p-4 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all flex flex-col justify-between space-y-2 min-h-[72px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950"
+              className="group p-4 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all flex flex-col justify-between space-y-2 min-h-[72px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               aria-label="Go to Counselor and Crisis Support — Access professional resources"
             >
               <div className="flex justify-between items-center">
@@ -1441,7 +1441,7 @@ export default function MentalHealthAssessment() {
             aria-busy={submitAssessment.isPending}
             aria-label={submitAssessment.isPending ? "Saving results, please wait" : "Confirm and save assessment results"}
             data-testid="button-save-assessment"
-            className="gap-2 rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+            className="gap-2 rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
           >
             <Save className="h-4 w-4" aria-hidden="true" />
             {submitAssessment.isPending ? "Saving..." : "Confirm & Save Results"}
@@ -1452,7 +1452,7 @@ export default function MentalHealthAssessment() {
             variant="outline" 
             size="lg" 
             aria-label={`Retake the ${displayTest} assessment`}
-            className="gap-2 rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+            className="gap-2 rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
             Retake Assessment
@@ -1463,7 +1463,7 @@ export default function MentalHealthAssessment() {
             size="lg" 
             variant="ghost" 
             aria-label="Return to Assessments Menu"
-            className="rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-slate-950 font-medium"
+            className="rounded-2xl min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background font-medium"
           >
             Return to Assessments Menu
           </Button>

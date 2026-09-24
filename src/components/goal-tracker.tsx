@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -179,9 +180,8 @@ export function GoalTracker() {
     return (
       <div className="space-y-6" data-testid="goal-tracker">
         <Card className="border-0 shadow-lg">
-          <CardContent className="p-8 text-center">
-            <div className="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-4"></div>
-            <div className="text-muted-foreground">Loading your goals...</div>
+          <CardContent className="p-8">
+            <LoadingSpinner text="Loading your goals..." />
           </CardContent>
         </Card>
       </div>
@@ -206,7 +206,7 @@ export function GoalTracker() {
               </div>
               <Button 
                 onClick={() => setShowAddForm(!showAddForm)}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
                 data-testid="button-add-goal"
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -332,7 +332,7 @@ export function GoalTracker() {
               <Button
                 onClick={handleAddGoal}
                 disabled={createGoalMutation.isPending}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-primary hover:bg-primary/90"
                 data-testid="button-submit-goal"
               >
                 <Check className="w-4 h-4 mr-2" />
@@ -484,7 +484,7 @@ export function GoalTracker() {
           </p>
           <Button 
             onClick={() => setShowAddForm(true)}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-primary hover:bg-primary/90"
           >
             <Plus className="w-4 h-4 mr-2" />Create Your First Goal
           </Button>
