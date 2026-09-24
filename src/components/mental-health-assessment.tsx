@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -341,6 +341,10 @@ export default function MentalHealthAssessment() {
   const [results, setResults] = useState<AssessmentResults>({});
   const [isCompleted, setIsCompleted] = useState(false);
   const [saveError, setSaveError] = useState(false);
+  // Roving tabindex for the answer options: tracks which option is the Tab stop.
+  // null = follow the selected option (or the first option when nothing is selected).
+  const [focusedOptionIndex, setFocusedOptionIndex] = useState<number | null>(null);
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
   // Snapshot of an interrupted attempt so the user can resume or discard it
   const [inProgressType, setInProgressType] = useState<AssessmentType | null>(null);
   const [inProgressAnswers, setInProgressAnswers] = useState<number[]>([]);
@@ -362,6 +366,11 @@ export default function MentalHealthAssessment() {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [currentAssessment, answers.length]);
+
+  // Reset the roving tab stop whenever the question (or assessment) changes
+  useEffect(() => {
+    setFocusedOptionIndex(null);
+  }, [currentQuestion, currentAssessment]);
 
   const getQuestions = (type: AssessmentType) => {
     switch (type) {
@@ -821,15 +830,27 @@ export default function MentalHealthAssessment() {
       }
     };
 
+    // Arrow keys move FOCUS between options (standard radiogroup roving focus).
+    // Space/Enter explicitly select via the same handler the mouse click uses, so
+    // activation is identical to mouse selection on every engine — including ones
+    // that don't synthesize a click on Space for role="radio" buttons (screen-reader
+    // forms mode, legacy WebKit). preventDefault stops the native click synthesis
+    // (and page scroll) so the answer can never be applied twice, and !e.repeat
+    // stops held keys from racing through questions.
     const handleRadioKeyDown = (e: React.KeyboardEvent, index: number) => {
       if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
         e.preventDefault();
         const nextIndex = (index + 1) % answerOptions.length;
-        handleSelectAnswer(answerOptions[nextIndex].value);
+        setFocusedOptionIndex(nextIndex);
+        optionRefs.current[nextIndex]?.focus();
       } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
         e.preventDefault();
         const prevIndex = (index - 1 + answerOptions.length) % answerOptions.length;
-        handleSelectAnswer(answerOptions[prevIndex].value);
+        setFocusedOptionIndex(prevIndex);
+        optionRefs.current[prevIndex]?.focus();
+      } else if ((e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') && !e.repeat) {
+        e.preventDefault();
+        handleSelectAnswer(answerOptions[index].value);
       }
     };
 
@@ -875,7 +896,13 @@ export default function MentalHealthAssessment() {
                     aria-checked={isSelected}
                     aria-label={`Option ${String.fromCharCode(65 + index)}: ${option.label}${isSelected ? ", selected" : ""}`}
                     variant={isSelected ? "default" : "outline"}
-                    tabIndex={isSelected || (selectedAnswer === undefined && index === 0) ? 0 : -1}
+                    ref={(el) => { optionRefs.current[index] = el; }}
+                    tabIndex={
+                      focusedOptionIndex !== null
+                        ? (focusedOptionIndex === index ? 0 : -1)
+                        : (isSelected || (selectedAnswer === undefined && index === 0) ? 0 : -1)
+                    }
+                    onFocus={() => setFocusedOptionIndex(index)}
                     onKeyDown={(e) => handleRadioKeyDown(e, index)}
                     className={`justify-start h-auto min-h-[48px] p-4 text-left rounded-2xl transition-all duration-200 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                       isSelected 
