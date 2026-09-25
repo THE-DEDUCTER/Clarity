@@ -1,428 +1,358 @@
 "use client";
 
-import React from 'react';
-import { BackButton } from '@/components/ui/back-button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import React, { useState } from "react";
+import { BackButton } from "@/components/ui/back-button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
-import { 
-  Gamepad2, 
-  Brain, 
-  Target, 
-  Puzzle, 
-  Timer, 
+import {
+  Gamepad2,
+  Brain,
+  Target,
+  Puzzle,
+  Timer,
   Trophy,
   Play,
   Star,
   PawPrint,
   Sparkles,
-  Castle,
-  BarChart3,
-  Droplets,
-  Utensils,
-  Moon,
-  Swords,
-  Sun,
-  TrendingUp,
-  Shield
-} from 'lucide-react';
+  ShieldCheck,
+  Wind,
+  Compass,
+  Heart,
+  BookOpen,
+  ArrowRight,
+  Activity,
+  CheckCircle2
+} from "lucide-react";
+
+type CategoryFilter = "all" | "resilience" | "mindfulness" | "focus";
 
 export default function GamesPage() {
   const router = useRouter();
+  const [activeCategory, setActiveCategory] = useState<CategoryFilter>("all");
 
-  const games = [
+  const wellnessGames = [
     {
-      id: 1,
-      title: "Memory Challenge",
-      description: "Improve your cognitive function with fun memory exercises",
-      icon: Brain,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      difficulty: "Easy",
-      time: "5-10 min"
+      id: "inner-gatekeeper",
+      title: "Inner Gatekeeper",
+      badge: "Cognitive Reappraisal",
+      description: "A mature strategy practice based on CBT and ACT. Meet internal thought visitors (imposter doubts, perfectionism, comparison) and choose mindful responses.",
+      icon: ShieldCheck,
+      color: "text-indigo-600 dark:text-indigo-400",
+      bgGradient: "from-indigo-500/10 via-purple-500/10 to-teal-500/10",
+      accentBorder: "border-indigo-200 dark:border-indigo-800/40",
+      difficulty: "Intermediate",
+      time: "8-12 min",
+      framework: "CBT & ACT",
+      category: "resilience",
+      route: "/inner-gatekeeper",
+      featured: true,
+      highlights: ["Imposter syndrome reframing", "Boundary setting practice", "Mindful clarity scores"]
     },
     {
-      id: 2,
-      title: "Mindful Breathing",
-      description: "Interactive breathing exercises to reduce stress and anxiety",
-      icon: Target,
-      color: "text-green-600",
-      bgColor: "bg-green-50",
-      difficulty: "Beginner",
-      time: "3-15 min"
-    },
-    {
-      id: 3,
-      title: "Puzzle Therapy",
-      description: "Relaxing puzzles designed to calm the mind",
-      icon: Puzzle,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
-      difficulty: "Medium",
-      time: "10-20 min"
-    },
-    {
-      id: 4,
-      title: "Focus Timer",
-      description: "Pomodoro-style focus sessions with wellness breaks",
-      icon: Timer,
-      color: "text-orange-600",
-      bgColor: "bg-orange-50",
-      difficulty: "Any",
-      time: "25 min"
-    },
-    {
-      id: 5,
-      title: "Pet Care Dashboard",
-      description: "Care for a virtual pet to practice responsibility and mindfulness",
+      id: "petcare-companion",
+      title: "Mindful Pet Companion Studio",
+      badge: "Activity Companion",
+      description: "Cultivate daily wellness habits alongside an empathetic companion. Engage in 4-4-4-4 box breathing, 5-4-3-2-1 somatic grounding, and focus sprints.",
       icon: PawPrint,
-      color: "text-pink-600",
-      bgColor: "bg-pink-50",
-      difficulty: "Easy",
-      time: "Open-ended",
+      color: "text-emerald-600 dark:text-emerald-400",
+      bgGradient: "from-emerald-500/10 via-teal-500/10 to-sky-500/10",
+      accentBorder: "border-emerald-200 dark:border-emerald-800/40",
+      difficulty: "All Levels",
+      time: "3-25 min",
+      framework: "Somatic & Habit",
+      category: "mindfulness",
+      route: "/petcare-game",
+      featured: true,
+      highlights: ["Box breathing guide", "5-4-3-2-1 grounding", "Pomodoro study sprints"]
+    },
+    {
+      id: "mindful-breathing",
+      title: "Diaphragmatic Breath Journey",
+      badge: "Vagal Regulation",
+      description: "Guided visual pacing to activate the parasympathetic nervous system and down-regulate physiological anxiety.",
+      icon: Wind,
+      color: "text-sky-600 dark:text-sky-400",
+      bgGradient: "from-sky-500/10 to-blue-500/10",
+      accentBorder: "border-sky-200 dark:border-sky-800/40",
+      difficulty: "Beginner",
+      time: "3-5 min",
+      framework: "Polyvagal Theory",
+      category: "mindfulness",
       route: "/petcare-game"
     },
     {
-      id: 6,
-      title: "Inner Gatekeeper",
-      description: "Protect your mind castle from negative thoughts and emotions in this therapeutic strategy game",
-      icon: Castle,
-      color: "text-indigo-600",
-      bgColor: "bg-indigo-50",
-      difficulty: "Medium",
-      time: "15-30 min",
-      route: "/inner-gatekeeper"
+      id: "focus-sprint",
+      title: "Focus Sanctuary & Timer",
+      badge: "Cognitive Momentum",
+      description: "Structured deep work intervals designed to reduce task initiation friction and prevent academic burnout.",
+      icon: Timer,
+      color: "text-amber-600 dark:text-amber-400",
+      bgGradient: "from-amber-500/10 to-orange-500/10",
+      accentBorder: "border-amber-200 dark:border-amber-800/40",
+      difficulty: "Customizable",
+      time: "15-45 min",
+      framework: "Pomodoro & Flow",
+      category: "focus",
+      route: "/petcare-game"
+    },
+    {
+      id: "reflection-prompts",
+      title: "Cognitive Reflection Journal",
+      badge: "Self-Inquiry",
+      description: "Targeted collegiate journal prompts to dismantle harsh self-criticism and externalize overwhelming thoughts.",
+      icon: BookOpen,
+      color: "text-purple-600 dark:text-purple-400",
+      bgGradient: "from-purple-500/10 to-pink-500/10",
+      accentBorder: "border-purple-200 dark:border-purple-800/40",
+      difficulty: "Gentle",
+      time: "5-10 min",
+      framework: "Reflective Therapy",
+      category: "resilience",
+      route: "/petcare-game"
+    },
+    {
+      id: "somatic-grounding",
+      title: "5-4-3-2-1 Somatic Grounding",
+      badge: "Sensory Re-anchoring",
+      description: "A fast sensory protocol to interrupt acute stress spirals and re-center in the physical room.",
+      icon: Compass,
+      color: "text-teal-600 dark:text-teal-400",
+      bgGradient: "from-teal-500/10 to-emerald-500/10",
+      accentBorder: "border-teal-200 dark:border-teal-800/40",
+      difficulty: "Immediate",
+      time: "4-6 min",
+      framework: "Somatic Grounding",
+      category: "mindfulness",
+      route: "/petcare-game"
     }
   ];
 
+  const filteredGames = activeCategory === "all" 
+    ? wellnessGames 
+    : wellnessGames.filter((g) => g.category === activeCategory || g.featured);
+
   return (
-    <div className="max-w-6xl mx-auto space-y-8 pb-20 animate-in fade-in duration-500" data-testid="page-games">
+    <div className="max-w-6xl mx-auto space-y-8 pb-24 animate-in fade-in duration-400" data-testid="page-games">
       <BackButton to="/dashboard" />
-      
-      <div className="space-y-2">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-indigo-100 dark:bg-indigo-950/60 rounded-2xl text-indigo-600 dark:text-indigo-400">
-            <Gamepad2 className="w-8 h-8" />
+
+      {/* ── HEADER ── */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="p-3.5 bg-gradient-to-tr from-indigo-500 to-purple-600 text-white rounded-2xl shadow-lg">
+            <Gamepad2 className="w-7 h-7" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground dark:text-gray-100">
-              Play
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
+              Wellness & Interactive Hub
             </h1>
-            <p className="text-sm text-muted-foreground">
-              Therapeutic interactive games designed to build emotional resilience, mindfulness, and cognitive strength.
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+              Evidence-based interactive activities designed to build emotional resilience, focus, and somatic calm.
             </p>
           </div>
         </div>
+
+        {/* Filter Pills */}
+        <div className="flex items-center gap-1.5 bg-muted/60 dark:bg-slate-800/60 p-1 rounded-2xl border border-border/80 self-start md:self-auto overflow-x-auto max-w-full">
+          {[
+            { id: "all", label: "All Practices" },
+            { id: "resilience", label: "Resilience & CBT" },
+            { id: "mindfulness", label: "Mindfulness & Body" },
+            { id: "focus", label: "Focus & Flow" },
+          ].map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id as CategoryFilter)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
+                activeCategory === cat.id
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Pet Care Dashboard Game Section */}
-      <div className="bg-gradient-to-r from-rose-500/10 via-violet-500/10 to-blue-500/10 rounded-[32px] p-6 sm:p-8 border border-rose-200/40 dark:border-rose-800/30 shadow-xl backdrop-blur-sm relative overflow-hidden">
-        {/* Background decorations */}
-        <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-violet-200/20 to-purple-200/20 rounded-full -translate-y-12 translate-x-12 blur-2xl pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-36 h-36 bg-gradient-to-tr from-rose-200/20 to-pink-200/20 rounded-full translate-y-8 -translate-x-8 blur-2xl pointer-events-none"></div>
-        
-        <div className="text-center mb-8 relative z-10">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
-            <div className="p-4 bg-gradient-to-br from-rose-500 to-pink-600 rounded-3xl shadow-lg shadow-rose-500/20">
-              <PawPrint className="w-10 h-10 text-white" />
-            </div>
-            <div className="text-center sm:text-left">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground dark:text-gray-100">Pet Care Companion</h2>
-              <Badge className="bg-gradient-to-r from-rose-500 to-pink-600 text-white border-0 shadow-sm mt-1.5 inline-flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Featured Therapeutic Game</span>
+      {/* ── FEATURED HERO ACTIVITIES ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Featured: Inner Gatekeeper */}
+        <div className="bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-teal-500/10 rounded-3xl p-6 sm:p-8 border border-indigo-200 dark:border-indigo-800/50 shadow-xl backdrop-blur-xl relative overflow-hidden flex flex-col justify-between group">
+          <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-indigo-500/10 blur-2xl pointer-events-none" />
+
+          <div className="space-y-4 relative z-10">
+            <div className="flex items-center justify-between">
+              <Badge className="bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                Featured Practice
               </Badge>
+              <span className="text-xs font-mono font-medium text-muted-foreground">
+                8-12 mins · CBT / ACT
+              </span>
             </div>
-          </div>
-          <p className="text-sm sm:text-base text-muted-foreground dark:text-gray-300 max-w-3xl mx-auto">
-            Experience the soothing routine of caring for a virtual emotional companion while learning valuable mindfulness and grounding skills.
-          </p>
-        </div>
 
-        {/* Game Preview Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-border">
-            <PawPrint className="w-7 h-7 mx-auto mb-2 text-rose-500" />
-            <div className="font-semibold text-foreground">Choose Your Pet</div>
-            <div className="text-sm text-muted-foreground">Dog, Cat, or Rabbit</div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-border">
-            <BarChart3 className="w-7 h-7 mx-auto mb-2 text-sky-500" />
-            <div className="font-semibold text-foreground">Track Progress</div>
-            <div className="text-sm text-muted-foreground">Health & Happiness</div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-border">
-            <Trophy className="w-7 h-7 mx-auto mb-2 text-amber-500" />
-            <div className="font-semibold text-foreground">Earn Achievements</div>
-            <div className="text-sm text-muted-foreground">Level up & unlock rewards</div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-border">
-            <Brain className="w-7 h-7 mx-auto mb-2 text-violet-500" />
-            <div className="font-semibold text-foreground">Therapeutic Benefits</div>
-            <div className="text-sm text-muted-foreground">Mindfulness & empathy</div>
-          </div>
-        </div>
-
-        {/* Therapeutic Benefits */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-rose-50/80 to-pink-50/80 backdrop-blur-sm">
-            <Trophy className="w-8 h-8 text-rose-600 mx-auto mb-3" />
-            <h3 className="font-bold text-foreground mb-2">Build Responsibility</h3>
-            <p className="text-muted-foreground text-sm">
-              Learn time management and develop consistent care routines through daily pet activities
-            </p>
-          </div>
-          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-sky-50/80 to-blue-50/80 backdrop-blur-sm">
-            <Target className="w-8 h-8 text-sky-600 mx-auto mb-3" />
-            <h3 className="font-bold text-foreground mb-2">Develop Empathy</h3>
-            <p className="text-muted-foreground text-sm">
-              Enhance emotional awareness and caregiving skills by responding to your pet's needs
-            </p>
-          </div>
-          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-violet-50/80 to-purple-50/80 backdrop-blur-sm">
-            <Brain className="w-8 h-8 text-violet-600 mx-auto mb-3" />
-            <h3 className="font-bold text-foreground mb-2">Practice Mindfulness</h3>
-            <p className="text-muted-foreground text-sm">
-              Stay present and attentive while engaging in calming, therapeutic gameplay
-            </p>
-          </div>
-        </div>
-
-        {/* Game Actions */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-gradient-to-br from-emerald-100 to-green-200 rounded-2xl p-4 text-center shadow-md">
-            <Utensils className="w-7 h-7 mx-auto mb-2 text-emerald-700" />
-            <div className="font-semibold text-emerald-800">Feed</div>
-            <div className="text-xs text-emerald-600">Nutrition & health</div>
-          </div>
-          <div className="bg-gradient-to-br from-sky-100 to-blue-200 rounded-2xl p-4 text-center shadow-md">
-            <Droplets className="w-7 h-7 mx-auto mb-2 text-sky-700" />
-            <div className="font-semibold text-sky-800">Hydrate</div>
-            <div className="text-xs text-sky-600">Fresh water care</div>
-          </div>
-          <div className="bg-gradient-to-br from-violet-100 to-purple-200 rounded-2xl p-4 text-center shadow-md">
-            <Gamepad2 className="w-7 h-7 mx-auto mb-2 text-violet-700" />
-            <div className="font-semibold text-violet-800">Play</div>
-            <div className="text-xs text-violet-600">Fun activities</div>
-          </div>
-          <div className="bg-gradient-to-br from-rose-100 to-pink-200 rounded-2xl p-4 text-center shadow-md">
-            <Moon className="w-7 h-7 mx-auto mb-2 text-rose-700" />
-            <div className="font-semibold text-rose-800">Rest</div>
-            <div className="text-xs text-rose-600">Recovery time</div>
-          </div>
-        </div>
-
-        {/* Play Button */}
-        <div className="text-center">
-          <Button 
-            onClick={() => router.push('/petcare-game')}
-            className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 text-white font-bold py-4 px-8 text-lg rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
-          >
-            <Play className="w-6 h-6 mr-3" />
-            Start Your Pet Care Journey
-            <Sparkles className="w-6 h-6 ml-3" />
-          </Button>
-          <p className="text-sm text-muted-foreground mt-3">
-            Recommended by mental health professionals • Play anytime, anywhere • Completely free
-          </p>
-        </div>
-      </div>
-
-      {/* Inner Gatekeeper Game Section */}
-      <div className="bg-gradient-to-r from-indigo-400/10 via-purple-400/10 to-blue-500/10 rounded-2xl p-8 border-0 shadow-xl backdrop-blur-sm relative overflow-hidden">
-        {/* Background decorations */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-200/20 to-purple-200/20 rounded-full -translate-y-6 translate-x-8"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-200/20 to-indigo-200/20 rounded-full translate-y-4 -translate-x-6"></div>
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-4 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full shadow-lg">
-              <Castle className="w-10 h-10 text-white" />
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold text-foreground">Inner Gatekeeper</h2>
-              <Badge className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-0 shadow-md mt-2 flex items-center gap-1.5 mx-auto w-fit">
-                <Brain className="w-3.5 h-3.5" />
-                <span>Mental Health Strategy Game</span>
-              </Badge>
-            </div>
-          </div>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6">
-            Take on the role of a guardian protecting your mind castle from negative thoughts and emotions. 
-            Make strategic choices to maintain your mental wellbeing while growing stronger and more resilient.
-          </p>
-        </div>
-
-        {/* Game Preview Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-border">
-            <Shield className="w-7 h-7 mx-auto mb-2 text-indigo-600" />
-            <div className="font-semibold text-foreground">Protect Castle</div>
-            <div className="text-sm text-muted-foreground">Maintain health & peace</div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-border">
-            <Swords className="w-7 h-7 mx-auto mb-2 text-purple-600" />
-            <div className="font-semibold text-foreground">Strategic Choices</div>
-            <div className="text-sm text-muted-foreground">Accept, reject, or challenge</div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-border">
-            <Sun className="w-7 h-7 mx-auto mb-2 text-amber-500" />
-            <div className="font-semibold text-foreground">Dynamic Weather</div>
-            <div className="text-sm text-muted-foreground">Reflects your mental state</div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-md border border-border">
-            <TrendingUp className="w-7 h-7 mx-auto mb-2 text-emerald-600" />
-            <div className="font-semibold text-foreground">Track Progress</div>
-            <div className="text-sm text-muted-foreground">Level up & improve skills</div>
-          </div>
-        </div>
-
-        {/* Therapeutic Benefits */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-indigo-50/80 to-blue-50/80 backdrop-blur-sm">
-            <Brain className="w-8 h-8 text-indigo-600 mx-auto mb-3" />
-            <h3 className="font-bold text-foreground mb-2">Emotional Regulation</h3>
-            <p className="text-muted-foreground text-sm">
-              Learn to identify and manage difficult emotions through strategic gameplay
-            </p>
-          </div>
-          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-purple-50/80 to-violet-50/80 backdrop-blur-sm">
-            <Target className="w-8 h-8 text-purple-600 mx-auto mb-3" />
-            <h3 className="font-bold text-foreground mb-2">Decision Making</h3>
-            <p className="text-muted-foreground text-sm">
-              Practice making healthy choices under pressure in a safe environment
-            </p>
-          </div>
-          <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg border-0 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-sm">
-            <Trophy className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-            <h3 className="font-bold text-foreground mb-2">Mental Resilience</h3>
-            <p className="text-muted-foreground text-sm">
-              Build strength to handle life's challenges with wisdom and courage
-            </p>
-          </div>
-        </div>
-
-        {/* Play Button */}
-        <div className="text-center">
-          <Button 
-            onClick={() => router.push('/inner-gatekeeper')}
-            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-600 hover:from-indigo-600 hover:via-purple-600 hover:to-blue-700 text-white font-bold py-4 px-8 text-lg rounded-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
-          >
-            <Castle className="w-6 h-6 mr-3" />
-            Begin Your Inner Journey
-            <Sparkles className="w-6 h-6 ml-3" />
-          </Button>
-          <p className="text-sm text-muted-foreground mt-3">
-            Designed by mental health experts • Evidence-based therapy • Safe space to practice
-          </p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {games.map((game) => {
-          const IconComponent = game.icon;
-          return (
-            <Card key={game.id} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md bg-gradient-to-br from-white via-slate-50/30 to-blue-50/20 hover:shadow-xl hover:scale-105">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div className={`p-3 rounded-lg shadow-md group-hover:scale-110 transition-transform duration-300 ${
-                    game.id === 1 ? 'bg-gradient-to-br from-sky-400 to-blue-500' :
-                    game.id === 2 ? 'bg-gradient-to-br from-emerald-400 to-green-500' :
-                    game.id === 3 ? 'bg-gradient-to-br from-violet-400 to-purple-500' :
-                    game.id === 4 ? 'bg-gradient-to-br from-amber-400 to-orange-500' :
-                    game.id === 5 ? 'bg-gradient-to-br from-rose-400 to-pink-500' :
-                    'bg-gradient-to-br from-indigo-400 to-purple-500'
-                  }`}>
-                    <IconComponent className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star 
-                        key={star} 
-                        className={`w-4 h-4 ${star <= 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
-                      />
-                    ))}
-                  </div>
-                </div>
-                <CardTitle className="text-xl group-hover:text-blue-600 transition-colors font-bold">
-                  {game.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground leading-relaxed">
-                  {game.description}
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground group-hover:text-indigo-600 transition-colors">
+                  Inner Gatekeeper
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Cognitive Reappraisal & Mind Sanctuary
                 </p>
-                
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Trophy className="w-4 h-4" />
-                    <span>{game.difficulty}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Timer className="w-4 h-4" />
-                    <span>{game.time}</span>
-                  </div>
-                </div>
-
-                <Button 
-                  className="w-full bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                  onClick={() => {
-                    if ((game as any).route) {
-                      router.push((game as any).route);
-                    } else {
-                      // Placeholder for other games
-                      alert(`${game.title} - Coming Soon! This therapeutic game is under development.`);
-                    }
-                  }}
-                >
-                  <Play className="w-4 h-4 mr-2" />
-                  {(game as any).route ? 'Play Now' : 'Coming Soon'}
-                </Button>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      <Card className="bg-gradient-to-r from-sky-400/10 via-violet-400/10 to-blue-400/10 border-0 shadow-lg backdrop-blur-sm relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full -translate-y-4 translate-x-8"></div>
-        <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-sky-200/20 to-cyan-200/20 rounded-full translate-y-4 -translate-x-6"></div>
-        <CardContent className="p-6">
-          <div className="text-center space-y-4">
-            <div className="flex justify-center">
-              <div className="p-4 bg-gradient-to-br from-sky-400 to-blue-500 rounded-full shadow-lg">
-                <Gamepad2 className="w-8 h-8 text-white" />
               </div>
             </div>
-            <h3 className="text-xl font-semibold text-foreground">
-              Therapeutic Gaming Benefits
-            </h3>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our wellness games are designed by mental health professionals to provide therapeutic benefits 
-              while being engaging and fun. Regular play can help improve mood, reduce anxiety, and enhance 
-              cognitive abilities.
+
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Encounter realistic collegiate thought visitors (imposter syndrome, exam catastrophizing, peer comparison) and practice mindful reappraisal to protect mental balance.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-              <div className="text-center">
-                <Brain className="w-6 h-6 text-sky-600 mx-auto mb-2" />
-                <div className="font-medium text-foreground">Cognitive Enhancement</div>
-                <div className="text-sm text-muted-foreground">Memory & Focus</div>
-              </div>
-              <div className="text-center">
-                <Target className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
-                <div className="font-medium text-foreground">Stress Reduction</div>
-                <div className="text-sm text-muted-foreground">Mindful Activities</div>
-              </div>
-              <div className="text-center">
-                <Trophy className="w-6 h-6 text-violet-600 mx-auto mb-2" />
-                <div className="font-medium text-foreground">Achievement</div>
-                <div className="text-sm text-muted-foreground">Progress Tracking</div>
-              </div>
+
+            <div className="space-y-1.5 pt-2">
+              {[
+                "Navigate real collegiate stress scenarios",
+                "Immediate psychological insight & pattern recognition",
+                "Measure Clarity, Compassion & Flexibility"
+              ].map((point, idx) => (
+                <div key={idx} className="flex items-center gap-2 text-xs font-medium text-foreground/90">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0" />
+                  <span>{point}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
+
+          <div className="pt-6 relative z-10">
+            <Button
+              onClick={() => router.push("/inner-gatekeeper")}
+              className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-teal-600 hover:from-indigo-700 hover:to-teal-700 text-white font-bold py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center gap-2"
+            >
+              <span>Begin Gatekeeper Practice</span>
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Featured: Pet Companion Studio */}
+        <div className="bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-sky-500/10 rounded-3xl p-6 sm:p-8 border border-emerald-200 dark:border-emerald-800/50 shadow-xl backdrop-blur-xl relative overflow-hidden flex flex-col justify-between group">
+          <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none" />
+
+          <div className="space-y-4 relative z-10">
+            <div className="flex items-center justify-between">
+              <Badge className="bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                Activity Studio
+              </Badge>
+              <span className="text-xs font-mono font-medium text-muted-foreground">
+                3-25 mins · Somatic Habits
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md">
+                <PawPrint className="w-6 h-6" />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground group-hover:text-emerald-600 transition-colors">
+                  Mindful Pet Companion
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Activity-Based Daily Wellness Ally
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              A supportive wellness presence that grows alongside your healthy habits. Practice guided box breathing, somatic grounding, study sprints, and empathetic check-ins.
+            </p>
+
+            <div className="space-y-1.5 pt-2">
+              {[
+                "Guided Box Breathing with animated pacing",
+                "5-4-3-2-1 Somatic Sensory Grounding tool",
+                "Pomodoro Focus Sanctuary with quiet companion"
+              ].map((point, idx) => (
+                <div key={idx} className="flex items-center gap-2 text-xs font-medium text-foreground/90">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                  <span>{point}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-6 relative z-10">
+            <Button
+              onClick={() => router.push("/petcare-game")}
+              className="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 hover:from-emerald-700 hover:to-sky-700 text-white font-bold py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center gap-2"
+            >
+              <span>Open Companion Studio</span>
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── ALL WELLNESS MODULES GRID ── */}
+      <div className="space-y-4">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+          <Brain className="w-4 h-4 text-indigo-500" />
+          Individual Wellness Modules
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filteredGames.map((game) => {
+            const IconComp = game.icon;
+            return (
+              <Card
+                key={game.id}
+                className="group rounded-3xl border border-border hover:border-indigo-300 dark:hover:border-indigo-700 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between bg-card"
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="w-11 h-11 rounded-2xl bg-muted/80 dark:bg-slate-800 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform">
+                      <IconComp className={`w-5 h-5 ${game.color}`} />
+                    </div>
+                    <Badge variant="outline" className="text-[10px] font-semibold text-muted-foreground">
+                      {game.time}
+                    </Badge>
+                  </div>
+
+                  <div className="space-y-1 pt-2">
+                    <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">
+                      {game.badge}
+                    </span>
+                    <CardTitle className="text-lg font-bold text-foreground group-hover:text-indigo-600 transition-colors">
+                      {game.title}
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="space-y-4">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {game.description}
+                  </p>
+
+                  <div className="pt-2 border-t border-border flex items-center justify-between">
+                    <span className="text-[11px] font-medium text-muted-foreground">
+                      {game.framework}
+                    </span>
+                    <Button
+                      size="sm"
+                      onClick={() => router.push(game.route)}
+                      className="rounded-xl text-xs font-bold bg-muted hover:bg-indigo-600 hover:text-white text-foreground transition-colors"
+                    >
+                      <span>Practice</span>
+                      <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

@@ -2,257 +2,152 @@
 
 import React from 'react';
 import { GameState } from './GameState';
-import { 
-  Sun, 
-  Cloud, 
-  CloudRain, 
-  CloudLightning, 
-  Smile, 
-  Meh, 
-  Frown, 
-  AlertCircle, 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  Sparkles, 
-  Shield, 
-  HeartHandshake 
+import {
+  Sun,
+  Cloud,
+  CloudRain,
+  CloudLightning,
+  Smile,
+  Meh,
+  Frown,
+  AlertCircle,
+  RotateCcw,
+  Shield,
+  HeartHandshake,
+  Trophy,
+  Crosshair
 } from 'lucide-react';
 
 interface GameUIProps {
   gameState: GameState;
-  isPaused: boolean;
-  onPause: () => void;
   onRestart: () => void;
-  feedback: string;
 }
 
 export const GameUI: React.FC<GameUIProps> = ({
   gameState,
-  isPaused,
-  onPause,
   onRestart,
-  feedback
 }) => {
   const getHealthColor = (health: number) => {
-    if (health > 70) return '#4ade80'; // green
-    if (health > 40) return '#fbbf24'; // yellow
-    return '#ef4444'; // red
+    if (health > 70) return '#4ade80';
+    if (health > 40) return '#fbbf24';
+    return '#ef4444';
   };
 
   const getPeaceColor = (peace: number) => {
-    if (peace > 70) return '#60a5fa'; // blue
-    if (peace > 40) return '#a78bfa'; // purple
-    return '#f87171'; // red
+    if (peace > 70) return '#818cf8';
+    if (peace > 40) return '#a78bfa';
+    return '#f87171';
   };
 
   const renderWeatherIcon = (weather: string) => {
     switch (weather) {
-      case 'sunny': return <Sun className="w-5 h-5 text-amber-400" />;
-      case 'cloudy': return <Cloud className="w-5 h-5 text-slate-300" />;
-      case 'rainy': return <CloudRain className="w-5 h-5 text-sky-400" />;
-      case 'stormy': return <CloudLightning className="w-5 h-5 text-purple-400" />;
-      default: return <Sun className="w-5 h-5 text-amber-400" />;
+      case 'sunny': return <Sun className="w-3.5 h-3.5 text-amber-400" />;
+      case 'cloudy': return <Cloud className="w-3.5 h-3.5 text-slate-400" />;
+      case 'rainy': return <CloudRain className="w-3.5 h-3.5 text-sky-400" />;
+      case 'stormy': return <CloudLightning className="w-3.5 h-3.5 text-purple-400" />;
+      default: return <Sun className="w-3.5 h-3.5 text-amber-400" />;
     }
   };
 
   const renderMoodIcon = (mood: string) => {
     switch (mood) {
-      case 'peaceful': return <Smile className="w-5 h-5 text-emerald-400" />;
-      case 'concerned': return <Meh className="w-5 h-5 text-amber-400" />;
-      case 'worried': return <Frown className="w-5 h-5 text-orange-400" />;
+      case 'peaceful': return <Smile className="w-3.5 h-3.5 text-emerald-400" />;
+      case 'concerned': return <Meh className="w-3.5 h-3.5 text-amber-400" />;
+      case 'worried': return <Frown className="w-3.5 h-3.5 text-orange-400" />;
       case 'stressed':
-      case 'anxious': return <AlertCircle className="w-5 h-5 text-rose-400" />;
-      default: return <Smile className="w-5 h-5 text-emerald-400" />;
+      case 'anxious': return <AlertCircle className="w-3.5 h-3.5 text-rose-400" />;
+      default: return <Smile className="w-3.5 h-3.5 text-emerald-400" />;
     }
   };
 
+  const accuracy = gameState.emotionsHandled > 0
+    ? Math.round((gameState.correctChoices / gameState.emotionsHandled) * 100)
+    : 0;
+
   return (
-    <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/20 to-transparent p-4">
-      {/* Top Bar */}
-      <div className="flex justify-between items-start mb-4">
-        {/* Health and Peace Bars */}
-        <div className="space-y-2">
-          {/* Castle Health */}
-          <div className="flex items-center space-x-2">
-            <span className="text-white font-semibold min-w-[100px] flex items-center gap-1.5">
-              <Shield className="w-4 h-4 text-emerald-400" />
-              Castle:
-            </span>
-            <div className="w-32 h-4 bg-black/40 rounded-full overflow-hidden">
-              <div 
-                className="h-full transition-all duration-500 rounded-full"
-                style={{ 
-                  width: `${gameState.castleHealth}%`,
-                  backgroundColor: getHealthColor(gameState.castleHealth)
-                }}
-              />
-            </div>
-            <span className="text-white font-mono text-sm">{gameState.castleHealth}%</span>
-          </div>
+    <div className="relative z-20 px-4 pt-2">
+      <div className="max-w-3xl mx-auto">
+        {/* Compact HUD Bar */}
+        <div className="bg-white/[0.04] backdrop-blur-xl border border-white/8 rounded-2xl px-4 py-3 shadow-lg">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            {/* Health & Peace Bars */}
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              {/* Castle Health */}
+              <div className="flex items-center gap-2 flex-1 min-w-[120px]">
+                <Shield className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <span className="text-[10px] font-semibold text-white/40 uppercase tracking-wider">Castle</span>
+                    <span className="text-[10px] font-mono text-white/60">{gameState.castleHealth}%</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-700 ease-out"
+                      style={{
+                        width: `${gameState.castleHealth}%`,
+                        backgroundColor: getHealthColor(gameState.castleHealth)
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
 
-          {/* Inner Peace */}
-          <div className="flex items-center space-x-2">
-            <span className="text-white font-semibold min-w-[100px] flex items-center gap-1.5">
-              <HeartHandshake className="w-4 h-4 text-sky-400" />
-              Peace:
-            </span>
-            <div className="w-32 h-4 bg-black/40 rounded-full overflow-hidden">
-              <div 
-                className="h-full transition-all duration-500 rounded-full"
-                style={{ 
-                  width: `${gameState.innerPeace}%`,
-                  backgroundColor: getPeaceColor(gameState.innerPeace)
-                }}
-              />
+              {/* Inner Peace */}
+              <div className="flex items-center gap-2 flex-1 min-w-[120px]">
+                <HeartHandshake className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <span className="text-[10px] font-semibold text-white/40 uppercase tracking-wider">Peace</span>
+                    <span className="text-[10px] font-mono text-white/60">{gameState.innerPeace}%</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-700 ease-out"
+                      style={{
+                        width: `${gameState.innerPeace}%`,
+                        backgroundColor: getPeaceColor(gameState.innerPeace)
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-            <span className="text-white font-mono text-sm">{gameState.innerPeace}%</span>
-          </div>
-        </div>
 
-        {/* Stats */}
-        <div className="text-right space-y-1">
-          <div className="text-white text-sm">
-            <span className="font-semibold">Score:</span> {gameState.score}
-          </div>
-          <div className="text-white text-sm">
-            <span className="font-semibold">Level:</span> {gameState.level}
-          </div>
-          <div className="text-white text-sm">
-            <span className="font-semibold">Visitors:</span> {gameState.totalVisitors}
-          </div>
-          <div className="text-white text-sm">
-            <span className="font-semibold">Accuracy:</span> {
-              gameState.totalVisitors > 0 
-                ? Math.round((gameState.correctChoices / gameState.totalVisitors) * 100)
-                : 0
-            }%
+            {/* Stats */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 bg-white/[0.04] rounded-lg px-2.5 py-1.5">
+                {renderWeatherIcon(gameState.weather)}
+                <span className="text-[10px] text-white/50 capitalize">{gameState.weather}</span>
+              </div>
+
+              <div className="flex items-center gap-1.5 bg-white/[0.04] rounded-lg px-2.5 py-1.5">
+                {renderMoodIcon(gameState.gatekeeperMood)}
+                <span className="text-[10px] text-white/50 capitalize">{gameState.gatekeeperMood}</span>
+              </div>
+
+              <div className="hidden sm:flex items-center gap-3 text-[10px] text-white/40 font-mono">
+                <div className="flex items-center gap-1">
+                  <Trophy className="w-3 h-3 text-amber-400" />
+                  <span>{gameState.score}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Crosshair className="w-3 h-3 text-indigo-400" />
+                  <span>{accuracy}%</span>
+                </div>
+                <span>Lv.{gameState.level}</span>
+              </div>
+
+              <button
+                onClick={onRestart}
+                className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-white/40 hover:text-white/70 transition-colors"
+                title="Restart"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Weather and Mood Indicator */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2 bg-black/40 rounded-lg px-3 py-1">
-            {renderWeatherIcon(gameState.weather)}
-            <span className="text-white text-sm capitalize">{gameState.weather}</span>
-          </div>
-          
-          <div className="flex items-center space-x-2 bg-black/40 rounded-lg px-3 py-1">
-            {renderMoodIcon(gameState.gatekeeperMood)}
-            <span className="text-white text-sm capitalize">{gameState.gatekeeperMood}</span>
-          </div>
-        </div>
-
-        {/* Control Buttons */}
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={onPause}
-            className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors duration-200 backdrop-blur-sm flex items-center gap-1.5 text-sm"
-          >
-            {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
-            <span>{isPaused ? 'Resume' : 'Pause'}</span>
-          </button>
-          <button
-            onClick={onRestart}
-            className="bg-red-500/80 hover:bg-red-500 text-white px-4 py-2 rounded-lg transition-colors duration-200 backdrop-blur-sm flex items-center gap-1.5 text-sm"
-          >
-            <RotateCcw className="w-4 h-4" />
-            <span>Restart</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Feedback Message */}
-      {feedback && (
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 bg-black/80 text-white px-6 py-3 rounded-lg backdrop-blur-sm animate-pulse">
-          {feedback}
-        </div>
-      )}
-
-      {/* Game Over Overlay */}
-      {(gameState.castleHealth <= 0 || gameState.innerPeace <= 0) && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className="bg-card rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
-            <h2 className="text-3xl font-bold mb-4 text-red-600">Game Over</h2>
-            <div className="space-y-2 mb-6">
-              <p className="text-muted-foreground">Final Score: <span className="font-bold">{gameState.score}</span></p>
-              <p className="text-muted-foreground">Level Reached: <span className="font-bold">{gameState.level}</span></p>
-              <p className="text-muted-foreground">Visitors Handled: <span className="font-bold">{gameState.totalVisitors}</span></p>
-              <p className="text-muted-foreground">
-                Accuracy: <span className="font-bold">
-                  {gameState.totalVisitors > 0 
-                    ? Math.round((gameState.correctChoices / gameState.totalVisitors) * 100)
-                    : 0}%
-                </span>
-              </p>
-            </div>
-            <div className="space-y-2">
-              <button
-                onClick={onRestart}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-              >
-                <RotateCcw className="w-5 h-5" />
-                <span>Play Again</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Victory Overlay */}
-      {gameState.level > 10 && gameState.castleHealth > 80 && gameState.innerPeace > 80 && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className="bg-card rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
-            <h2 className="text-3xl font-bold mb-4 text-green-600 flex items-center justify-center gap-2">
-              <Sparkles className="w-7 h-7 text-amber-500" />
-              <span>Victory!</span>
-            </h2>
-            <p className="text-muted-foreground mb-4">
-              You've mastered the art of inner gatekeeping!
-            </p>
-            <div className="space-y-2 mb-6">
-              <p className="text-muted-foreground">Final Score: <span className="font-bold">{gameState.score}</span></p>
-              <p className="text-muted-foreground">Level Reached: <span className="font-bold">{gameState.level}</span></p>
-              <p className="text-muted-foreground">Perfect Balance Achieved!</p>
-            </div>
-            <button
-              onClick={onRestart}
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-            >
-              <Sparkles className="w-5 h-5" />
-              <span>Play Again</span>
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Pause Overlay */}
-      {isPaused && gameState.castleHealth > 0 && gameState.innerPeace > 0 && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-40 backdrop-blur-sm">
-          <div className="bg-card rounded-lg p-8 text-center max-w-md mx-4 shadow-2xl">
-            <h2 className="text-2xl font-bold mb-4 text-foreground">Game Paused</h2>
-            <p className="text-muted-foreground mb-6">Take a moment to breathe...</p>
-            <div className="space-y-2">
-              <button
-                onClick={onPause}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-              >
-                <Play className="w-5 h-5" />
-                <span>Resume Game</span>
-              </button>
-              <button
-                onClick={onRestart}
-                className="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-              >
-                <RotateCcw className="w-5 h-5" />
-                <span>Restart Game</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

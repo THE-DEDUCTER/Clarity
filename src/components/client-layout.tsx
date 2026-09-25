@@ -19,7 +19,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     pathname === "/login" ||
     pathname === "/register" ||
     pathname === "/admin-login" ||
-    pathname === "/admin";
+    pathname === "/admin" ||
+    pathname === "/inner-gatekeeper";
 
   if (isSpecialRoute) {
     return <div className="min-h-screen flex-1 w-full">{children}</div>;

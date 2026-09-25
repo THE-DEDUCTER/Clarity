@@ -1,17 +1,12 @@
 "use client";
 
 import React from 'react';
-import { BackButton } from '@/components/ui/back-button';
-import { VirtualPets } from '@/components/3d/virtual-pets';
+import { PetCareDashboard } from '@/components/petcare-game';
 
 export default function PetCareGamePage() {
   return (
-    <div className="relative w-full" style={{ height: 'calc(100vh - 0px)' }}>
-      {/* Back button floats over the game */}
-      <div className="absolute top-3 left-3 z-50">
-        <BackButton to="/games" />
-      </div>
-      <VirtualPets fullPage />
+    <div className="w-full min-h-screen bg-gradient-to-b from-background via-background/95 to-muted/20 px-4 sm:px-6 py-6 pb-24">
+      <PetCareDashboard />
     </div>
   );
 }
