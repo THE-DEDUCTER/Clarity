@@ -45,6 +45,7 @@
     "ai": "^7.0.79",
     "autoprefixer": "^10.5.4",
     "axios": "^1.12.2",
+    "cheerio": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

@@ -26,9 +26,17 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="responsive-container flex-1 w-full">
+    <div className="responsive-container flex-1 w-full relative">
+      {/* High-performance ambient glowing background without heavy CPU/GPU blur filters */}
+      <div 
+        className="fixed inset-0 z-0 pointer-events-none opacity-40 dark:opacity-60"
+        style={{
+          background: "radial-gradient(circle at 10% 10%, rgba(147, 51, 234, 0.12), transparent 45%), radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.10), transparent 45%), radial-gradient(circle at 70% 40%, rgba(16, 185, 129, 0.06), transparent 35%)"
+        }}
+      />
+
       {/* Fixed Header */}
-      <header className="fixed-header">
+      <header className="fixed-header relative z-40 bg-white/70 dark:bg-black/60 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/10">
         <div className="header-left flex items-center gap-2">
           {/* Mobile drawer trigger */}
           <div className="md:hidden">
@@ -55,10 +63,10 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       </header>
       
       {/* Main Layout */}
-      <div className="flex h-[calc(100vh-var(--header-height,4rem))] w-full main-content relative">
+      <div className="flex h-[calc(100vh-var(--header-height,4rem))] w-full main-content relative z-10">
         
         {/* Spacer to push main content - Desktop only */}
-        <div className="hidden md:block w-[72px] shrink-0 h-full bg-white dark:bg-[#0c0c0c] border-r border-gray-200/50 dark:border-gray-800/50" />
+        <div className="hidden md:block w-[72px] shrink-0 h-full bg-white/60 dark:bg-black/40 backdrop-blur-md border-r border-gray-200/50 dark:border-white/10" />
 
         {/* Absolute Custom Sidebar overlay */}
         <div className="hidden md:block absolute left-0 top-0 bottom-0 z-50">

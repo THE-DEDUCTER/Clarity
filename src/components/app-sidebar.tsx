@@ -44,9 +44,9 @@ interface NavHub {
 
 const hubItems: NavHub[] = [
   {
-    title: "My Mind",
-    url: "/my-mind",
-    icon: Brain,
+    title: "Home",
+    url: "/dashboard",
+    icon: Home,
     children: [
       { title: "AI Buddy", url: "/ai-buddy", icon: MessageCircle },
       { title: "Diary", url: "/diary", icon: PenLine },
@@ -143,11 +143,6 @@ export function AppSidebar() {
               Navigate
             </span>
           </div>
-
-          <Link href="/dashboard" className={itemClass(isActive("/dashboard"))}>
-            <Home className={iconClass(isActive("/dashboard"))} />
-            <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Home</span>
-          </Link>
 
           {hubItems.map((hub) => {
             const hubActive = isHubOrChildActive(hub);

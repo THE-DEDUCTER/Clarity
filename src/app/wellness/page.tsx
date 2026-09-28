@@ -107,13 +107,10 @@ export default function WellnessPage() {
         </div>
 
         <div className="grid gap-12 lg:grid-cols-3">
-          {/* Mood Tracker */}
-          <div className="lg:col-span-1">
-            <MoodTracker />
-          </div>
+
 
           {/* Audio Sessions - Clean Design */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-3 space-y-8">
             {/* Audio Sessions */}
             <div className="space-y-6">
               <div className="text-center space-y-2">

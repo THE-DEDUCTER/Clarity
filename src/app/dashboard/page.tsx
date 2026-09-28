@@ -9,6 +9,7 @@ import MoodTracker from "@/components/mood-tracker";
 import { PromptInput } from "@/components/ui/ai-chat-input";
 
 export default function Dashboard() {
+  const router = useRouter();
   const { user } = useAuth();
   const name = user?.firstName || user?.username || "Friend";
   const [analyzing, setAnalyzing] = useState(false);
@@ -96,13 +97,13 @@ export default function Dashboard() {
   return (
     <div className="w-full max-w-none mx-auto space-y-8 sm:space-y-12 pb-16 px-4 md:px-8 lg:px-16 xl:px-24 animate-in fade-in zoom-in-95 duration-500">
       
-      {/* Top Banner Area (Sleek, integrated typography instead of a box) */}
+      {/* Top Banner Area */}
       <div className="pt-6 sm:pt-10 relative">
         <div className="flex flex-col gap-6">
           <span className="text-sm font-medium text-gray-500 dark:text-gray-400 tracking-wide uppercase">Your Daily Growth</span>
           <div className="flex flex-col gap-2">
             <h1 className="text-6xl md:text-8xl lg:text-display-lg text-gray-900 dark:text-white">
-              Hello,
+              Hello, {name}
             </h1>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium text-gray-400 dark:text-gray-500">
               How are you feeling today?
@@ -126,12 +127,24 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content Layout Grid */}
-      <div className="flex flex-col gap-12 lg:gap-16">
+      <div className="flex flex-col gap-10 lg:gap-14">
         
-        {/* Mood Tracker */}
-        <div className="flex flex-col gap-6 w-full">
-          <MoodTracker variant="inline" />
+        {/* Interactive Mood Meter */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 tracking-wide">
+              Interactive Mood Meter
+            </span>
+            <span className="text-xs text-muted-foreground">
+              Tap the color that best describes how you feel right now
+            </span>
+          </div>
+          <div className="rounded-[32px] overflow-hidden border border-gray-200/50 dark:border-white/10 bg-white/50 dark:bg-black/30 backdrop-blur-md p-4 sm:p-6 shadow-sm">
+            <MoodTracker onMoodLogged={() => router.push('/ai-buddy')} />
+          </div>
         </div>
+        
+
 
         {/* Bento Grid Features */}
         <div className="pt-2">
@@ -210,28 +223,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Mood Overlay */}
-      {detectedQuadrant && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="w-full max-w-lg bg-black rounded-[44px] shadow-2xl relative overflow-hidden border border-white/10 animate-in zoom-in-95 duration-400">
-             <button 
-               onClick={() => setDetectedQuadrant(null)}
-               className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center z-50 text-white hover:bg-white/20 transition-colors"
-               aria-label="Close"
-             >
-               <X className="w-4 h-4" />
-             </button>
-             
-             <div className="pt-6 relative z-10 max-h-[85vh] overflow-y-auto no-scrollbar">
-               <MoodTracker 
-                 variant="inline" 
-                 defaultQuadrant={detectedQuadrant} 
-                 onMoodLogged={() => setDetectedQuadrant(null)} 
-               />
-             </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

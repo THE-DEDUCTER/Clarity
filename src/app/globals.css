@@ -205,7 +205,7 @@ body {
   --destructive-border: hsl(var(--destructive));
 }
 
-/* DARK MODE - Immersive Dark Teal / Navy */
+/* DARK MODE - Immersive Sleek Black */
 .dark {
   --button-outline: rgba(255,255,255, .10);
   --badge-outline: rgba(255,255,255, .05);
@@ -213,40 +213,40 @@ body {
   --elevate-1: rgba(255,255,255, .04);
   --elevate-2: rgba(255,255,255, .09);
 
-  --background: 220 30% 10%;
-  --foreground: 220 20% 90%;
-  --border: 220 20% 20%;
-  --card: 220 30% 12%;
-  --card-foreground: 220 20% 90%;
-  --card-border: 220 20% 20%;
+  --background: 0 0% 2%;
+  --foreground: 0 0% 98%;
+  --border: 0 0% 12%;
+  --card: 0 0% 4%;
+  --card-foreground: 0 0% 98%;
+  --card-border: 0 0% 10%;
   
-  --sidebar: 220 30% 10%;
-  --sidebar-foreground: 220 20% 85%;
-  --sidebar-border: 220 20% 18%;
-  --sidebar-primary: 160 50% 45%;
+  --sidebar: 0 0% 2%;
+  --sidebar-foreground: 0 0% 90%;
+  --sidebar-border: 0 0% 12%;
+  --sidebar-primary: 250 50% 60%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 220 20% 20%;
-  --sidebar-accent-foreground: 220 30% 95%;
-  --sidebar-ring: 160 50% 45%;
+  --sidebar-accent: 0 0% 8%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-ring: 250 50% 60%;
 
-  --popover: 220 30% 12%;
-  --popover-foreground: 220 20% 90%;
-  --popover-border: 220 20% 20%;
+  --popover: 0 0% 4%;
+  --popover-foreground: 0 0% 98%;
+  --popover-border: 0 0% 12%;
 
-  --primary: 156 50% 45%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 220 20% 20%;
-  --secondary-foreground: 220 20% 85%;
-  --muted: 220 20% 18%;
-  --muted-foreground: 220 15% 60%;
-  --accent: 220 20% 22%;
-  --accent-foreground: 220 20% 90%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 10%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 0 0% 10%;
+  --accent-foreground: 0 0% 98%;
   
-  --destructive: 0 60% 55%;
+  --destructive: 0 60% 50%;
   --destructive-foreground: 0 0% 100%;
 
-  --input: 220 20% 25%;
-  --ring: 156 50% 45%;
+  --input: 0 0% 12%;
+  --ring: 0 0% 98%;
 
   --chart-1: 156 50% 45%;
   --chart-2: 190 60% 50%;
@@ -254,14 +254,14 @@ body {
   --chart-4: 280 40% 60%;
   --chart-5: 144 30% 50%;
 
-  --shadow-2xs: 0px 2px 0px 0px hsl(220 20% 5% / 0.00);
-  --shadow-xs: 0px 2px 0px 0px hsl(220 20% 5% / 0.00);
-  --shadow-sm: 0px 2px 0px 0px hsl(220 20% 5% / 0.00), 0px 1px 2px -1px hsl(220 20% 5% / 0.00);
-  --shadow: 0px 2px 0px 0px hsl(220 20% 5% / 0.00), 0px 1px 2px -1px hsl(220 20% 5% / 0.00);
-  --shadow-md: 0px 2px 0px 0px hsl(220 20% 5% / 0.00), 0px 2px 4px -1px hsl(220 20% 5% / 0.00);
-  --shadow-lg: 0px 2px 0px 0px hsl(220 20% 5% / 0.00), 0px 4px 6px -1px hsl(220 20% 5% / 0.00);
-  --shadow-xl: 0px 2px 0px 0px hsl(220 20% 5% / 0.00), 0px 8px 10px -1px hsl(220 20% 5% / 0.00);
-  --shadow-2xl: 0px 2px 0px 0px hsl(220 20% 5% / 0.00);
+  --shadow-2xs: 0px 2px 0px 0px rgba(0,0,0,1);
+  --shadow-xs: 0px 2px 0px 0px rgba(0,0,0,1);
+  --shadow-sm: 0px 2px 0px 0px rgba(0,0,0,1), 0px 1px 2px -1px rgba(0,0,0,1);
+  --shadow: 0px 2px 0px 0px rgba(0,0,0,1), 0px 1px 2px -1px rgba(0,0,0,1);
+  --shadow-md: 0px 2px 0px 0px rgba(0,0,0,1), 0px 2px 4px -1px rgba(0,0,0,1);
+  --shadow-lg: 0px 2px 0px 0px rgba(0,0,0,1), 0px 4px 6px -1px rgba(0,0,0,1);
+  --shadow-xl: 0px 2px 0px 0px rgba(0,0,0,1), 0px 8px 10px -1px rgba(0,0,0,1);
+  --shadow-2xl: 0px 2px 0px 0px rgba(0,0,0,1);
 }
 
 @layer base {

@@ -56,9 +56,9 @@ interface FeatureCategory {
 
 const FEATURE_CATEGORIES: FeatureCategory[] = [
   {
-    title: "My Mind",
+    title: "Home",
     items: [
-      { title: "My Mind Hub", description: "Your mental and emotional toolkit", href: "/my-mind", icon: Brain, color: "text-violet-600 bg-violet-50 dark:bg-violet-950/50" },
+      { title: "Home Dashboard", description: "Your mental and emotional toolkit", href: "/dashboard", icon: Brain, color: "text-violet-600 bg-violet-50 dark:bg-violet-950/50" },
       { title: "AI Buddy", description: "Empathetic companion with voice support", href: "/ai-buddy", icon: Bot, color: "text-pink-600 bg-pink-50 dark:bg-pink-950/50", badge: "Live" },
       { title: "Emotional Diary", description: "Journal your thoughts and emotions", href: "/diary", icon: PenLine, color: "text-orange-600 bg-orange-50 dark:bg-orange-950/50" },
       { title: "Self-Assessment", description: "Clinically backed mental wellbeing tests", href: "/assessment", icon: Brain, color: "text-purple-600 bg-purple-50 dark:bg-purple-950/50" },

@@ -82,15 +82,7 @@ export const PetCareDashboard: React.FC = () => {
   const [cooldowns, setCooldowns] = useState<Record<string, number>>({});
   const [achievements, setAchievements] = useState<string[]>([]);
   const [playTime, setPlayTime] = useState(0);
-  const [chatMessages, setChatMessages] = useState<Array<{id: string, sender: 'user' | 'pet', message: string, timestamp: Date}>>([
-    {
-      id: '1',
-      sender: 'pet',
-      message: `Woof! Hi there! I'm ${pet.name} and I'm so happy to meet you!`,
-      timestamp: new Date()
-    }
-  ]);
-  const [currentMessage, setCurrentMessage] = useState('');
+
 
   const activities: Activity[] = [
     {
@@ -210,96 +202,7 @@ export const PetCareDashboard: React.FC = () => {
     }
   }, [pet.experience, pet.maxExperience, pet.level, achievements]);
 
-  // Pet chat responses based on stats and activities
-  const getPetResponse = (userMessage: string): string => {
-    const message = userMessage.toLowerCase();
-    
-    // Contextual responses based on pet stats
-    if (pet.hunger < 30) {
-      return "Woof woof! I'm getting really hungry... could you feed me please?";
-    }
-    if (pet.thirst < 30) {
-      return "Pant pant... I'm so thirsty! Could I have some fresh water?";
-    }
-    if (pet.health < 40) {
-      return "I'm not feeling too well... maybe I need some rest and care?";
-    }
-    if (pet.happiness < 40) {
-      return "I'm feeling a bit sad today... want to play with me to cheer me up?";
-    }
-    
-    // Responses to specific keywords
-    if (message.includes('play') || message.includes('game')) {
-      return "Yes! I love to play! Let's have some fun together!";
-    }
-    if (message.includes('hungry') || message.includes('food') || message.includes('eat')) {
-      return "Woof! Food sounds amazing right now! I love treats!";
-    }
-    if (message.includes('water') || message.includes('drink') || message.includes('thirsty')) {
-      return "Fresh water is the best! Glug glug glug!";
-    }
-    if (message.includes('good') || message.includes('love') || message.includes('cute')) {
-      return "Aww, you're the best! I love you too! You take such good care of me!";
-    }
-    if (message.includes('tired') || message.includes('sleep') || message.includes('rest')) {
-      return "A good nap sounds perfect right now... zzz...";
-    }
-    if (message.includes('happy') || message.includes('joy')) {
-      return "I'm so happy when we're together! You make me feel loved!";
-    }
-    if (message.includes('sick') || message.includes('hurt') || message.includes('pain')) {
-      return "Don't worry about me! With your love and care, I'll feel better soon!";
-    }
-    
-    // General friendly responses
-    const generalResponses = [
-      "Woof woof! I'm so happy you're talking to me!",
-      "You're the best pet parent ever! Thank you for taking care of me!",
-      "I love spending time with you! What should we do next?",
-      "Being with you makes me so happy! Tail wagging intensifies!",
-      "You always know just what to say! I'm lucky to have you!",
-      "Every day with you is an adventure! What fun thing should we do?",
-      "I can tell you care about me so much! That makes me feel safe and loved!"
-    ];
-    
-    return generalResponses[Math.floor(Math.random() * generalResponses.length)];
-  };
 
-  // Send chat message
-  const sendMessage = () => {
-    if (!currentMessage.trim()) return;
-    
-    // Add user message
-    const userMsg = {
-      id: Date.now().toString(),
-      sender: 'user' as const,
-      message: currentMessage,
-      timestamp: new Date()
-    };
-    
-    setChatMessages(prev => [...prev, userMsg]);
-    
-    // Generate pet response after a short delay
-    setTimeout(() => {
-      const petResponse = {
-        id: (Date.now() + 1).toString(),
-        sender: 'pet' as const,
-        message: getPetResponse(currentMessage),
-        timestamp: new Date()
-      };
-      
-      setChatMessages(prev => [...prev, petResponse]);
-    }, 1000);
-    
-    setCurrentMessage('');
-  };
-
-  // Handle enter key press
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      sendMessage();
-    }
-  };
 
   const performActivity = (activity: Activity) => {
     if (cooldowns[activity.id] && cooldowns[activity.id] > 0) return;
@@ -610,69 +513,7 @@ export const PetCareDashboard: React.FC = () => {
         </Card>
       )}
 
-      {/* Pet Chat */}
-      <Card className="border-2 border-purple-200 dark:border-purple-900/50 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <MessageCircle className="w-5 h-5 text-purple-600" />
-            Chat with {pet.name}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Chat Messages */}
-          <div className="h-64 overflow-y-auto bg-white/70 dark:bg-slate-900/70 rounded-lg p-4 space-y-3 border border-purple-100 dark:border-purple-900/50">
-            {chatMessages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] p-3 rounded-lg ${
-                    msg.sender === 'user'
-                      ? 'bg-blue-500 text-white rounded-br-none'
-                      : 'bg-card border border-purple-200 text-foreground rounded-bl-none'
-                  }`}
-                >
-                  <div className="font-medium text-sm mb-1">
-                    {msg.sender === 'user' ? 'You' : pet.name}
-                  </div>
-                  <div className="text-sm leading-relaxed">{msg.message}</div>
-                  <div className={`text-xs mt-1 opacity-70`}>
-                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
 
-          {/* Chat Input */}
-          <div className="flex gap-2">
-            <Input
-              value={currentMessage}
-              onChange={(e) => setCurrentMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder={`Talk to ${pet.name}...`}
-              className="flex-1 bg-white/70 dark:bg-slate-900/70 border-purple-200 dark:border-purple-900/50 focus:border-purple-400 dark:focus:border-purple-500"
-            />
-            <Button
-              onClick={sendMessage}
-              disabled={!currentMessage.trim()}
-              className="bg-purple-500 hover:bg-purple-600 text-white"
-            >
-              <Send className="w-4 h-4" />
-            </Button>
-          </div>
-
-          {/* Chat Tips */}
-          <div className="text-xs text-muted-foreground bg-white/50 dark:bg-slate-900/50 p-3 rounded-lg border border-purple-100 dark:border-purple-900/50 flex items-start gap-2">
-            <Sparkles className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
-            <div>
-              <strong>Chat Tips:</strong> Ask {pet.name} how they're feeling, tell them about your day, or just say hi! 
-              Your pet will respond based on their current needs and mood. Try words like "play", "hungry", "happy", or "love"!
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Game Benefits */}
       <Card className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border-green-200 dark:border-green-900/50">
