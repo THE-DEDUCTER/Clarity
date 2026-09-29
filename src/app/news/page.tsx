@@ -19,7 +19,11 @@ import {
   ChevronRight,
   X,
   ExternalLink,
-  Tag
+  BookOpen,
+  Palette,
+  Users2,
+  Lock,
+  Heart
 } from "lucide-react";
 
 interface NewsItem {
@@ -31,6 +35,7 @@ interface NewsItem {
   readTime: string;
   badge: string;
   image: string;
+  icon: any;
   featured?: boolean;
   summary: string;
   content: string[];
@@ -47,7 +52,8 @@ const NEWS_ARTICLES: NewsItem[] = [
     readTime: "4 min read",
     badge: "Breaking News",
     featured: true,
-    image: "/assets/chatgpt-research.png",
+    image: "/assets/news-clinical-ai.jpg",
+    icon: Sparkles,
     summary: "Clarity's core AI research team today revealed a landmark milestone in empathetic language modeling, allowing the platform to identify subtle emotional decline before acute crises manifest.",
     content: [
       "Traditional conversational systems often struggle to distinguish between casual frustration and deep psychological distress. By integrating contextual cognitive linguistic analysis with Psychological First Aid (PFA) frameworks, Clarity's updated models detect cognitive distortions and distress markers with unprecedented sensitivity.",
@@ -68,7 +74,8 @@ const NEWS_ARTICLES: NewsItem[] = [
     date: "September 22, 2026",
     readTime: "5 min read",
     badge: "Clinical Study",
-    image: "/framerusercontent.com/images/kQIC9ukuG.LpWpZJA1.png",
+    image: "/assets/news-anxiety-study.jpg",
+    icon: BookOpen,
     summary: "Independent researchers have validated the therapeutic efficacy of Clarity's daily check-in workflows and emotional streak tracking across diverse participant cohorts.",
     content: [
       "In a 6-week cohort study tracking 1,200 individuals experiencing mild-to-moderate generalized anxiety, participants using Clarity for just 7 minutes daily demonstrated an average 34% drop in GAD-7 anxiety scores.",
@@ -89,7 +96,8 @@ const NEWS_ARTICLES: NewsItem[] = [
     date: "September 15, 2026",
     readTime: "3 min read",
     badge: "New Feature",
-    image: "/assets/chatgpt-research.png",
+    image: "/assets/news-art-therapy.jpg",
+    icon: Palette,
     summary: "Recognizing that trauma and deep feelings are often difficult to verbalize, Clarity has launched an interactive tactile canvas featuring sacred geometry and chakra grounding.",
     content: [
       "Words often fall short when processing heavy emotional states. The newly integrated Creative Zone allows users to engage in mindful coloring of sacred chakra mandalas, freehand expressive drawing, and tactile color palette selection.",
@@ -110,7 +118,8 @@ const NEWS_ARTICLES: NewsItem[] = [
     date: "September 08, 2026",
     readTime: "6 min read",
     badge: "Privacy & Trust",
-    image: "/assets/chatgpt-research.png",
+    image: "/assets/news-privacy-vault.jpg",
+    icon: Lock,
     summary: "Clarity has introduced a zero-knowledge data architecture ensuring that your conversations, journal entries, and personal assessments are indecipherable even to internal servers.",
     content: [
       "Mental health is sacred and confidential. Unlike corporate wellness tools that monetize user telemetry, Clarity applies military-grade AES-256 encryption at the client layer before any data is synced.",
@@ -131,7 +140,8 @@ const NEWS_ARTICLES: NewsItem[] = [
     date: "August 30, 2026",
     readTime: "4 min read",
     badge: "Impact",
-    image: "/framerusercontent.com/images/kQIC9ukuG.LpWpZJA1.png",
+    image: "/assets/news-campus.jpg",
+    icon: Users2,
     summary: "As student mental health services face unprecedented waitlists, Clarity has partnered with collegiate wellness centers to provide round-the-clock digital psychological support.",
     content: [
       "College counseling centers across the country have reported months-long waiting periods for intake appointments. Clarity bridges this critical gap by providing instant triage, stress de-escalation, and peer support frameworks.",
@@ -152,7 +162,8 @@ const NEWS_ARTICLES: NewsItem[] = [
     date: "August 21, 2026",
     readTime: "4 min read",
     badge: "Safety First",
-    image: "/assets/chatgpt-research.png",
+    image: "/assets/news-crisis-lifeline.jpg",
+    icon: Heart,
     summary: "Clarity reinforces its non-negotiable safety commitment by embedding instantaneous warm-handoff protocols for users signaling acute distress or self-harm ideation.",
     content: [
       "While Clarity is a supportive companion for daily mental wellness, our platform is engineered to immediately recognize when human clinical intervention is necessary.",
@@ -188,29 +199,29 @@ export default function NewsPage() {
   const featuredArticle = NEWS_ARTICLES.find(a => a.featured) || NEWS_ARTICLES[0];
 
   return (
-    <div className="min-h-screen bg-[#faf8f5] dark:bg-[#121118] text-[#262335] dark:text-[#f1e6db] transition-colors">
+    <div className="min-h-screen bg-[#faf8f5] dark:bg-[#0d0c12] text-[#262335] dark:text-[#f3ede6] transition-colors pb-24">
       {/* Top Header Navigation */}
-      <header className="sticky top-0 z-40 bg-[#faf8f5]/85 dark:bg-[#121118]/85 backdrop-blur-md border-b border-[#262335]/10 dark:border-white/10">
+      <header className="sticky top-0 z-40 bg-[#faf8f5]/85 dark:bg-[#0d0c12]/85 backdrop-blur-md border-b border-black/5 dark:border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Home</span>
             </Link>
             <span className="text-gray-300 dark:text-gray-700">|</span>
             <div className="flex items-center gap-2">
-              <Newspaper className="w-5 h-5 text-rose-500" />
-              <span className="font-extrabold tracking-tight text-lg">Clarity Newsroom</span>
+              <Newspaper className="w-4 h-4 text-rose-500" />
+              <span className="font-extrabold tracking-tight text-base sm:text-lg">Clarity Newsroom</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.push(isAuthenticated ? "/dashboard" : "/login")}
-              className="px-5 py-2 rounded-full bg-[#262335] text-white hover:bg-black dark:bg-white dark:text-[#262335] dark:hover:bg-gray-100 font-semibold text-xs sm:text-sm transition-all shadow-sm flex items-center gap-2"
+              className="px-5 py-2 rounded-full bg-[#262335] text-white hover:bg-black dark:bg-white dark:text-[#262335] font-semibold text-xs sm:text-sm transition-all shadow-sm flex items-center gap-2"
             >
               <span>Get Started</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -241,7 +252,7 @@ export default function NewsPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search news, studies, product updates..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-full bg-white dark:bg-[#1c1a24] border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 rounded-full bg-white dark:bg-[#181622] border border-black/10 dark:border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 transition-all shadow-sm"
             />
           </div>
         </section>
@@ -255,7 +266,7 @@ export default function NewsPage() {
               className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                 selectedCategory === cat
                   ? "bg-[#262335] text-white dark:bg-white dark:text-[#262335] shadow-sm"
-                  : "bg-white/70 dark:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800 hover:border-gray-300"
+                  : "bg-white dark:bg-[#181622] text-gray-600 dark:text-gray-400 border border-black/5 dark:border-white/10 hover:border-black/20"
               }`}
             >
               {cat}
@@ -265,7 +276,7 @@ export default function NewsPage() {
 
         {/* Featured Story */}
         {selectedCategory === "All" && !searchQuery && featuredArticle && (
-          <section className="bg-white dark:bg-[#1a1824] rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-md hover:shadow-xl transition-all">
+          <section className="bg-white dark:bg-[#181622] rounded-[36px] overflow-hidden border border-black/5 dark:border-white/10 shadow-lg hover:shadow-xl transition-all">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-7 relative h-72 sm:h-96 lg:h-auto overflow-hidden">
                 <img
@@ -280,32 +291,32 @@ export default function NewsPage() {
                 </div>
               </div>
 
-              <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-6">
-                <div className="space-y-3">
+              <div className="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between space-y-6">
+                <div className="space-y-4">
                   <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
                     <span className="font-semibold text-rose-500">{featuredArticle.category}</span>
-                    <span>•</span>
+                    <span>&bull;</span>
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5" />
                       {featuredArticle.date}
                     </span>
-                    <span>•</span>
+                    <span>&bull;</span>
                     <span className="flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" />
                       {featuredArticle.readTime}
                     </span>
                   </div>
 
-                  <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white leading-snug">
+                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-snug">
                     {featuredArticle.title}
                   </h2>
 
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                     {featuredArticle.subtitle}
                   </p>
                 </div>
 
-                <div className="pt-2 flex items-center justify-between border-t border-gray-100 dark:border-gray-800">
+                <div className="pt-4 flex items-center justify-between border-t border-black/5 dark:border-white/10">
                   <button
                     onClick={() => setActiveArticle(featuredArticle)}
                     className="inline-flex items-center gap-2 text-sm font-bold text-rose-600 hover:text-rose-700 dark:text-rose-400 transition-colors"
@@ -315,7 +326,7 @@ export default function NewsPage() {
                   </button>
                   <button
                     onClick={() => router.push(isAuthenticated ? "/dashboard" : "/login")}
-                    className="px-4 py-1.5 rounded-full bg-[#262335] text-white hover:bg-black dark:bg-white dark:text-[#262335] font-semibold text-xs transition-colors"
+                    className="px-5 py-2 rounded-full bg-[#262335] text-white hover:bg-black dark:bg-white dark:text-[#262335] font-semibold text-xs transition-colors"
                   >
                     Get Started
                   </button>
@@ -338,10 +349,10 @@ export default function NewsPage() {
             {filteredArticles.map((article) => (
               <article
                 key={article.id}
-                className="bg-white dark:bg-[#1a1824] rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between"
+                className="bg-white dark:bg-[#181622] rounded-[32px] overflow-hidden border border-black/5 dark:border-white/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative h-48 w-full overflow-hidden">
+                  <div className="relative h-48 w-full overflow-hidden bg-black/5 dark:bg-white/5">
                     <img
                       src={article.image}
                       alt={article.title}
@@ -354,25 +365,25 @@ export default function NewsPage() {
                     </div>
                   </div>
 
-                  <div className="p-5 space-y-2.5">
+                  <div className="p-6 space-y-3">
                     <div className="flex items-center gap-2 text-[11px] text-gray-500 dark:text-gray-400">
                       <span className="font-semibold text-rose-500">{article.category}</span>
-                      <span>•</span>
+                      <span>&bull;</span>
                       <span>{article.date}</span>
                     </div>
 
-                    <h4 className="font-bold text-base text-gray-900 dark:text-white leading-snug line-clamp-2">
+                    <h4 className="font-bold text-lg leading-snug line-clamp-2">
                       {article.title}
                     </h4>
 
-                    <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-3 leading-relaxed">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed">
                       {article.summary}
                     </p>
                   </div>
                 </div>
 
-                <div className="p-5 pt-0 border-t border-gray-100 dark:border-gray-800/60 mt-3 flex items-center justify-between">
-                  <span className="text-[11px] text-muted-foreground">{article.readTime}</span>
+                <div className="p-6 pt-0 border-t border-black/5 dark:border-white/10 mt-3 flex items-center justify-between">
+                  <span className="text-[11px] text-gray-400">{article.readTime}</span>
                   <button
                     onClick={() => setActiveArticle(article)}
                     className="inline-flex items-center gap-1 text-xs font-semibold text-rose-600 hover:text-rose-700 dark:text-rose-400 transition-colors"
@@ -386,7 +397,7 @@ export default function NewsPage() {
           </div>
 
           {filteredArticles.length === 0 && (
-            <div className="text-center py-16 space-y-3 bg-white dark:bg-[#1a1824] rounded-2xl border border-gray-200 dark:border-gray-800">
+            <div className="text-center py-16 space-y-3 bg-white dark:bg-[#181622] rounded-[32px] border border-black/5 dark:border-white/10">
               <Search className="w-8 h-8 text-gray-400 mx-auto" />
               <h4 className="font-bold text-lg">No articles found</h4>
               <p className="text-xs text-muted-foreground max-w-sm mx-auto">
@@ -397,18 +408,18 @@ export default function NewsPage() {
         </section>
 
         {/* Bottom Banner */}
-        <section className="bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-teal-500/10 rounded-3xl p-8 sm:p-12 border border-rose-500/20 text-center space-y-4">
+        <section className="bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-teal-500/10 rounded-[40px] p-8 sm:p-14 border border-rose-500/20 text-center space-y-4 shadow-sm">
           <HeartHandshake className="w-10 h-10 text-rose-500 mx-auto" />
-          <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h3 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
             Ready to Begin Your Wellness Journey?
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+          <p className="text-sm text-gray-600 dark:text-gray-300 max-w-xl mx-auto leading-relaxed">
             Experience gentle emotional companionship, private encrypted reflections, and evidence-based mental health tools right now.
           </p>
           <div className="pt-2">
             <button
               onClick={() => router.push(isAuthenticated ? "/dashboard" : "/login")}
-              className="px-8 py-3 rounded-full bg-[#262335] text-white hover:bg-black dark:bg-white dark:text-[#262335] font-semibold text-sm transition-all shadow-md inline-flex items-center gap-2"
+              className="px-8 py-3.5 rounded-full bg-[#262335] text-white hover:bg-black dark:bg-white dark:text-[#262335] font-semibold text-sm transition-all shadow-md inline-flex items-center gap-2 hover:scale-105"
             >
               <span>Get Started</span>
               <ChevronRight className="w-4 h-4" />
@@ -420,10 +431,10 @@ export default function NewsPage() {
       {/* Modal View for Article Reading */}
       {activeArticle && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-[#1a1824] border border-gray-200 dark:border-gray-800 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+          <div className="bg-white dark:bg-[#181622] border border-black/10 dark:border-white/15 rounded-[36px] max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
             <button
               onClick={() => setActiveArticle(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors z-10"
+              className="absolute top-4 right-4 p-2 rounded-full bg-black/10 dark:bg-white/10 text-gray-700 dark:text-gray-200 hover:bg-black/20 dark:hover:bg-white/20 transition-colors z-10"
             >
               <X className="w-4 h-4" />
             </button>
@@ -446,52 +457,45 @@ export default function NewsPage() {
               </div>
             </div>
 
-            <div className="p-6 sm:p-8 space-y-6">
-              <div className="flex items-center gap-4 text-xs text-muted-foreground border-b border-gray-100 dark:border-gray-800 pb-4">
-                <span>{activeArticle.date}</span>
-                <span>•</span>
+            <div className="p-6 sm:p-10 space-y-6">
+              <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 border-b border-black/5 dark:border-white/10 pb-4">
+                <span>Published {activeArticle.date}</span>
+                <span>&bull;</span>
                 <span>{activeArticle.readTime}</span>
-                <span>•</span>
-                <span className="text-rose-500 font-semibold">{activeArticle.badge}</span>
               </div>
 
-              <div className="space-y-4 text-sm sm:text-base leading-relaxed text-gray-700 dark:text-gray-300">
+              <div className="space-y-4 text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
                 {activeArticle.content.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
 
-              {/* Key Takeaways */}
-              <div className="p-5 rounded-2xl bg-rose-500/5 border border-rose-500/15 space-y-3">
-                <h4 className="font-bold text-sm text-rose-600 dark:text-rose-400 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4" />
+              <div className="p-6 rounded-2xl bg-rose-500/5 dark:bg-rose-500/10 border border-rose-500/20 space-y-3">
+                <h4 className="font-bold text-sm text-rose-600 dark:text-rose-400 uppercase tracking-wider">
                   Key Takeaways
                 </h4>
-                <ul className="space-y-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                  {activeArticle.keyTakeaways.map((takeaway, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-rose-500 font-bold">•</span>
+                <ul className="space-y-2">
+                  {activeArticle.keyTakeaways.map((takeaway, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                      <CheckCircle2 className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
                       <span>{takeaway}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="pt-4 flex items-center justify-between border-t border-gray-100 dark:border-gray-800">
+              <div className="pt-4 flex justify-between items-center border-t border-black/5 dark:border-white/10">
                 <button
                   onClick={() => setActiveArticle(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="px-5 py-2.5 rounded-full border border-black/10 dark:border-white/15 text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                 >
-                  Close Story
+                  Close Article
                 </button>
                 <button
-                  onClick={() => {
-                    setActiveArticle(null);
-                    router.push(isAuthenticated ? "/dashboard" : "/login");
-                  }}
-                  className="px-6 py-2.5 rounded-full bg-[#262335] text-white hover:bg-black dark:bg-white dark:text-[#262335] font-semibold text-xs sm:text-sm transition-all shadow-sm"
+                  onClick={() => router.push(isAuthenticated ? "/dashboard" : "/login")}
+                  className="px-6 py-2.5 rounded-full bg-[#262335] text-white hover:bg-black dark:bg-white dark:text-[#262335] font-semibold text-xs transition-colors shadow-md"
                 >
-                  Get Started with Clarity
+                  Experience Clarity
                 </button>
               </div>
             </div>
