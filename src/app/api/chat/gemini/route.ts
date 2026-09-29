@@ -8,12 +8,19 @@ const systemPrompts: Record<string, string> = {
   rio:   "You are Rio, a friendly social buddy. Keep responses warm, casual, and conversational. No medical advice.",
 };
 
+function cleanKey(raw: string | undefined): string | null {
+  if (!raw) return null;
+  const cleaned = raw.replace(/^\uFEFF/, '').replace(/[\r\n\t ]/g, '').replace(/[^\x20-\x7E]/g, '');
+  return cleaned.length > 0 ? cleaned : null;
+}
+
 export async function POST(req: Request) {
   try {
     const { message, personalityId, messages } = await req.json();
 
-    const apiKey =
+    const rawKey =
       process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    const apiKey = cleanKey(rawKey);
 
     if (!apiKey) {
       return NextResponse.json(

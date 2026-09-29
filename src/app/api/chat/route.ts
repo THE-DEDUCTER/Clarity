@@ -88,13 +88,22 @@ function mapMessages(messages: any[]): { role: string; content: string }[] {
   }));
 }
 
+// Helper to strip any BOM (\uFEFF / 65279) or hidden whitespace/carriage returns
+function cleanKey(raw: string | undefined): string | null {
+  if (!raw) return null;
+  // Strip BOM, non-ASCII characters, whitespace, and quotes
+  const cleaned = raw.replace(/^\uFEFF/, '').replace(/[\r\n\t ]/g, '').replace(/[^\x20-\x7E]/g, '');
+  return cleaned.length > 0 ? cleaned : null;
+}
+
 // ─── Provider 1: Google Gemini ────────────────────────────────────────────────
 async function tryGemini(
   systemPrompt: string,
   messages: any[],
 ): Promise<string | null> {
-  const apiKey =
+  const rawKey =
     process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+  const apiKey = cleanKey(rawKey);
   if (!apiKey) return null;
 
   // Build Gemini contents array (system prompt injected as first user+model pair)
@@ -148,8 +157,9 @@ async function tryNvidia(
   systemPrompt: string,
   messages: any[],
 ): Promise<string | null> {
-  const apiKey =
+  const rawKey =
     process.env.NVIDIA_API_KEY || process.env.NEXT_PUBLIC_NVIDIA_API_KEY;
+  const apiKey = cleanKey(rawKey);
   if (!apiKey) return null;
 
   const nvMessages = [
